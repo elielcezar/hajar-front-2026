@@ -1,0 +1,137 @@
+"use client";
+
+import { useState } from "react";
+import { Grid, List } from "lucide-react";
+import { Button } from "./ui/button";
+import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
+import { PropertyCard } from "./PropertyCard";
+import { getMockImoveis } from "@/lib/api";
+
+export const PropertiesSection = () => {
+  const properties = getMockImoveis();
+  const [filterType, setFilterType] = useState<"all" | "venda" | "aluguel">("all");
+  const [sortBy, setSortBy] = useState<"recent" | "price">("recent");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
+  const filteredProperties = properties.filter(property => {
+    if (filterType === "all") return true;
+    return property.tipo === filterType;
+  });
+
+  const sortedProperties = [...filteredProperties].sort((a, b) => {
+    if (sortBy === "price") {
+      return a.preco - b.preco;
+    }
+    return 0; // recent is default order
+  });
+
+  return (
+    <section className="py-16 bg-background">
+      <div className="container mx-auto px-4">
+        <div className="mb-8">
+          <div className="text-sm font-bold mb-2 text-muted-foreground tracking-wider">
+            O QUE OFERECEMOS
+          </div>
+          <h2 className="text-4xl font-bold mb-8 border-b-4 border-primary inline-block pb-2">
+            IMÓVEIS RECENTES
+          </h2>
+        </div>
+
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 bg-[#2b2b2b] p-4 rounded-sm">
+          <div className="flex items-center gap-4 text-white">
+            <Button 
+              variant="ghost" 
+              onClick={() => setFilterType("all")}
+              className={filterType === "all" ? "bg-primary text-white hover:bg-primary/90 hover:text-white" : "text-white hover:bg-white/10 hover:text-white"}
+            >
+              {properties.length} Anúncios
+            </Button>
+            <Button 
+              variant="ghost"
+              onClick={() => setFilterType("venda")}
+              className={filterType === "venda" ? "bg-primary text-white hover:bg-primary/90 hover:text-white" : "text-white hover:bg-white/10 hover:text-white"}
+            >
+              Venda
+            </Button>
+            <Button 
+              variant="ghost"
+              onClick={() => setFilterType("aluguel")}
+              className={filterType === "aluguel" ? "bg-primary text-white hover:bg-primary/90 hover:text-white" : "text-white hover:bg-white/10 hover:text-white"}
+            >
+              Aluguel
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <span className="text-white font-medium">Ordenar por:</span>
+            <Button 
+              variant="ghost" 
+              onClick={() => setSortBy("recent")}
+              className={sortBy === "recent" ? "bg-primary text-white hover:bg-primary/90 hover:text-white" : "text-white hover:bg-white/10 hover:text-white"}
+            >
+              Recentes ▼
+            </Button>
+            <Button 
+              variant="ghost"
+              onClick={() => setSortBy("price")}
+              className={sortBy === "price" ? "bg-primary text-white hover:bg-primary/90 hover:text-white" : "text-white hover:bg-white/10 hover:text-white"}
+            >
+              Preço ▼
+            </Button>
+            <ToggleGroup type="single" value={viewMode} onValueChange={(value) => value && setViewMode(value as "grid" | "list")} className="ml-4">
+              <ToggleGroupItem value="grid" aria-label="Grid view" className="data-[state=on]:bg-primary data-[state=on]:text-white">
+                <Grid className="h-4 w-4" />
+              </ToggleGroupItem>
+              <ToggleGroupItem value="list" aria-label="List view" className="data-[state=on]:bg-primary data-[state=on]:text-white">
+                <List className="h-4 w-4" />
+              </ToggleGroupItem>
+            </ToggleGroup>
+          </div>
+        </div>
+
+        {viewMode === "grid" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {sortedProperties.map((property, index) => (
+              <div 
+                key={property.id}
+                className="animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s`, animationFillMode: 'both' }}
+              >
+                <PropertyCard 
+                  id={property.id}
+                  image={property.fotos[0]}
+                  title={property.titulo}
+                  location={property.localizacao}
+                  price={property.tipo === 'aluguel' ? `R$ ${property.preco}/mês` : `R$ ${property.preco.toLocaleString('pt-BR')}`}
+                  badge={property.tipo === 'venda' ? 'À Venda!' : 'Para Alugar!'}
+                  type={property.tipo}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {sortedProperties.map((property, index) => (
+              <div 
+                key={property.id}
+                className="animate-fade-in bg-card rounded-sm overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'both' }}
+              >
+                <PropertyCard 
+                  id={property.id}
+                  image={property.fotos[0]}
+                  title={property.titulo}
+                  location={property.localizacao}
+                  price={property.tipo === 'aluguel' ? `R$ ${property.preco}/mês` : `R$ ${property.preco.toLocaleString('pt-BR')}`}
+                  badge={property.tipo === 'venda' ? 'À Venda!' : 'Para Alugar!'}
+                  type={property.tipo}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
