@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Newsletter } from "@/components/Newsletter";
 import { PropertyCard } from "@/components/PropertyCard";
@@ -12,10 +12,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Grid, List, Search, MapPin, ChevronRight } from "lucide-react";
-import { getMockImoveis } from "@/lib/api";
+import { getImoveis, type Imovel } from "@/lib/api";
 
 export default function PropertiesContent() {
-  const properties = getMockImoveis();
+  const [properties, setProperties] = useState<Imovel[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchImoveis() {
+      try {
+        const data = await getImoveis();
+        setProperties(data);
+      } catch (error) {
+        console.error('Erro ao carregar imóveis:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchImoveis();
+  }, []);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<"recent" | "price">("recent");
   const [priceRange, setPriceRange] = useState([0, 2000000]);
@@ -36,6 +51,17 @@ export default function PropertiesContent() {
     }
     return 0;
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <p className="text-muted-foreground text-lg">Carregando imóveis...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

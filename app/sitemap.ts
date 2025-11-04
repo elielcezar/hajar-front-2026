@@ -1,11 +1,11 @@
 import { MetadataRoute } from 'next';
-import { getMockImoveis } from '@/lib/api';
+import { getImoveis } from '@/lib/api';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://hajar.com.br';
   
   // Buscar todos os imóveis
-  const imoveis = getMockImoveis();
+  const imoveis = await getImoveis();
   
   // Páginas estáticas
   const staticPages = [

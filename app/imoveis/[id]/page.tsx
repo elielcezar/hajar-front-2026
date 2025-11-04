@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getImovel, getMockImoveis } from "@/lib/api";
+import { getImovel, getImoveis } from "@/lib/api";
 import PropertyDetailsContent from "./property-details-content";
 
 type Props = {
@@ -63,10 +63,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // Gerar parâmetros estáticos para as páginas mais acessadas (ISR)
 export async function generateStaticParams() {
-  const imoveis = getMockImoveis();
+  const imoveis = await getImoveis();
   
-  // Gerar páginas estáticas para os primeiros imóveis
-  return imoveis.slice(0, 10).map((imovel) => ({
+  // Gerar páginas estáticas para todos os imóveis
+  return imoveis.map((imovel) => ({
     id: String(imovel.id),
   }));
 }

@@ -1,20 +1,63 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hajar.ecwd.cloud/api';
 
-export interface Imovel {
-  id: string | number;
+// Interface da resposta da API
+interface ApiImovel {
+  id: number;
   titulo: string;
+  subTitulo: string;
+  descricaoCurta: string;
+  descricaoLonga: string;
+  fotos: string[];
+  cidade: string;
+  valor: string;
+  codigo: string;
+  endereco: string;
+  createdAt: string;
+  updatedAt: string;
+  tipo: Array<{
+    id: number;
+    imovelId: number;
+    tipoId: number;
+    tipo: {
+      id: number;
+      nome: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+  }>;
+  finalidade: Array<{
+    id: number;
+    imovelId: number;
+    finalidadeId: number;
+    finalidade: {
+      id: number;
+      nome: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+  }>;
+  categorias: any[];
+}
+
+// Interface unificada para uso no frontend
+export interface Imovel {
+  id: number;
+  titulo: string;
+  subTitulo: string;
   descricao: string;
+  descricaoLonga: string;
   preco: number;
   localizacao: string;
   endereco: string;
-  area: number;
-  quartos: number;
-  banheiros: number;
   fotos: string[];
   tipo: 'venda' | 'aluguel';
-  categoria: 'casa' | 'apartamento' | 'terreno' | 'comercial';
+  categoria: string;
+  codigo: string;
+  dataPublicacao: string;
+  area?: number;
+  quartos?: number;
+  banheiros?: number;
   caracteristicas?: string[];
-  dataPublicacao?: string;
   corretor?: {
     nome: string;
     email: string;
@@ -24,10 +67,44 @@ export interface Imovel {
   favoritos?: number;
 }
 
+// Função para transformar dados da API para o formato do frontend
+function transformApiImovel(apiImovel: ApiImovel): Imovel {
+  // Extrair tipo e finalidade
+  const tipoNome = apiImovel.tipo[0]?.tipo?.nome || 'Casa';
+  const finalidadeNome = apiImovel.finalidade[0]?.finalidade?.nome || 'Venda';
+  
+  // Converter valor para número (remover pontos e vírgulas)
+  const valorNumerico = parseFloat(apiImovel.valor.replace(/\./g, '').replace(',', '.')) || 0;
+  
+  return {
+    id: apiImovel.id,
+    titulo: apiImovel.titulo,
+    subTitulo: apiImovel.subTitulo,
+    descricao: apiImovel.descricaoCurta,
+    descricaoLonga: apiImovel.descricaoLonga,
+    preco: valorNumerico,
+    localizacao: apiImovel.cidade,
+    endereco: apiImovel.endereco,
+    fotos: apiImovel.fotos,
+    tipo: finalidadeNome.toLowerCase() === 'aluguel' ? 'aluguel' : 'venda',
+    categoria: tipoNome,
+    codigo: apiImovel.codigo,
+    dataPublicacao: apiImovel.createdAt,
+    // Valores padrão para campos que não existem na API
+    area: 0,
+    quartos: 0,
+    banheiros: 0,
+    caracteristicas: [],
+    visualizacoes: 0,
+    favoritos: 0,
+  };
+}
+
 export async function getImoveis(): Promise<Imovel[]> {
   try {
     const response = await fetch(`${API_URL}/imoveis`, {
-      next: { revalidate: 3600 } // Revalidar a cada 1 hora
+      next: { revalidate: 3600 }, // Revalidar a cada 1 hora
+      cache: 'no-store', // Forçar busca fresca em desenvolvimento
     });
     
     if (!response.ok) {
@@ -35,7 +112,8 @@ export async function getImoveis(): Promise<Imovel[]> {
       return [];
     }
     
-    return response.json();
+    const data: ApiImovel[] = await response.json();
+    return data.map(transformApiImovel);
   } catch (error) {
     console.error('Erro ao buscar imóveis:', error);
     return [];
@@ -44,16 +122,16 @@ export async function getImoveis(): Promise<Imovel[]> {
 
 export async function getImovel(id: string | number): Promise<Imovel | null> {
   try {
-    const response = await fetch(`${API_URL}/imoveis/${id}`, {
-      next: { revalidate: 3600 } // Revalidar a cada 1 hora
-    });
+    // Buscar da lista de imóveis e filtrar por ID
+    const imoveis = await getImoveis();
+    const imovel = imoveis.find(i => i.id === Number(id));
     
-    if (!response.ok) {
-      console.error('Erro ao buscar imóvel:', response.statusText);
+    if (!imovel) {
+      console.log(`Imóvel ${id} não encontrado`);
       return null;
     }
     
-    return response.json();
+    return imovel;
   } catch (error) {
     console.error('Erro ao buscar imóvel:', error);
     return null;
@@ -61,116 +139,7 @@ export async function getImovel(id: string | number): Promise<Imovel | null> {
 }
 
 export async function getImoveisFeatured(): Promise<Imovel[]> {
-  try {
-    const response = await fetch(`${API_URL}/imoveis?featured=true`, {
-      next: { revalidate: 3600 }
-    });
-    
-    if (!response.ok) {
-      console.error('Erro ao buscar imóveis em destaque:', response.statusText);
-      return [];
-    }
-    
-    return response.json();
-  } catch (error) {
-    console.error('Erro ao buscar imóveis em destaque:', error);
-    return [];
-  }
+  // Por enquanto, retorna os primeiros 4 imóveis
+  const imoveis = await getImoveis();
+  return imoveis.slice(0, 4);
 }
-
-// Dados mockados para desenvolvimento (caso API não esteja disponível)
-export const getMockImoveis = (): Imovel[] => [
-  {
-    id: 1,
-    titulo: "Apartamento Central Park",
-    descricao: "Belo apartamento em localização privilegiada com vista panorâmica da cidade.",
-    preco: 450000,
-    localizacao: "Centro, São Paulo",
-    endereco: "Av. Paulista, 1000",
-    area: 85,
-    quartos: 3,
-    banheiros: 2,
-    fotos: ["/property-1.jpg", "/property-2.jpg"],
-    tipo: "venda",
-    categoria: "apartamento",
-    caracteristicas: ["Ar condicionado", "Garagem", "Piscina", "Academia"],
-    dataPublicacao: new Date().toISOString(),
-    corretor: {
-      nome: "João Silva",
-      email: "joao@hajar.com.br",
-      telefone: "(11) 98765-4321"
-    },
-    visualizacoes: 1234,
-    favoritos: 42
-  },
-  {
-    id: 2,
-    titulo: "Casa Moderna em Condomínio",
-    descricao: "Casa espaçosa com acabamento de luxo em condomínio fechado.",
-    preco: 850000,
-    localizacao: "Alphaville, Barueri",
-    endereco: "Alameda das Flores, 250",
-    area: 250,
-    quartos: 4,
-    banheiros: 3,
-    fotos: ["/property-2.jpg", "/property-3.jpg"],
-    tipo: "venda",
-    categoria: "casa",
-    caracteristicas: ["Churrasqueira", "Jardim", "Garagem para 3 carros", "Piscina"],
-    dataPublicacao: new Date().toISOString(),
-    corretor: {
-      nome: "Maria Santos",
-      email: "maria@hajar.com.br",
-      telefone: "(11) 98765-4322"
-    },
-    visualizacoes: 856,
-    favoritos: 28
-  },
-  {
-    id: 3,
-    titulo: "Apartamento Studio Moderno",
-    descricao: "Studio compacto e funcional, ideal para jovens profissionais.",
-    preco: 2500,
-    localizacao: "Vila Madalena, São Paulo",
-    endereco: "Rua Harmonia, 150",
-    area: 35,
-    quartos: 1,
-    banheiros: 1,
-    fotos: ["/property-3.jpg", "/property-4.jpg"],
-    tipo: "aluguel",
-    categoria: "apartamento",
-    caracteristicas: ["Mobiliado", "Ar condicionado", "Internet"],
-    dataPublicacao: new Date().toISOString(),
-    corretor: {
-      nome: "Pedro Costa",
-      email: "pedro@hajar.com.br",
-      telefone: "(11) 98765-4323"
-    },
-    visualizacoes: 642,
-    favoritos: 15
-  },
-  {
-    id: 4,
-    titulo: "Cobertura de Luxo",
-    descricao: "Cobertura duplex com piscina privativa e vista espetacular.",
-    preco: 1200000,
-    localizacao: "Itaim Bibi, São Paulo",
-    endereco: "Av. Brigadeiro Faria Lima, 3000",
-    area: 180,
-    quartos: 4,
-    banheiros: 4,
-    fotos: ["/property-4.jpg", "/property-1.jpg"],
-    tipo: "venda",
-    categoria: "apartamento",
-    caracteristicas: ["Piscina privativa", "Sauna", "Garagem para 4 carros", "Elevador privativo"],
-    dataPublicacao: new Date().toISOString(),
-    corretor: {
-      nome: "Ana Paula",
-      email: "ana@hajar.com.br",
-      telefone: "(11) 98765-4324"
-    },
-    visualizacoes: 2145,
-    favoritos: 89
-  }
-];
-

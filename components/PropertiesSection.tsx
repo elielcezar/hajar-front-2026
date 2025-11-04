@@ -1,14 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Grid, List } from "lucide-react";
 import { Button } from "./ui/button";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { PropertyCard } from "./PropertyCard";
-import { getMockImoveis } from "@/lib/api";
+import { getImoveis, type Imovel } from "@/lib/api";
 
 export const PropertiesSection = () => {
-  const properties = getMockImoveis();
+  const [properties, setProperties] = useState<Imovel[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchImoveis() {
+      try {
+        const data = await getImoveis();
+        setProperties(data);
+      } catch (error) {
+        console.error('Erro ao carregar imóveis:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchImoveis();
+  }, []);
   const [filterType, setFilterType] = useState<"all" | "venda" | "aluguel">("all");
   const [sortBy, setSortBy] = useState<"recent" | "price">("recent");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -24,6 +39,16 @@ export const PropertiesSection = () => {
     }
     return 0; // recent is default order
   });
+
+  if (loading) {
+    return (
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-muted-foreground">Carregando imóveis...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 bg-background">
