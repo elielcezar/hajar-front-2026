@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hajar.ecwd.cloud/api';
+const API_URL = 'https://admin.hajar.com.br/api';
 
 // Interface da resposta da API
 interface ApiImovel {

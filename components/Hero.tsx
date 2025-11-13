@@ -6,6 +6,7 @@ import { Input } from "./ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import Image from "next/image";
+import { Newsletter } from "@/components/Newsletter";
 
 const heroImages = [
   "/hero-bg.jpg",
@@ -53,7 +54,7 @@ export const Hero = () => {
       <div className="relative container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 gap-8 items-start">
           {/* Calculator */}
-          <div className="bg-[#2b2b2b]/95 backdrop-blur-sm p-6 rounded-sm max-w-md">
+          {/*<div className="bg-[#2b2b2b]/95 backdrop-blur-sm p-6 rounded-sm max-w-md">
             <Tabs defaultValue="calculator" className="w-full">
               <TabsList className="w-full grid grid-cols-4 bg-black/30">
                 <TabsTrigger value="calculator" className="text-white data-[state=active]:bg-primary data-[state=active]:text-white">
@@ -129,7 +130,10 @@ export const Hero = () => {
                 <p className="text-white text-center py-8">Renting options coming soon...</p>
               </TabsContent>
             </Tabs>
-          </div>
+          </div>*/}
+
+          
+          
 
           {/* Hero Text */}
           <div className="flex items-center justify-center md:justify-end mt-12 md:mt-24">

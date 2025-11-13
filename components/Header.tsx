@@ -3,6 +3,7 @@
 import { Phone, MessageSquare, Globe } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import logo from "@/public/logo.png";
 
 export const Header = () => {
   return (
@@ -16,18 +17,18 @@ export const Header = () => {
                 <Phone className="h-4 w-4" />
                 <span>01800034567</span>
               </a>
-              <a href="#" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
+              {/*<a href="#" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
                 <MessageSquare className="h-4 w-4" />
                 <span>Live chat</span>
               </a>
               <button className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
                 <Globe className="h-4 w-4" />
                 <span>Language</span>
-              </button>
+              </button>*/}
             </div>
-            <Button size="sm" className="h-8">
+            {/*<Button size="sm" className="h-8">
               Login
-            </Button>
+            </Button>*/}
           </div>
         </div>
       </div>
@@ -36,12 +37,8 @@ export const Header = () => {
       <nav className="bg-[#2b2b2b] text-white sticky top-0 z-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
-              <div className="bg-white/10 p-2 rounded">
-                <div className="w-6 h-6 border-2 border-white rounded-sm" />
-              </div>
-              <span className="text-primary">Hajar</span>
-              <span>Imóveis</span>
+            <Link href="/" className="flex items-center gap-2 text-2xl font-bold">              
+              <img src={logo.src} alt="Hajar" className="w-[150px] h-full" />
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
