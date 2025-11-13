@@ -113,3 +113,15 @@ All colors MUST be HSL.
   animation: fade-in 0.5s ease-out;
 }
 
+/* Hero Arrow Title */
+.hero-arrow-title::before {
+  content: '';
+  position: absolute;
+  left: -70px;
+  top: 0;
+  border-style: solid;
+  border-color: transparent hsl(var(--primary)) transparent transparent;
+  border-width: 72px 70px 0 0;
+  transition: all 0.3s;
+}
+

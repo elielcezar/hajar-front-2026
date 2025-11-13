@@ -1,6 +1,6 @@
 "use client";
 
-import { Phone, MessageSquare, Globe } from "lucide-react";
+import { Phone, MessageSquare, Globe, Mail } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import logo from "@/public/logo.png";
@@ -11,11 +11,18 @@ export const Header = () => {
       {/* Top Bar */}
       <div className="bg-muted border-b border-border">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-10 text-sm">
-            <div className="flex items-center gap-6">
-              <a href="tel:01800034567" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
-                <Phone className="h-4 w-4" />
-                <span>01800034567</span>
+          <div className="flex items-end justify-between h-10 text-sm">
+              <a href="mailto:escritoriohajar@outlook.com.br" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
+                <Mail className="h-5 w-5 text-primary" />
+                <span>escritoriohajar@outlook.com.br</span>
+              </a>
+              <a href="tel:42999536810" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
+                <Phone className="h-5 w-5 text-primary" />
+                <span>42 99953 6810</span>
+              </a>
+              <a href="tel:42999257363" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
+                <Phone className="h-5 w-5 text-primary" />
+                <span>42 99925 7363</span>
               </a>
               {/*<a href="#" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
                 <MessageSquare className="h-4 w-4" />
@@ -24,11 +31,10 @@ export const Header = () => {
               <button className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
                 <Globe className="h-4 w-4" />
                 <span>Language</span>
-              </button>*/}
-            </div>
-            {/*<Button size="sm" className="h-8">
-              Login
-            </Button>*/}
+              </button>*/}            
+              {/*<Button size="sm" className="h-8">
+                Login
+              </Button>*/}
           </div>
         </div>
       </div>

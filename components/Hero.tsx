@@ -2,22 +2,53 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import Image from "next/image";
-import { Newsletter } from "@/components/Newsletter";
+import { Home, BedDouble, DollarSign } from "lucide-react";
 
 const heroImages = [
-  "/hero-bg.jpg",
-  "/hero-bg-2.jpg",
-  "/hero-bg-3.jpg",
-  "/hero-bg-4.jpg"
+  {
+    image: "/hero-bg.jpg",
+    title: "Encontre o imóvel perfeito",
+    description: "Conheça nossos imóveis exclusivos com as melhores localizações. Apartamentos e casas prontos para você realizar o seu sonho.",
+    features: [
+      { icon: Home, label: "3" },
+      { icon: BedDouble, label: "5" },
+      { icon: DollarSign, label: "5.000" }
+    ]
+  },
+  {
+    image: "/hero-bg-2.jpg",
+    title: "Oportunidade de investimento",
+    description: "Investir em imóveis é uma excelente oportunidade de ganhar renda passiva e aumentar o seu patrimônio. Com a Hajar Imóveis, você pode investir em imóveis de qualidade e com potencial de valorização.",
+    features: [
+      { icon: Home, label: "1" },
+      { icon: BedDouble, label: "2" },
+      { icon: DollarSign, label: "1.000" }
+    ]
+  },
+  {
+    image: "/hero-bg-3.jpg",
+    title: "Alugue o seu imóvel",
+    description: "Alugar um imóvel é uma excelente oportunidade de ganhar renda passiva e aumentar o seu patrimônio. Com a Hajar Imóveis, você pode alugar imóveis de qualidade e com potencial de valorizaçã.",
+    features: [
+      { icon: Home, label: "2" },
+      { icon: BedDouble, label: "1" },
+      { icon: DollarSign, label: "7.000" }
+    ]
+  },
+  {
+    image: "/hero-bg-4.jpg",
+    title: "Encontre o seu imóvel",
+    description: "Com a Hajar Imóveis, você pode encontrar o imóvel perfeito para você e sua família. Com as melhores localizações e os melhores imóveis, você pode realizar o seu sonho.",
+    features: [
+      { icon: Home, label: "4" },
+      { icon: BedDouble, label: "4" },
+      { icon: DollarSign, label: "4.000" }
+    ]
+  }
 ];
     
 export const Hero = () => {
-  const [priceProperty, setPriceProperty] = useState("");
-  const [downPayment, setDownPayment] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
@@ -31,7 +62,7 @@ export const Hero = () => {
   return (
     <div className="relative min-h-[600px] overflow-hidden">
       {/* Animated Background Images */}
-      {heroImages.map((image, index) => (
+      {heroImages.map((item: any, index: number) => (
         <div
           key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -39,128 +70,81 @@ export const Hero = () => {
           }`}
         >
           <Image
-            src={image}
+            src={item.image}
             alt={`Hero background ${index + 1}`}
             fill
             className="object-cover"
             priority={index === 0}
             quality={90}
           />
+
+          <div className="absolute inset-0 bg-black/40" />
+      
+            <div className="relative container mx-auto px-4 py-12 md:py-20">
+              <div className="max-w-3xl ml-auto">
+                {/* Título Principal */}
+                <div className="w-full relative bg-primary px-8 py-4 mb-6 inline-block animate-fade-in hero-arrow-title ml-[30px]">
+                  <h1 className="relative text-3xl md:text-4xl font-bold text-white">
+                    {item.title}
+                  </h1>
+                </div>
+
+                {/* Card de Destaque do Imóvel */}
+                <div className="bg-black/80 backdrop-blur-sm p-6 md:p-8 rounded-sm animate-fade-in space-y-4">
+                  <p className="text-white text-lg leading-relaxed">
+                    {item.description}
+                  </p>
+                  
+                  {/* Ícones de Características */}
+                  <div className="flex flex-wrap gap-4 py-4">
+                    <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded">
+                      <Home className="w-6 h-6 text-white" />
+                      <span className="text-white text-xl font-semibold">{item.features[0].label}</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded">
+                      <BedDouble className="w-6 h-6 text-white" />
+                      <span className="text-white text-xl font-semibold">{item.features[1].label}</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2 bg-primary px-6 py-2 rounded">                      
+                      <span className="text-white text-2xl font-bold">R$ {item.features[2].label}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Botão CTA */}
+                  <div className="pt-2">
+                    <Button 
+                      size="lg" 
+                      className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-6 text-lg"
+                    >
+                      Ver Mais Informações
+                    </Button>
+                  </div>
+                </div>
+              </div>        
+            </div>
+
+              {/* Navigation Dots */}
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-10">
+                  {heroImages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                        index === currentImageIndex 
+                          ? "bg-primary w-8" 
+                          : "bg-white/50 hover:bg-white/80"
+                      }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+                        
         </div>
       ))}
       
-      <div className="absolute inset-0 bg-black/30" />
       
-      <div className="relative container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-2 gap-8 items-start">
-          {/* Calculator */}
-          {/*<div className="bg-[#2b2b2b]/95 backdrop-blur-sm p-6 rounded-sm max-w-md">
-            <Tabs defaultValue="calculator" className="w-full">
-              <TabsList className="w-full grid grid-cols-4 bg-black/30">
-                <TabsTrigger value="calculator" className="text-white data-[state=active]:bg-primary data-[state=active]:text-white">
-                  Calculator
-                </TabsTrigger>
-                <TabsTrigger value="buying" className="text-white data-[state=active]:bg-primary data-[state=active]:text-white">
-                  Buying
-                </TabsTrigger>
-                <TabsTrigger value="selling" className="text-white data-[state=active]:bg-primary data-[state=active]:text-white">
-                  Selling
-                </TabsTrigger>
-                <TabsTrigger value="renting" className="text-white data-[state=active]:bg-primary data-[state=active]:text-white">
-                  Renting
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="calculator" className="mt-6 space-y-4">
-                <div>
-                  <label className="text-white text-sm mb-2 block">Calculate Your Propertie</label>
-                  <Input 
-                    placeholder="Price Propertie" 
-                    value={priceProperty}
-                    onChange={(e) => setPriceProperty(e.target.value)}
-                    className="bg-white"
-                  />
-                </div>
-                <div>
-                  <Input 
-                    placeholder="Down payment" 
-                    value={downPayment}
-                    onChange={(e) => setDownPayment(e.target.value)}
-                    className="bg-white"
-                  />
-                </div>
-                <div>
-                  <Select>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Interest Rate" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="3">3%</SelectItem>
-                      <SelectItem value="4">4%</SelectItem>
-                      <SelectItem value="5">5%</SelectItem>
-                      <SelectItem value="6">6%</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Select>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Months" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="12">12 Months</SelectItem>
-                      <SelectItem value="24">24 Months</SelectItem>
-                      <SelectItem value="36">36 Months</SelectItem>
-                      <SelectItem value="48">48 Months</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <Button className="w-full">Calculate</Button>
-              </TabsContent>
-
-              <TabsContent value="buying" className="mt-6">
-                <p className="text-white text-center py-8">Buying options coming soon...</p>
-              </TabsContent>
-
-              <TabsContent value="selling" className="mt-6">
-                <p className="text-white text-center py-8">Selling options coming soon...</p>
-              </TabsContent>
-
-              <TabsContent value="renting" className="mt-6">
-                <p className="text-white text-center py-8">Renting options coming soon...</p>
-              </TabsContent>
-            </Tabs>
-          </div>*/}
-
-          
-          
-
-          {/* Hero Text */}
-          <div className="flex items-center justify-center md:justify-end mt-12 md:mt-24">
-            <div className="bg-primary/90 backdrop-blur-sm px-12 py-8 rounded-sm animate-fade-in">
-              <h1 className="text-4xl md:text-5xl font-bold text-white text-center">
-                Encontre o imóvel dos seus sonhos
-              </h1>
-            </div>
-          </div>
-        </div>
-
-        {/* Navigation Dots */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-10">
-          {heroImages.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentImageIndex(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentImageIndex 
-                  ? "bg-primary w-8" 
-                  : "bg-white/50 hover:bg-white/80"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      </div>
     </div>
   );
 };
