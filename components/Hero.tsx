@@ -50,47 +50,135 @@ const heroImages = [
     
 export const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [nextImageIndex, setNextImageIndex] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [animationKey, setAnimationKey] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+      const next = (currentImageIndex + 1) % heroImages.length;
+      setNextImageIndex(next);
+      setIsTransitioning(true);
+      setAnimationKey(prev => prev + 1);
+      
+      setTimeout(() => {
+        setCurrentImageIndex(next);
+        setIsTransitioning(false);
+      }, 1300); // Duração da animação mosaico (último bloco delay 400ms + animação 800ms = 1200ms + margem)
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [currentImageIndex]);
 
   return (
-    <div className="relative min-h-[600px] overflow-hidden">
+    <div className="relative min-h-[600px] overflow-hidden bg-zinc-900">
       {/* Animated Background Images */}
-      {heroImages.map((item: any, index: number) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentImageIndex ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <Image
-            src={item.image}
-            alt={`Hero background ${index + 1}`}
-            fill
-            className="object-cover"
-            priority={index === 0}
-            quality={90}
-          />
+      {heroImages.map((item: any, index: number) => {
+        const isCurrentSlide = index === currentImageIndex;
+        const isNextSlide = index === nextImageIndex && isTransitioning;
+        const shouldShow = isCurrentSlide || isNextSlide;
+        
+        if (!shouldShow) return null;
+        
+        const cols = 6;
+        const rows = 4;
+        const totalBlocks = cols * rows;
+        
+        return (
+          <div
+            key={`slide-${index}-${isNextSlide ? animationKey : 'static'}`}
+            className={`absolute inset-0 ${
+              isNextSlide ? "z-20" : isCurrentSlide ? "z-10" : "z-0"
+            }`}
+          >
+            {/* Imagem completa */}
+            {!isNextSlide && (
+              <div className={`absolute inset-0 ${
+                (isCurrentSlide && isTransitioning) ? "fade-out-smooth" : ""
+              }`}>
+                <Image
+                  src={item.image}
+                  alt={`Hero background ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  priority={index === 0}
+                  quality={90}
+                />
+              </div>
+            )}
 
-          <div className="absolute inset-0 bg-black/40" />
-      
-            <div className="relative container mx-auto px-4 py-12 md:py-20">
-              <div className="max-w-3xl ml-auto">
-                {/* Título Principal */}
-                <div className="w-full relative bg-primary px-8 py-4 mb-6 inline-block animate-fade-in hero-arrow-title ml-[30px]">
-                  <h1 className="relative text-3xl md:text-4xl font-bold text-white">
-                    {item.title}
-                  </h1>
+            {/* Efeito Mosaico - Cria grade de blocos por cima */}
+            {isNextSlide && (
+              <>
+                {/* Imagem completa que aparece quando mosaico suma */}
+                <div className="absolute inset-0 fade-in-from-mosaic">
+                  <Image
+                    src={item.image}
+                    alt={`Hero background ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    quality={90}
+                  />
                 </div>
+                
+                <div className="mosaic-container">
+                  {Array.from({ length: totalBlocks }).map((_, blockIndex) => {
+                    const col = blockIndex % cols;
+                    const row = Math.floor(blockIndex / cols);
+                    
+                    return (
+                      <div
+                        key={blockIndex}
+                        className="mosaic-block"
+                      >
+                        <div 
+                          className="absolute inset-0"
+                          style={{
+                            width: `${cols * 100}%`,
+                            height: `${rows * 100}%`,
+                            left: `${-col * 100}%`,
+                            top: `${-row * 100}%`,
+                          }}
+                        >
+                          <Image
+                            src={item.image}
+                            alt=""
+                            fill
+                            className="object-cover"
+                            quality={90}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                
+                {/* Overlay no mosaico e na imagem que vai aparecer */}
+                <div className="absolute inset-0 bg-black/40 pointer-events-none z-[21]" />
+              </>
+            )}
 
-                {/* Card de Destaque do Imóvel */}
-                <div className="bg-black/80 backdrop-blur-sm p-6 md:p-8 rounded-sm animate-fade-in space-y-4">
+            {/* Overlay na imagem completa (apenas quando não é nextSlide) */}
+            {!isNextSlide && (
+              <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+            )}
+      
+            {isCurrentSlide && (
+              <div className="relative container mx-auto px-4 py-12 md:py-20">
+                <div className="max-w-3xl ml-auto">
+                  {/* Título Principal */}
+                  <div className={`w-full relative bg-primary px-8 py-4 mb-6 inline-block hero-arrow-title ml-[30px] ${
+                    !isTransitioning ? 'content-fade-in-title' : 'opacity-0'
+                  }`}>
+                    <h1 className="relative text-3xl md:text-4xl font-bold text-white">
+                      {item.title}
+                    </h1>
+                  </div>
+
+                  {/* Card de Destaque do Imóvel */}
+                  <div className={`bg-black/80 backdrop-blur-sm p-6 md:p-8 rounded-sm space-y-4 ${
+                    !isTransitioning ? 'content-fade-in-content' : 'opacity-0'
+                  }`}>
                   <p className="text-white text-lg leading-relaxed">
                     {item.description}
                   </p>
@@ -124,25 +212,36 @@ export const Hero = () => {
                 </div>
               </div>        
             </div>
-
-              {/* Navigation Dots */}
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-10">
-                  {heroImages.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                        index === currentImageIndex 
-                          ? "bg-primary w-8" 
-                          : "bg-white/50 hover:bg-white/80"
-                      }`}
-                      aria-label={`Go to slide ${index + 1}`}
-                    />
-                  ))}
-                </div>
-                        
+            )}
         </div>
-      ))}
+        );
+      })}
+
+      {/* Navigation Dots */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-30">
+        {heroImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              if (!isTransitioning && index !== currentImageIndex) {
+                setNextImageIndex(index);
+                setIsTransitioning(true);
+                setAnimationKey(prev => prev + 1);
+                setTimeout(() => {
+                  setCurrentImageIndex(index);
+                  setIsTransitioning(false);
+                }, 1300);
+              }
+            }}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              index === currentImageIndex 
+                ? "bg-primary w-8" 
+                : "bg-white/50 hover:bg-white/80"
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
       
       
     </div>

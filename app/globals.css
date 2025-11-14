@@ -113,6 +113,162 @@ All colors MUST be HSL.
   animation: fade-in 0.5s ease-out;
 }
 
+/* Curtain Bottom Left Effect */
+@keyframes curtainBottomLeft {
+  0% {
+    clip-path: polygon(0 100%, 0 100%, 0 100%, 0 100%);
+  }
+  50% {
+    clip-path: polygon(0 0, 0 100%, 0 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+.curtain-enter {
+  animation: curtainBottomLeft 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* Mosaic Effect - Camera Style */
+.mosaic-container {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  z-index: 20;
+  gap: 0;
+  animation: mosaicContainerFade 1.3s ease-in-out forwards;
+}
+
+@keyframes mosaicContainerFade {
+  0%, 80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Imagem completa invisível enquanto mosaico está visível */
+.hidden-behind-mosaic {
+  opacity: 0;
+}
+
+/* Fade in da imagem completa quando mosaico está sumindo */
+.fade-in-from-mosaic {
+  animation: fadeInFromMosaic 1.3s ease-out forwards;
+}
+
+@keyframes fadeInFromMosaic {
+  0%, 60% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.mosaic-block {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  transform: scale(0);
+  animation: mosaicBlockGrow 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.mosaic-block img {
+  object-fit: cover;
+}
+
+@keyframes mosaicBlockGrow {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Fade out suave para a imagem anterior */
+.fade-out-smooth {
+  animation: fadeOutSmooth 1.3s ease-out forwards;
+  will-change: opacity;
+  transform: translateZ(0);
+}
+
+@keyframes fadeOutSmooth {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Delays escalonados para cada bloco (24 blocos = 6 cols x 4 rows) */
+.mosaic-block:nth-child(1) { animation-delay: 0ms; }
+.mosaic-block:nth-child(2) { animation-delay: 50ms; }
+.mosaic-block:nth-child(3) { animation-delay: 100ms; }
+.mosaic-block:nth-child(4) { animation-delay: 150ms; }
+.mosaic-block:nth-child(5) { animation-delay: 200ms; }
+.mosaic-block:nth-child(6) { animation-delay: 250ms; }
+.mosaic-block:nth-child(7) { animation-delay: 50ms; }
+.mosaic-block:nth-child(8) { animation-delay: 100ms; }
+.mosaic-block:nth-child(9) { animation-delay: 150ms; }
+.mosaic-block:nth-child(10) { animation-delay: 200ms; }
+.mosaic-block:nth-child(11) { animation-delay: 250ms; }
+.mosaic-block:nth-child(12) { animation-delay: 300ms; }
+.mosaic-block:nth-child(13) { animation-delay: 100ms; }
+.mosaic-block:nth-child(14) { animation-delay: 150ms; }
+.mosaic-block:nth-child(15) { animation-delay: 200ms; }
+.mosaic-block:nth-child(16) { animation-delay: 250ms; }
+.mosaic-block:nth-child(17) { animation-delay: 300ms; }
+.mosaic-block:nth-child(18) { animation-delay: 350ms; }
+.mosaic-block:nth-child(19) { animation-delay: 150ms; }
+.mosaic-block:nth-child(20) { animation-delay: 200ms; }
+.mosaic-block:nth-child(21) { animation-delay: 250ms; }
+.mosaic-block:nth-child(22) { animation-delay: 300ms; }
+.mosaic-block:nth-child(23) { animation-delay: 350ms; }
+.mosaic-block:nth-child(24) { animation-delay: 400ms; }
+
+/* Content Fade In Up */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Título entra primeiro */
+.content-fade-in-title {
+  animation: fadeInUp 0.5s ease-out 0.05s both;
+}
+
+/* Conteúdo entra logo depois */
+.content-fade-in-content {
+  animation: fadeInUp 0.5s ease-out 0.25s both;
+}
+
+/* Fallback para compatibilidade */
+.content-fade-in {
+  animation: fadeInUp 0.5s ease-out 0.1s both;
+}
+
 /* Hero Arrow Title */
 .hero-arrow-title::before {
   content: '';
