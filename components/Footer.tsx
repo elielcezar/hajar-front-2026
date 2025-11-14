@@ -44,12 +44,9 @@ export const Footer = () => {
       </div>
 
       {/* Red line with arrow */}
-      <div className="relative">
-        <div className="h-1 bg-primary"></div>
-        <div className="absolute left-1/2 -translate-x-1/2 -top-3">
-          <div className="w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[15px] border-t-primary"></div>
-        </div>
-      </div>
+      
+        <div className="h-1 bg-primary"></div>        
+      
 
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12">

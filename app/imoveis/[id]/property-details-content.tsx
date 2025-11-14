@@ -34,6 +34,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Imovel } from "@/lib/api";
 import Image from "next/image";
+import { Footer } from "@/components/Footer";
+import { CarouselProperties } from "@/components/CarouselProperties";
 
 interface PropertyDetailsContentProps {
   imovel: Imovel;
@@ -66,6 +68,9 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
   return (
     <div className="min-h-screen bg-background">
       <Header />
+
+      {/* Search Bar */}
+      <Newsletter />
       
       {/* Hero Section with Breadcrumb */}
       <div className="relative h-[300px] overflow-hidden">
@@ -87,16 +92,13 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
         </div>
       </div>
 
-      {/* Search Bar */}
-      <Newsletter />
-
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Action Buttons */}
-            <div className="flex flex-wrap gap-3 p-4 bg-card rounded-sm shadow-sm">
+            {/*<div className="flex flex-wrap gap-3 p-4 bg-card rounded-sm shadow-sm">
               <Button variant="outline" size="sm">
                 <Printer className="h-4 w-4 mr-2" />
                 Imprimir
@@ -121,7 +123,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                 <Calendar className="h-4 w-4" />
                 <span>Publicado: {imovel.dataPublicacao ? new Date(imovel.dataPublicacao).toLocaleDateString('pt-BR') : 'Recente'}</span>
               </div>
-            </div>
+            </div>*/}
 
             {/* Image Carousel */}
             <Carousel className="w-full" setApi={setCarouselApi}>
@@ -174,88 +176,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                   />
                 </div>
               ))}
-            </div>
-
-            {/* Tabs Section */}
-            <Tabs defaultValue="details" className="w-full">
-              <TabsList className="w-full justify-start">
-                <TabsTrigger value="details">Mais Detalhes</TabsTrigger>
-                <TabsTrigger value="agent">Contatar Corretor</TabsTrigger>
-                <TabsTrigger value="comments">Comentários</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="details" className="space-y-6 mt-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-4">Características Gerais</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {(imovel.caracteristicas || []).map((feature, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-primary rounded-full" />
-                          <span className="text-sm">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-4">Descrição Completa</h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {imovel.descricao}
-                    </p>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="agent" className="mt-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-6">Entre em Contato com o Corretor</h3>
-                    <form className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="name">Nome</Label>
-                          <Input id="name" placeholder="Seu nome" />
-                        </div>
-                        <div>
-                          <Label htmlFor="email">E-mail</Label>
-                          <Input id="email" type="email" placeholder="seu@email.com" />
-                        </div>
-                      </div>
-                      <div>
-                        <Label htmlFor="phone">Telefone</Label>
-                        <Input id="phone" placeholder="(00) 00000-0000" />
-                      </div>
-                      <div>
-                        <Label htmlFor="message">Mensagem</Label>
-                        <Textarea 
-                          id="message" 
-                          placeholder="Estou interessado neste imóvel..."
-                          rows={5}
-                        />
-                      </div>
-                      <Button className="w-full">
-                        <Send className="h-4 w-4 mr-2" />
-                        Enviar Mensagem
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="comments" className="mt-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-6">Comentários</h3>
-                    <p className="text-muted-foreground">
-                      Nenhum comentário ainda. Seja o primeiro a comentar!
-                    </p>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
+            </div>            
           </div>
 
           {/* Right Column - Sidebar */}
@@ -338,7 +259,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
             )}
 
             {/* Quick Stats */}
-            <Card>
+            {/*<Card>
               <CardContent className="p-6">
                 <h3 className="text-lg font-bold mb-4">Estatísticas</h3>
                 <div className="space-y-3">
@@ -356,10 +277,99 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                   </div>
                 </div>
               </CardContent>
-            </Card>
-          </div>
-        </div>
+            </Card>*/}
+          </div>          
+        </div>            
+
+        {/* Tabs Section */}
+        <Tabs defaultValue="details" className="w-full mt-12">
+              <TabsList className="w-full justify-start">
+                <TabsTrigger value="details">Mais Detalhes</TabsTrigger>
+                <TabsTrigger value="agent">Contatar Corretor</TabsTrigger>
+                {/*<TabsTrigger value="comments">Comentários</TabsTrigger>*/}
+              </TabsList>
+
+              <TabsContent value="details" className="space-y-6 mt-6">
+                {/*<Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold mb-4">Características Gerais</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {(imovel.caracteristicas || []).map((feature, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-primary rounded-full" />
+                          <span className="text-sm">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>*/}
+
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold mb-4">Descrição Completa</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {imovel.descricao}
+                    </p>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="agent" className="mt-6">
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold mb-6">Entre em Contato com o Corretor</h3>
+                    <form className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="name">Nome</Label>
+                          <Input id="name" placeholder="Seu nome" />
+                        </div>
+                        <div>
+                          <Label htmlFor="email">E-mail</Label>
+                          <Input id="email" type="email" placeholder="seu@email.com" />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="phone">Telefone</Label>
+                        <Input id="phone" placeholder="(00) 00000-0000" />
+                      </div>
+                      <div>
+                        <Label htmlFor="message">Mensagem</Label>
+                        <Textarea 
+                          id="message" 
+                          placeholder="Estou interessado neste imóvel..."
+                          rows={5}
+                        />
+                      </div>
+                      <Button className="w-full">
+                        <Send className="h-4 w-4 mr-2" />
+                        Enviar Mensagem
+                      </Button>
+                    </form>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/*<TabsContent value="comments" className="mt-6">
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold mb-6">Comentários</h3>
+                    <p className="text-muted-foreground">
+                      Nenhum comentário ainda. Seja o primeiro a comentar!
+                    </p>
+                  </CardContent>
+                </Card>
+              </TabsContent>*/}
+              
+            </Tabs> 
+
+            
       </div>
+
+      <CarouselProperties />
+
+      <Footer />
+
     </div>
   );
 }

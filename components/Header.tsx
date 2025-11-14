@@ -49,10 +49,9 @@ export const Header = () => {
 
             <div className="hidden md:flex items-center gap-8">
               <Link href="/" className="text-white hover:text-primary transition-colors font-medium">HOME</Link>
-              <Link href="#sobre" className="text-white/80 hover:text-primary transition-colors">SOBRE</Link>
-              <Link href="#features" className="text-white/80 hover:text-primary transition-colors">RECURSOS</Link>
-              <Link href="/imoveis" className="text-white/80 hover:text-primary transition-colors">IMÓVEIS</Link>
-              <Link href="#blog" className="text-white/80 hover:text-primary transition-colors">BLOG</Link>
+              <Link href="/imoveis" className="text-white/80 hover:text-primary transition-colors">IMÓVEIS</Link>              
+              <Link href="#" className="text-white/80 hover:text-primary transition-colors">SOBRE</Link>              
+              <Link href="https://www8.caixa.gov.br/siopiinternet-web/simulaOperacaoInternet.do?method=inicializarCasoUso" target="_blank" className="text-white/80 hover:text-primary transition-colors">SIMULADOR DE FINANCIAMENTO</Link>
               <Link href="/contato" className="text-white/80 hover:text-primary transition-colors">CONTATO</Link>
             </div>
           </div>

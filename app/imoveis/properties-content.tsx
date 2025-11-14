@@ -13,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Grid, List, Search, MapPin, ChevronRight } from "lucide-react";
 import { getImoveis, type Imovel } from "@/lib/api";
+import { Footer } from "@/components/Footer";
 
 export default function PropertiesContent() {
   const [properties, setProperties] = useState<Imovel[]>([]);
@@ -68,7 +69,7 @@ export default function PropertiesContent() {
       <Header />
 
       {/* Breadcrumb */}
-      <div className="bg-muted py-4 border-b border-border">
+      {/*<div className="bg-muted py-4 border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <a href="/" className="hover:text-primary transition-colors">
@@ -78,10 +79,12 @@ export default function PropertiesContent() {
             <span className="text-foreground font-medium">Imóveis</span>
           </div>
         </div>
-      </div>
+      </div>*/}
+
+      <Newsletter />
 
       {/* Detailed Search Bar */}
-      <div className="bg-card border-b border-border py-8">
+      {/*<div className="bg-card border-b border-border py-8">
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-4">
             <div className="relative flex-1">
@@ -98,7 +101,7 @@ export default function PropertiesContent() {
             </Button>
           </div>
         </div>
-      </div>
+      </div>}
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
@@ -266,14 +269,14 @@ export default function PropertiesContent() {
                   <ToggleGroupItem
                     value="grid"
                     aria-label="Grid view"
-                    className="data-[state=on]:bg-primary data-[state=on]:text-white"
+                    className="bg-[#2b2b2b] text-white data-[state=on]:bg-primary"
                   >
                     <Grid className="h-4 w-4" />
                   </ToggleGroupItem>
                   <ToggleGroupItem
                     value="list"
                     aria-label="List view"
-                    className="data-[state=on]:bg-primary data-[state=on]:text-white"
+                    className="bg-[#2b2b2b] text-white data-[state=on]:bg-primary"
                   >
                     <List className="h-4 w-4" />
                   </ToggleGroupItem>
@@ -346,7 +349,9 @@ export default function PropertiesContent() {
         </div>
       </div>
 
-      <Newsletter />
+      <Footer />
+
+      
     </div>
   );
 }

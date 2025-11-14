@@ -1,4 +1,4 @@
-import { TrendingUp, Building2, MapPin, Home, Info, List } from "lucide-react";
+import { TrendingUp, Building2, MapPin, Home, Info, Camera } from "lucide-react";
 
 const features = [
   {
@@ -27,7 +27,7 @@ const features = [
     description: "Consultoria profissional em todas as etapas.",
   },
   {
-    icon: List,
+    icon: Camera,
     title: "Liste seu Imóvel",
     description: "Cadastre e divulgue seu imóvel de forma simples.",
   },
@@ -35,29 +35,37 @@ const features = [
 
 export const FeaturesSection = () => {
   return (
-    <section className="py-16 bg-muted" id="features">
+    <section className="py-16 bg-background" id="features">
       <div className="container mx-auto px-4">
-        <div className="mb-12 text-center">
-          <h2 className="text-4xl font-bold mb-4">NOSSOS RECURSOS</h2>
+        {/* Título com linha decorativa */}
+        <div className="mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-2 tracking-wide">NOSSOS RECURSOS</h2>
+          <div className="w-32 h-1 bg-primary"></div>
         </div>
 
+        {/* Grid de Features */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
               <div 
                 key={index}
-                className="bg-background p-6 rounded-sm shadow-md hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
+                className="group"
               >
                 <div className="flex items-start gap-4">
-                  <div className="bg-primary/10 p-3 rounded-sm group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                    <Icon className="h-6 w-6 text-primary group-hover:text-white transition-colors duration-300" />
+                  {/* Ícone circular com borda */}
+                  <div className="relative flex-shrink-0">
+                    <div className="w-24 h-24 rounded-full bg-primary flex items-center justify-center border-4 border-black/80 transition-all duration-300 group-hover:scale-110 group-hover:border-primary group-hover:shadow-lg">
+                      <Icon className="h-10 w-10 text-white" strokeWidth={2} />
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors duration-300">
+                  
+                  {/* Conteúdo do card */}
+                  <div className="flex-1 bg-muted/50 p-5 rounded-sm min-h-[100px] flex flex-col justify-center transition-all duration-300 group-hover:bg-muted group-hover:shadow-md">
+                    <h3 className="text-lg font-bold mb-2 text-foreground transition-colors duration-300 group-hover:text-primary">
                       {feature.title}
                     </h3>
-                    <p className="text-muted-foreground">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                       {feature.description}
                     </p>
                   </div>

@@ -53,23 +53,20 @@ export const PropertiesSection = () => {
   return (
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
-        <div className="mb-8">
-          <div className="text-sm font-bold mb-2 text-muted-foreground tracking-wider">
-            O QUE OFERECEMOS
-          </div>
-          <h2 className="text-4xl font-bold mb-8 border-b-4 border-primary inline-block pb-2">
+        <div className="mb-8">         
+          <h2 className="text-4xl font-bold mb-4 border-b-8 border-primary inline-block pb-2">
             IMÓVEIS RECENTES
           </h2>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 bg-[#2b2b2b] p-4 rounded-sm">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 bg-[#2b2b2b] p-0 rounded-sm">
           <div className="flex items-center gap-4 text-white">
             <Button 
               variant="ghost" 
               onClick={() => setFilterType("all")}
-              className={filterType === "all" ? "bg-primary text-white hover:bg-primary/90 hover:text-white" : "text-white hover:bg-white/10 hover:text-white"}
+              className={filterType === "all" ? "bg-primary text-white hover:bg-primary/90 hover:text-white p-7" : "text-white hover:bg-white/10 hover:text-white p-7"}
             >
-              {properties.length} Anúncios
+              Todos
             </Button>
             <Button 
               variant="ghost"
@@ -87,7 +84,7 @@ export const PropertiesSection = () => {
             </Button>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 px-2">
             <span className="text-white font-medium">Ordenar por:</span>
             <Button 
               variant="ghost" 
@@ -104,10 +101,10 @@ export const PropertiesSection = () => {
               Preço ▼
             </Button>
             <ToggleGroup type="single" value={viewMode} onValueChange={(value) => value && setViewMode(value as "grid" | "list")} className="ml-4">
-              <ToggleGroupItem value="grid" aria-label="Grid view" className="data-[state=on]:bg-primary data-[state=on]:text-white">
+              <ToggleGroupItem value="grid" aria-label="Grid view" className="bg-[#2b2b2b] text-white data-[state=on]:bg-primary">
                 <Grid className="h-4 w-4" />
               </ToggleGroupItem>
-              <ToggleGroupItem value="list" aria-label="List view" className="data-[state=on]:bg-primary data-[state=on]:text-white">
+              <ToggleGroupItem value="list" aria-label="List view" className="bg-[#2b2b2b] text-white data-[state=on]:bg-primary">
                 <List className="h-4 w-4" />
               </ToggleGroupItem>
             </ToggleGroup>

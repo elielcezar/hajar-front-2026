@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ChevronRight, Mail, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
+import { Footer } from "@/components/Footer";
 
 const agents = [
   {
@@ -98,7 +99,7 @@ export default function ContactContent() {
       <Header />
 
       {/* Breadcrumb */}
-      <div className="bg-muted py-4 border-b border-border">
+      {/*<div className="bg-muted py-4 border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Link href="/" className="hover:text-primary transition-colors">
@@ -108,7 +109,7 @@ export default function ContactContent() {
             <span className="text-foreground font-medium">Contato</span>
           </div>
         </div>
-      </div>
+      </div>*/}
 
       {/* Map Section */}
       <div className="w-full h-[400px] bg-muted relative overflow-hidden">
@@ -125,7 +126,7 @@ export default function ContactContent() {
       </div>
 
       {/* Stay Informed Section */}
-      <div className="bg-muted py-12 border-b border-border">
+      {/*<div className="bg-muted py-12 border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
@@ -146,7 +147,7 @@ export default function ContactContent() {
             </div>
           </div>
         </div>
-      </div>
+      </div>*/}
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-16">
@@ -154,11 +155,11 @@ export default function ContactContent() {
           {/* Contact Form */}
           <div>
             <div className="mb-8">
-              <div className="text-sm font-bold mb-2 text-muted-foreground tracking-wider">
+              {/*<div className="text-sm font-bold mb-2 text-muted-foreground tracking-wider">
                 ENTRE EM CONTATO
-              </div>
+              </div>*/}
               <h2 className="text-4xl font-bold mb-4 border-b-4 border-primary inline-block pb-2">
-                FORMULÁRIO DE CONTATO
+              ENTRE EM CONTATO
               </h2>
             </div>
 
@@ -243,11 +244,11 @@ export default function ContactContent() {
           {/* Info Agents */}
           <div>
             <div className="mb-8">
-              <div className="text-sm font-bold mb-2 text-muted-foreground tracking-wider">
-                NOSSA EQUIPE
-              </div>
+                {/*<div className="text-sm font-bold mb-2 text-muted-foreground tracking-wider">
+                  NOSSA EQUIPE
+                </div>*/}
               <h2 className="text-4xl font-bold mb-4 border-b-4 border-primary inline-block pb-2">
-                CORRETORES
+                NOSSA EQUIPE
               </h2>
               <p className="text-muted-foreground mt-4">
                 Nossos corretores experientes estão aqui para ajudá-lo a encontrar o imóvel dos seus sonhos. 
@@ -295,7 +296,7 @@ export default function ContactContent() {
         </div>
       </div>
 
-      <Newsletter />
+      <Footer />
     </div>
   );
 }

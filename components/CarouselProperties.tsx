@@ -54,10 +54,10 @@ export const CarouselProperties = () => {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
-          <h2 className="text-4xl font-bold mb-2 inline-block">
-            CAROUSEL PROPERTIES
+          <h2 className="text-4xl font-bold mb-4 border-b-8 border-primary inline-block pb-2">
+            IMÓVEIS EM DESTAQUE
           </h2>
-          <div className="w-96 h-1 bg-primary"></div>
+          
         </div>
 
         {/* Carousel Container */}
@@ -88,7 +88,7 @@ export const CarouselProperties = () => {
                           <div className="relative w-32 h-32">
                             <div className="absolute top-6 -left-8 w-40 bg-primary text-white text-center py-2 transform -rotate-45 shadow-lg">
                               <span className="text-sm font-bold">
-                                {property.tipo === 'venda' ? 'For Sale' : 'For Rent'}
+                                {property.tipo === 'venda' ? 'À Venda!' : 'Para Alugar!'}
                               </span>
                             </div>
                           </div>
