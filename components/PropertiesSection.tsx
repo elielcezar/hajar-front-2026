@@ -54,7 +54,7 @@ export const PropertiesSection = () => {
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="mb-8">         
-          <h2 className="text-4xl font-bold mb-4 border-b-8 border-primary inline-block pb-2">
+          <h2 className="font-aestetico text-4xl mb-4 border-b-8 border-primary inline-block pb-2">
             IMÓVEIS RECENTES
           </h2>
         </div>

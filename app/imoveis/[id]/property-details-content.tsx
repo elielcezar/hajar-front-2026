@@ -85,7 +85,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
         />
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative container mx-auto px-4 h-full flex flex-col justify-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">DETALHES DO IMÓVEL</h1>
+          <h1 className="font-aestetico text-4xl md:text-5xl font-medium text-white mb-4">DETALHES DO IMÓVEL</h1>
           <div className="flex items-center gap-2 text-white">
             <span>Home</span>
             <span>/</span>
@@ -185,7 +185,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
           <div className="space-y-6">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4">DESCRIÇÃO GERAL</h3>
+                <h3 className="font-aestetico text-2xl font-medium mb-4">DESCRIÇÃO GERAL</h3>
                 <p className="text-sm text-muted-foreground mb-6">
                   {imovel.descricao.substring(0, 150)}...
                 </p>
@@ -308,7 +308,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
 
                 <Card>
                   <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-4">Descrição Completa</h3>
+                    <h3 className="font-aestetico text-2xl font-medium mb-4">Descrição Completa</h3>
                     <p className="text-muted-foreground leading-relaxed">
                       {imovel.descricao}
                     </p>
@@ -319,7 +319,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                   <CardContent className="p-6">
                     <div className="flex items-center gap-2 mb-4">
                       <MapPin className="h-5 w-5 text-primary" />
-                      <h3 className="text-xl font-bold">Localização</h3>
+                      <h3 className="font-aestetico text-2xl font-medium">Localização</h3>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">
                       {imovel.endereco}, {imovel.localizacao}

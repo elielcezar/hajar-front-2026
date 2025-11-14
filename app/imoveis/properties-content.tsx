@@ -111,7 +111,7 @@ export default function PropertiesContent() {
           <aside className="lg:col-span-1">
             <div className="bg-card rounded-sm border border-border p-6 space-y-6 sticky top-24">
               <div>
-                <h3 className="font-bold text-lg mb-4 border-b-2 border-primary inline-block pb-1">
+                <h3 className="font-aestetico text-lg font-medium mb-4 border-b-2 border-primary inline-block pb-1">
                   FILTROS
                 </h3>
               </div>
@@ -223,10 +223,10 @@ export default function PropertiesContent() {
           <div className="lg:col-span-3">
             {/* Results Header */}
             <div className="mb-6">
-              <div className="text-sm font-bold mb-2 text-muted-foreground tracking-wider">
+              <div className="font-aestetico text-sm font-medium mb-2 text-muted-foreground tracking-wider">
                 IMÓVEIS DISPONÍVEIS
               </div>
-              <h1 className="text-4xl font-bold mb-6 border-b-4 border-primary inline-block pb-2">
+              <h1 className="font-aestetico text-4xl font-medium mb-6 border-b-4 border-primary inline-block pb-2">
                 ENCONTRE SEU LAR
               </h1>
             </div>

@@ -34,7 +34,7 @@ export const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="flex gap-8">
           {/* Contact Us */}
-          <div className="w-full landscape:max-w-[30%] flex flex-col">
+          <div className="w-full text-sm landscape:max-w-[30%] flex flex-col">
             <img src={logo.src} alt="Hajar" className="self-start w-[220px] h-auto mb-6" />            
 
               <div className="flex items-start gap-3 mb-3">
@@ -45,51 +45,54 @@ export const Footer = () => {
               </div>
               <div className="flex items-start gap-3 mb-3">
                 <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                <a href="tel:55-5698-4589" className="hover:text-primary transition-colors">
-                  55-5698-4589
+                <a href="tel:42999536810" className="hover:text-primary transition-colors">
+                42 99953 6810                
+                </a>
+              </div>
+              <div className="flex items-start gap-3 mb-3">
+                <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <a href="tel:42999257363" className="hover:text-primary transition-colors">                
+                42 99925 7363
                 </a>
               </div>
               <div className="flex items-start gap-3 mb-3">
                 <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <span className="text-gray-300">
-                  Av. Exemplo, 123 - São Paulo
+                  R. Conceição, 341 - Centro<br/>
+                  Palmeira - PR, 84130-000
                 </span>
-              </div>
-              <div className="flex items-start gap-3 mb-3">
-                <MessageCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                <span className="text-gray-300">hajarimoveis</span>
-              </div>
+              </div>             
           </div>
 
           {/* Tag Cloud */}
           <div className="w-full landscape:max-w-[30%] flex flex-col">
 
-            <h3 className="text-xl font-bold mt-6 mb-9">Nossos Consultores</h3>
+            <h3 className="font-aestetico text-xl font-medium mt-6 mb-9">Nossos Consultores</h3>
               <ul>
                 <li className="mb-3 flex gap-2">
                   <FaWhatsapp className="bg-green-500 rounded-full p-1 w-6 h-6 text-white mt-1 flex-shrink-0 inline-block" /> 
-                  <span>
+                  <span className="text-sm">
                     <strong className="inline-block min-w-[140px]">Jaudeth hajar</strong> (42) 99925-7363<br/>
                     CRECI 15545
                   </span>
                 </li>
                 <li className="mb-3 flex gap-2">
                   <FaWhatsapp className="bg-green-500 rounded-full p-1 w-6 h-6 text-white mt-1 flex-shrink-0 inline-block" /> 
-                  <span>
+                  <span className="text-sm">
                     <strong className="inline-block min-w-[140px]">Zahra Hajar</strong> (42) 99924-8874<br/>
                     CRECI 18590
                   </span>
                 </li>
                 <li className="mb-3 flex gap-2">
                   <FaWhatsapp className="bg-green-500 rounded-full p-1 w-6 h-6 text-white mt-1 flex-shrink-0 inline-block" /> 
-                  <span>
+                  <span className="text-sm">
                     <strong className="inline-block min-w-[140px]">Kelly Stanganini</strong> (42) 99141-4779<br/>
                     CRECI 48209
                   </span>
                 </li>
                 <li className="mb-3 flex gap-2">
                   <FaWhatsapp className="bg-green-500 rounded-full p-1 w-6 h-6 text-white mt-1 flex-shrink-0 inline-block" /> 
-                  <span>
+                  <span className="text-sm">
                     <strong className="inline-block min-w-[140px]">Yara Agottani</strong> (42) 99953-6810<br/>
                     CRECI 33773
                   </span>
@@ -100,7 +103,7 @@ export const Footer = () => {
           {/* Testimonials */}
           <div className="w-full landscape:max-w-[20%] flex flex-col">
 
-            <h3 className="text-xl font-bold mt-6 mb-9">Cotações do dia</h3>
+            <h3 className="font-aestetico text-xl font-medium mt-6 mb-9">Cotações do dia</h3>
             <ul>
               <li className="mb-3"><strong>Dólar:</strong> R$ 5,29</li>
               <li className="mb-3"><strong>Milho:</strong> R$ 55,24/sc</li>
@@ -111,11 +114,11 @@ export const Footer = () => {
           </div>
           <div className="w-full landscape:max-w-[20%] flex flex-col">
 
-            <h3 className="text-xl font-bold mt-6 mb-9">Redes Sociais</h3>            
+            <h3 className="font-aestetico text-xl font-medium mt-6 mb-9">Redes Sociais</h3>            
             <div className="flex items-start gap-4">              
-              <FaFacebook className="w-7 h-7 text-primary mt-1 flex-shrink-0" />
-              <FaInstagram className="w-7 h-7 text-primary mt-1 flex-shrink-0" />
-              <FaLinkedin className="w-7 h-7 text-primary mt-1 flex-shrink-0" />
+              <FaFacebook className="w-7 h-7 text-white mt-1 flex-shrink-0 hover:text-primary transition-colors" />
+              <FaInstagram className="w-7 h-7 text-white mt-1 flex-shrink-0 hover:text-primary transition-colors" />
+              <FaLinkedin className="w-7 h-7 text-white mt-1 flex-shrink-0 hover:text-primary transition-colors" />
               
             </div>
           </div>
