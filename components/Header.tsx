@@ -9,21 +9,23 @@ export const Header = () => {
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-muted border-b border-border">
+      <div className="bg-muted border-b-2 border-primary">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-end gap-4 h-10 text-sm">
+          <div className="flex items-center justify-between gap-4 h-10 text-sm">
               <a href="mailto:escritoriohajar@outlook.com.br" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
                 <Mail className="h-5 w-5 text-primary" />
-                <span>escritoriohajar@outlook.com.br</span>
+                <span className="font-medium">escritoriohajar@outlook.com.br</span>
               </a>
+              <span className="flex items-center gap-8 font-medium">
               <a href="tel:42999536810" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
-                <Phone className="h-5 w-5 text-primary" />
+                <span className="text-white bg-primary rounded-lg p-1"><Phone className="h-5 w-5" /></span>
                 <span>42 99953 6810</span>
               </a>
               <a href="tel:42999257363" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
-                <Phone className="h-5 w-5 text-primary" />
+                <span className="text-white bg-primary rounded-lg p-1"><Phone className="h-5 w-5" /></span>
                 <span>42 99925 7363</span>
               </a>
+              </span>
               {/*<a href="#" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
                 <MessageSquare className="h-4 w-4" />
                 <span>Live chat</span>
@@ -40,7 +42,7 @@ export const Header = () => {
       </div>
 
       {/* Main Navigation */}
-      <nav className="bg-[#2b2b2b] text-white sticky top-0 z-50">
+      <nav className="bg-deepOceanic text-white sticky top-0 z-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2 text-2xl font-bold">              

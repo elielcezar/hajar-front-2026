@@ -15,27 +15,27 @@ import { Footer } from "@/components/Footer";
 const agents = [
   {
     id: 1,
-    name: "João Silva",
-    email: "joao@hajar.com.br",
-    phone: "(11) 98765-4321",
+    name: "Jaudeth Hajar",
+    email: "CRECI 15545",
+    phone: "(42) 99925-7363",
   },
   {
     id: 2,
-    name: "Maria Santos",
-    email: "maria@hajar.com.br",
-    phone: "(11) 98765-4322",
+    name: "Zahra Hajar",
+    email: "CRECI 18590",
+    phone: "(42) 99924-8874",
   },
   {
     id: 3,
-    name: "Pedro Costa",
-    email: "pedro@hajar.com.br",
-    phone: "(11) 98765-4323",
+    name: "Kelly Stanganini",
+    email: "CRECI 48209",
+    phone: "(42) 99141-4779",
   },
   {
     id: 4,
-    name: "Ana Paula",
-    email: "ana@hajar.com.br",
-    phone: "(11) 98765-4324",
+    name: "Yara Agottani",
+    email: "CRECI 33773",
+    phone: "(42) 99953-6810",
   },
 ];
 
@@ -114,7 +114,7 @@ export default function ContactContent() {
       {/* Map Section */}
       <div className="w-full h-[400px] bg-muted relative overflow-hidden">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.0977579757647!2d-46.65417768502216!3d-23.56142398468115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1234567890123!5m2!1spt-BR!2sbr"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3603.5001724695812!2d-50.004346923705654!3d-25.4215364325586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94dd581937358c35%3A0x4d923cf947dde188!2sHajar%20Corretores%20de%20Im%C3%B3veis!5e0!3m2!1spt-BR!2sbr!4v1763127726780!5m2!1spt-BR!2sbr"
           width="100%"
           height="100%"
           style={{ border: 0 }}
@@ -125,6 +125,7 @@ export default function ContactContent() {
         />
       </div>
 
+    
       {/* Stay Informed Section */}
       {/*<div className="bg-muted py-12 border-b border-border">
         <div className="container mx-auto px-4">

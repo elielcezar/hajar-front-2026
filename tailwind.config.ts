@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        aestetico: ["var(--font-aestetico)", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -26,6 +29,30 @@ export default {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },        
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        blood: {
+          DEFAULT: "hsl(var(--blood))",
+          foreground: "hsl(var(--blood-foreground))",
+        },
+        oceanic: {
+          DEFAULT: "hsl(var(--oceanic))",
+          foreground: "hsl(var(--oceanic-foreground))",
+        },
+        deepOceanic: {
+          DEFAULT: "hsl(var(--deep-oceanic))",
+          foreground: "hsl(var(--deep-oceanic-foreground))",
+        },
+        mystic: {
+          DEFAULT: "hsl(var(--mystic))",
+          foreground: "hsl(var(--mystic-foreground))",
+        },
+        vanilla: {
+          DEFAULT: "hsl(var(--vanilla))",
+          foreground: "hsl(var(--vanilla-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

@@ -165,46 +165,46 @@ export const Hero = () => {
       
             {isCurrentSlide && (
               <div className="relative container mx-auto px-4 py-12 md:py-20">
-                <div className="max-w-3xl ml-auto">
+                <div className="flex flex-col align-end max-w-3xl ml-auto justify-end">
                   {/* Título Principal */}
-                  <div className={`w-full relative bg-primary px-8 py-4 mb-6 inline-block hero-arrow-title ml-[30px] ${
+                  <div className={`w-[91%] relative bg-primary/90 px-8 py-4 mb-3 ml-[9%] inline-block hero-arrow-title ${
                     !isTransitioning ? 'content-fade-in-title' : 'opacity-0'
                   }`}>
-                    <h1 className="relative text-3xl md:text-4xl font-bold text-white">
+                    <h1 className="font-aestetico relative text-3xl md:text-4xl font-medium text-white leading-6 text-right">
                       {item.title}
                     </h1>
                   </div>
 
                   {/* Card de Destaque do Imóvel */}
-                  <div className={`bg-black/80 backdrop-blur-sm p-6 md:p-8 rounded-sm space-y-4 ${
+                  <div className={`text-right space-y-4 ${
                     !isTransitioning ? 'content-fade-in-content' : 'opacity-0'
                   }`}>
-                  <p className="text-white text-lg leading-relaxed">
+                  <p className="text-white text-right text-lg leading-relaxed bg-deepOceanic/80 backdrop-blur-sm p-6 md:p-8 rounded-sm">
                     {item.description}
                   </p>
                   
                   {/* Ícones de Características */}
-                  <div className="flex flex-wrap gap-4 py-4">
-                    <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded">
+                  <div className="flex flex-wrap gap-4 py-4 justify-end">
+                    <div className="flex items-center gap-2 bg-deepOceanic/80 px-4 py-2 rounded">
                       <Home className="w-6 h-6 text-white" />
                       <span className="text-white text-xl font-semibold">{item.features[0].label}</span>
                     </div>
                     
-                    <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded">
+                    <div className="flex items-center gap-2 bg-deepOceanic/80 px-4 py-2 rounded">
                       <BedDouble className="w-6 h-6 text-white" />
                       <span className="text-white text-xl font-semibold">{item.features[1].label}</span>
                     </div>
                     
-                    <div className="flex items-center gap-2 bg-primary px-6 py-2 rounded">                      
+                    <div className="flex items-center gap-2 bg-primary/90 px-6 py-2 rounded">                      
                       <span className="text-white text-2xl font-bold">R$ {item.features[2].label}</span>
                     </div>
                   </div>
                   
                   {/* Botão CTA */}
-                  <div className="pt-2">
+                  <div className="pt-0">
                     <Button 
                       size="lg" 
-                      className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-6 text-lg"
+                      className="bg-primary/90 hover:bg-primary text-white font-semibold px-8 py-6 text-lg"
                     >
                       Ver Mais Informações
                     </Button>

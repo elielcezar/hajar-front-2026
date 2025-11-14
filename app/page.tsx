@@ -5,6 +5,7 @@ import { PropertiesSection } from "@/components/PropertiesSection";
 import { CarouselProperties } from "@/components/CarouselProperties";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import { Footer } from "@/components/Footer";
+import { GetInTouch } from "@/components/GetInTouch";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <PropertiesSection />
       <CarouselProperties />
       <FeaturesSection />
+      <GetInTouch />
       <Footer />
     </div>
   );

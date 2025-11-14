@@ -4,6 +4,24 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryProvider } from "@/components/providers/query-provider";
+import localFont from "next/font/local";
+
+const aestetico = localFont({
+  src: [
+    {
+      path: "../public/fonts/AesteticoFormal-Medium.woff",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/AesteticoFormal-Medium.woff2",
+      weight: "400",
+      style: "normal",
+    }
+  ],
+  variable: "--font-aestetico",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -41,7 +59,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body>
+      <body className={aestetico.variable}>
         <QueryProvider>
           <TooltipProvider>
             {children}

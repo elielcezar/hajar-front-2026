@@ -27,7 +27,8 @@ import {
   Calendar,
   User,
   Phone,
-  Send
+  Send,
+  MapPin
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -36,6 +37,7 @@ import { Imovel } from "@/lib/api";
 import Image from "next/image";
 import { Footer } from "@/components/Footer";
 import { CarouselProperties } from "@/components/CarouselProperties";
+import { GetInTouch } from "@/components/GetInTouch";
 
 interface PropertyDetailsContentProps {
   imovel: Imovel;
@@ -312,6 +314,42 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                     </p>
                   </CardContent>
                 </Card>
+
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <MapPin className="h-5 w-5 text-primary" />
+                      <h3 className="text-xl font-bold">Localização</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {imovel.endereco}, {imovel.localizacao}
+                    </p>
+                    <div className="relative w-full h-[400px] rounded-lg overflow-hidden border">
+                      <iframe
+                        src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(`${imovel.endereco}, ${imovel.localizacao}`)}`}
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Localização do Imóvel"
+                      />
+                    </div>
+                    <div className="mt-4 flex justify-end">
+                      <Button variant="outline" size="sm" asChild>
+                        <a 
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${imovel.endereco}, ${imovel.localizacao}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <MapPin className="h-4 w-4 mr-2" />
+                          Abrir no Google Maps
+                        </a>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
               </TabsContent>
 
               <TabsContent value="agent" className="mt-6">
@@ -368,6 +406,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
 
       <CarouselProperties />
 
+      <GetInTouch />
       <Footer />
 
     </div>

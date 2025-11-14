@@ -36,12 +36,7 @@ const features = [
 export const FeaturesSection = () => {
   return (
     <section className="py-16 bg-background" id="features">
-      <div className="container mx-auto px-4">
-        {/* Título com linha decorativa */}
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-2 tracking-wide">NOSSOS RECURSOS</h2>
-          <div className="w-32 h-1 bg-primary"></div>
-        </div>
+      <div className="container mx-auto px-4">       
 
         {/* Grid de Features */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

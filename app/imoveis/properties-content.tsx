@@ -14,6 +14,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Grid, List, Search, MapPin, ChevronRight } from "lucide-react";
 import { getImoveis, type Imovel } from "@/lib/api";
 import { Footer } from "@/components/Footer";
+import { GetInTouch } from "@/components/GetInTouch";
 
 export default function PropertiesContent() {
   const [properties, setProperties] = useState<Imovel[]>([]);
@@ -348,6 +349,8 @@ export default function PropertiesContent() {
           </div>
         </div>
       </div>
+
+      <GetInTouch />
 
       <Footer />
 

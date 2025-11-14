@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "./ui/button";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import logo from "@/public/logo-footer.png";
+import { FaFacebook, FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
+
 
 const testimonials = [
   {
@@ -23,130 +25,98 @@ export const Footer = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
   return (
-    <footer className="bg-[#2b2b2b] text-white">
-      {/* Get in Touch Section */}
-      <div className="bg-[#3a3a3a] py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Entre em Contato
-          </h2>
-          <p className="text-gray-300 italic text-lg mb-8 max-w-2xl mx-auto">
-            Lorem ipsum ea cum congue bonorum, pri no natum clita. His ne vide
-            omnis forensibus. Eum cetero imperdiet et.!
-          </p>
-          <Button 
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg"
-          >
-            Agendar Visita
-          </Button>
-        </div>
-      </div>
-
-      {/* Red line with arrow */}
-      
-        <div className="h-1 bg-primary"></div>        
+    <footer className="bg-deepOceanic text-white">
       
 
+      {/* Red line with arrow */}      
+      <div className="h-1 bg-primary"></div>              
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="flex gap-8">
           {/* Contact Us */}
-          <div>
-            <h3 className="text-xl font-bold mb-6">Contato</h3>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
+          <div className="w-full landscape:max-w-[30%] flex flex-col">
+            <img src={logo.src} alt="Hajar" className="self-start w-[220px] h-auto mb-6" />            
+
+              <div className="flex items-start gap-3 mb-3">
                 <Mail className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <a href="mailto:contato@hajar.com.br" className="hover:text-primary transition-colors">
                   contato@hajar.com.br
                 </a>
               </div>
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 mb-3">
                 <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <a href="tel:55-5698-4589" className="hover:text-primary transition-colors">
                   55-5698-4589
                 </a>
               </div>
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 mb-3">
                 <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <span className="text-gray-300">
                   Av. Exemplo, 123 - São Paulo
                 </span>
               </div>
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 mb-3">
                 <MessageCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <span className="text-gray-300">hajarimoveis</span>
               </div>
-            </div>
-          </div>
-
-          {/* Useful Links */}
-          <div>
-            <h3 className="text-xl font-bold mb-6">Links Úteis</h3>
-            <ul className="space-y-3">
-              <li>
-                <a href="/sobre" className="text-gray-300 hover:text-primary transition-colors">
-                  Sobre Nós
-                </a>
-              </li>
-              <li>
-                <a href="/servicos" className="text-gray-300 hover:text-primary transition-colors">
-                  Serviços
-                </a>
-              </li>
-              <li>
-                <a href="/imoveis" className="text-gray-300 hover:text-primary transition-colors">
-                  Imóveis
-                </a>
-              </li>
-              <li>
-                <a href="/corretores" className="text-gray-300 hover:text-primary transition-colors">
-                  Nossos Corretores
-                </a>
-              </li>
-            </ul>
           </div>
 
           {/* Tag Cloud */}
-          <div>
-            <h3 className="text-xl font-bold mb-6">Categorias</h3>
-            <div className="flex flex-wrap gap-2">
-              {["Blog", "Web Design", "News", "Internet", "Audio", "Image", "Blog", "Web Design", "News"].map((tag, index) => (
-                <span
-                  key={index}
-                  className="bg-[#4a4a4a] hover:bg-primary transition-colors px-4 py-2 text-sm cursor-pointer"
-                >
-                  {tag}
-                </span>
-              ))}
+          <div className="w-full landscape:max-w-[30%] flex flex-col">
+
+            <h3 className="text-xl font-bold mt-6 mb-9">Nossos Consultores</h3>
+              <ul>
+                <li className="mb-3 flex gap-2">
+                  <FaWhatsapp className="bg-green-500 rounded-full p-1 w-6 h-6 text-white mt-1 flex-shrink-0 inline-block" /> 
+                  <span>
+                    <strong className="inline-block min-w-[140px]">Jaudeth hajar</strong> (42) 99925-7363<br/>
+                    CRECI 15545
+                  </span>
+                </li>
+                <li className="mb-3 flex gap-2">
+                  <FaWhatsapp className="bg-green-500 rounded-full p-1 w-6 h-6 text-white mt-1 flex-shrink-0 inline-block" /> 
+                  <span>
+                    <strong className="inline-block min-w-[140px]">Zahra Hajar</strong> (42) 99924-8874<br/>
+                    CRECI 18590
+                  </span>
+                </li>
+                <li className="mb-3 flex gap-2">
+                  <FaWhatsapp className="bg-green-500 rounded-full p-1 w-6 h-6 text-white mt-1 flex-shrink-0 inline-block" /> 
+                  <span>
+                    <strong className="inline-block min-w-[140px]">Kelly Stanganini</strong> (42) 99141-4779<br/>
+                    CRECI 48209
+                  </span>
+                </li>
+                <li className="mb-3 flex gap-2">
+                  <FaWhatsapp className="bg-green-500 rounded-full p-1 w-6 h-6 text-white mt-1 flex-shrink-0 inline-block" /> 
+                  <span>
+                    <strong className="inline-block min-w-[140px]">Yara Agottani</strong> (42) 99953-6810<br/>
+                    CRECI 33773
+                  </span>
+                </li>              
+              </ul>
             </div>
-          </div>
 
           {/* Testimonials */}
-          <div>
-            <div className="bg-[#3a3a3a] p-6">
-              <p className="text-gray-300 mb-4 italic leading-relaxed">
-                {testimonials[currentTestimonial].text}
-              </p>
-              <p className="text-sm font-semibold">
-                {testimonials[currentTestimonial].author}
-              </p>
+          <div className="w-full landscape:max-w-[20%] flex flex-col">
+
+            <h3 className="text-xl font-bold mt-6 mb-9">Cotações do dia</h3>
+            <ul>
+              <li className="mb-3"><strong>Dólar:</strong> R$ 5,29</li>
+              <li className="mb-3"><strong>Milho:</strong> R$ 55,24/sc</li>
+              <li className="mb-3"><strong>Soja:</strong> R$ 133,98/sc</li>
+              <li className="mb-3"><strong>Atualizado em:</strong> 14/11/2025 10:10</li>
+            </ul>
+            
+          </div>
+          <div className="w-full landscape:max-w-[20%] flex flex-col">
+
+            <h3 className="text-xl font-bold mt-6 mb-9">Redes Sociais</h3>            
+            <div className="flex items-start gap-4">              
+              <FaFacebook className="w-7 h-7 text-primary mt-1 flex-shrink-0" />
+              <FaInstagram className="w-7 h-7 text-primary mt-1 flex-shrink-0" />
+              <FaLinkedin className="w-7 h-7 text-primary mt-1 flex-shrink-0" />
               
-              {/* Navigation Dots */}
-              <div className="flex gap-2 mt-6 justify-center">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentTestimonial(index)}
-                    className={`w-3 h-3 rounded-full transition-colors ${
-                      index === currentTestimonial
-                        ? "bg-primary"
-                        : "bg-gray-500 hover:bg-gray-400"
-                    }`}
-                    aria-label={`Go to testimonial ${index + 1}`}
-                  />
-                ))}
-              </div>
             </div>
           </div>
         </div>
@@ -160,12 +130,12 @@ export const Footer = () => {
               © {new Date().getFullYear()} Hajar Imóveis. Todos os direitos reservados.
             </p>
             <div className="flex gap-6">
-              <a href="/privacidade" className="text-gray-400 hover:text-primary text-sm transition-colors">
+              {/*<a href="/privacidade" className="text-gray-400 hover:text-primary text-sm transition-colors">
                 Política de Privacidade
               </a>
               <a href="/termos" className="text-gray-400 hover:text-primary text-sm transition-colors">
                 Termos de Uso
-              </a>
+              </a>*/}
             </div>
           </div>
         </div>

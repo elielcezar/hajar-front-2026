@@ -59,7 +59,7 @@ export const PropertiesSection = () => {
           </h2>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 bg-[#2b2b2b] p-0 rounded-sm">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 bg-oceanic p-0 rounded-sm">
           <div className="flex items-center gap-4 text-white">
             <Button 
               variant="ghost" 
@@ -101,10 +101,10 @@ export const PropertiesSection = () => {
               Preço ▼
             </Button>
             <ToggleGroup type="single" value={viewMode} onValueChange={(value) => value && setViewMode(value as "grid" | "list")} className="ml-4">
-              <ToggleGroupItem value="grid" aria-label="Grid view" className="bg-[#2b2b2b] text-white data-[state=on]:bg-primary">
+              <ToggleGroupItem value="grid" aria-label="Grid view" className="bg-oceanic text-white data-[state=on]:bg-primary">
                 <Grid className="h-4 w-4" />
               </ToggleGroupItem>
-              <ToggleGroupItem value="list" aria-label="List view" className="bg-[#2b2b2b] text-white data-[state=on]:bg-primary">
+              <ToggleGroupItem value="list" aria-label="List view" className="bg-oceanic text-white data-[state=on]:bg-primary">
                 <List className="h-4 w-4" />
               </ToggleGroupItem>
             </ToggleGroup>
