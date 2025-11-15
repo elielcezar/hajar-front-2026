@@ -159,7 +159,7 @@ export default function ContactContent() {
               {/*<div className="text-sm font-bold mb-2 text-muted-foreground tracking-wider">
                 ENTRE EM CONTATO
               </div>*/}
-              <h2 className="text-4xl font-bold mb-4 border-b-4 border-primary inline-block pb-2">
+              <h2 className="font-aestetico text-4xl font-medium mb-4 border-b-4 border-primary inline-block pb-2">
               ENTRE EM CONTATO
               </h2>
             </div>
@@ -248,12 +248,11 @@ export default function ContactContent() {
                 {/*<div className="text-sm font-bold mb-2 text-muted-foreground tracking-wider">
                   NOSSA EQUIPE
                 </div>*/}
-              <h2 className="text-4xl font-bold mb-4 border-b-4 border-primary inline-block pb-2">
+              <h2 className="font-aestetico text-4xl font-medium mb-4 border-b-4 border-primary inline-block pb-2">
                 NOSSA EQUIPE
               </h2>
               <p className="text-muted-foreground mt-4">
-                Nossos corretores experientes estão aqui para ajudá-lo a encontrar o imóvel dos seus sonhos. 
-                Sinta-se à vontade para entrar em contato diretamente com qualquer membro de nossa equipe.
+              Sinta-se à vontade para entrar em contato diretamente com qualquer um de nosso consultores. Eles estão aqui para ajudá-lo a encontrar o imóvel dos seus sonhos. 
               </p>
             </div>
 

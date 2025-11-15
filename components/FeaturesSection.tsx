@@ -3,39 +3,39 @@ import { TrendingUp, Building2, MapPin, Home, Info, Camera } from "lucide-react"
 const features = [
   {
     icon: TrendingUp,
-    title: "Resultados Mensuráveis",
-    description: "Acompanhe o desempenho de seus imóveis com métricas detalhadas.",
+    title: "Para você morar bem",
+    description: "Compre ou alugue com agilidade e segurança, sem burocracia.",
   },
   {
     icon: Building2,
-    title: "Projetos em Destaque",
-    description: "Conheça os melhores empreendimentos da região.",
+    title: "Quer vender seu imóvel?",
+    description: "Conte com nossa equipe para vender seu imóvel de forma eficiente e segura.",
   },
   {
     icon: MapPin,
-    title: "Encontre seu Lugar",
-    description: "Busca inteligente por localização e preferências.",
+    title: "Investimento seguro e rentável",
+    description: "O mercado imobiliário é um investimento seguro e rentável a longo prazo.",
   },
   {
     icon: Home,
-    title: "Anuncie Aluguéis",
-    description: "Plataforma completa para gestão de locações.",
+    title: "Mais de 100 opções disponíveis",
+    description: "Nossa equipe possui mais de 20 anos de experiência em investimentos imobiliários.",
   },
   {
     icon: Info,
-    title: "Orientação Especializada",
-    description: "Consultoria profissional em todas as etapas.",
+    title: "Alugue sem burocracia",
+    description: "Com documentação e assinatura digital. Mais facilidade para você.",
   },
   {
     icon: Camera,
-    title: "Liste seu Imóvel",
-    description: "Cadastre e divulgue seu imóvel de forma simples.",
+    title: "O imóvel dos sonhos está aqui!",
+    description: "São dezenas de opções disponíveis para compra, confira!",
   },
 ];
 
 export const FeaturesSection = () => {
   return (
-    <section className="py-16 bg-background" id="features">
+    <section className="py-16 bg-background border-t-[0.25rem] border-primary" id="features">
       <div className="container mx-auto px-4">       
 
         {/* Grid de Features */}
@@ -47,22 +47,24 @@ export const FeaturesSection = () => {
                 key={index}
                 className="group"
               >
-                <div className="flex items-start gap-4">
-                  {/* Ícone circular com borda */}
-                  <div className="relative flex-shrink-0">
-                    <div className="w-24 h-24 rounded-full bg-primary flex items-center justify-center border-4 border-black/80 transition-all duration-300 group-hover:scale-110 group-hover:border-primary group-hover:shadow-lg">
-                      <Icon className="h-10 w-10 text-white" strokeWidth={2} />
+                <div className="flex flex-col">
+                  <h3 className="font-aestetico text-xl font-semibold text-foreground transition-colors duration-300 group-hover:text-primary text-left pl-[1rem] mb-2">
+                    {feature.title}
+                  </h3>
+                  <div className="flex items-center justify-start gap-0">
+                    {/* Ícone circular com borda */}
+                    <div className="relative flex-shrink-0 mr-[-30px]">
+                      <div className="w-24 h-24 rounded-full bg-primary flex items-center justify-center border-4 border-deepOceanic transition-all duration-300 group-hover:scale-110 group-hover:border-primary group-hover:shadow-lg">
+                        <Icon className="h-10 w-10 text-white" strokeWidth={2} />
+                      </div>
                     </div>
-                  </div>
-                  
-                  {/* Conteúdo do card */}
-                  <div className="flex-1 bg-muted/50 p-5 rounded-sm min-h-[100px] flex flex-col justify-center transition-all duration-300 group-hover:bg-muted group-hover:shadow-md">
-                    <h3 className="text-lg font-bold mb-2 text-foreground transition-colors duration-300 group-hover:text-primary">
-                      {feature.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {feature.description}
-                    </p>
+                    
+                    {/* Conteúdo do card */}
+                    <div className="flex-1 bg-muted/50 py-3 pl-[50px] pr-5 rounded-lg border border-border flex flex-col justify-center transition-all duration-300 group-hover:bg-muted group-hover:shadow-md">                    
+                      <p className="text-sm text-muted-foreground leading-relaxed text-zinc-800">
+                        {feature.description}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>

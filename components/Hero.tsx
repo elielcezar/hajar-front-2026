@@ -154,13 +154,13 @@ export const Hero = () => {
                 </div>
                 
                 {/* Overlay no mosaico e na imagem que vai aparecer */}
-                <div className="absolute inset-0 bg-black/40 pointer-events-none z-[21]" />
+                <div className="absolute inset-0 bg-black/10 pointer-events-none z-[21]" />
               </>
             )}
 
             {/* Overlay na imagem completa (apenas quando não é nextSlide) */}
             {!isNextSlide && (
-              <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+              <div className="absolute inset-0 bg-black/10 pointer-events-none" />
             )}
       
             {isCurrentSlide && (

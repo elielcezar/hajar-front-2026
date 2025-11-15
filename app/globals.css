@@ -288,7 +288,7 @@ All colors MUST be HSL.
 .hero-arrow-title::before {
   content: '';
   position: absolute;
-  left: -70px;
+  left: -69px;
   top: 0;
   border-style: solid;
   border-color: transparent hsl(var(--primary)) transparent transparent;
