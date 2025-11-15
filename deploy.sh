@@ -46,7 +46,7 @@ echo -e "${YELLOW}🚀 Iniciando aplicação...${NC}"
 if pm2 describe hajar-front &> /dev/null; then
     pm2 restart hajar-front
 else
-    pm2 start ecosystem.config.js
+    pm2 start ecosystem.config.cjs
 fi
 
 # 7. Salvar configuração do PM2
