@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: 'hajar-front',
     script: 'node_modules/next/dist/bin/next',
-    args: 'start -p 3005',
+    args: 'start -p 3008',
     cwd: '/home/hajar-novo/htdocs/novo.hajar.com.br',
     instances: 1,
     exec_mode: 'cluster',
@@ -10,7 +10,7 @@ module.exports = {
     max_memory_restart: '1G',
     env: {
       NODE_ENV: 'production',
-      PORT: 3005
+      PORT: 3008
     },
     error_file: '/home/hajar-novo/logs/hajar-front-error.log',
     out_file: '/home/hajar-novo/logs/hajar-front-out.log',
