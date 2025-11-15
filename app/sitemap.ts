@@ -1,6 +1,10 @@
 import { MetadataRoute } from 'next';
 import { getImoveis } from '@/lib/api';
 
+// Tornar o sitemap dinâmico
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // 1 hora
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://hajar.com.br';
   

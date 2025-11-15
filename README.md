@@ -101,12 +101,14 @@ hajar-front-2026/
 
 O frontend consome dados da API REST:
 
-**Base URL**: `https://hajar.ecwd.cloud/api`
+**Base URL**: `https://admin.hajar.com.br/api`
 
 ### Endpoints Utilizados
 
 - `GET /imoveis` - Lista todos os imóveis
 - `GET /imoveis/:id` - Detalhes de um imóvel específico
+
+**Configuração CORS:** O backend precisa ter `https://novo.hajar.com.br` na variável `FRONTEND_URL`
 
 Para mais informações, consulte: **[DOCS/API_INTEGRATION.md](DOCS/API_INTEGRATION.md)**
 
@@ -182,22 +184,35 @@ Todos os componentes shadcn/ui estão em `components/ui/` e podem ser personaliz
 
 ## 🚀 Deploy
 
-### Opção 1: Vercel (Recomendado)
+### Opção 1: VPS com PM2 (Produção Atual)
+
+O site está hospedado em: **https://novo.hajar.com.br/**
+
+**Deploy rápido:**
+```bash
+# No servidor
+cd /home/hajar-novo/htdocs/novo.hajar.com.br
+git pull
+chmod +x deploy.sh
+./deploy.sh
+```
+
+**Deploy manual:**
+```bash
+npm install
+npm run build
+pm2 restart hajar-front
+```
+
+**📖 Documentação completa:** Veja [DEPLOY.md](DEPLOY.md) para instruções detalhadas de deploy no VPS.
+
+### Opção 2: Vercel
 ```bash
 # Instalar Vercel CLI
 npm i -g vercel
 
 # Deploy
 vercel
-```
-
-### Opção 2: VPS com Node.js
-```bash
-# No servidor
-npm run build
-pm2 start npm --name "hajar-front" -- start
-
-# Configurar Nginx como proxy reverso para porta 3000
 ```
 
 ---

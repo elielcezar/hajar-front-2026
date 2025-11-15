@@ -104,7 +104,6 @@ export async function getImoveis(): Promise<Imovel[]> {
   try {
     const response = await fetch(`${API_URL}/imoveis`, {
       next: { revalidate: 3600 }, // Revalidar a cada 1 hora
-      cache: 'no-store', // Forçar busca fresca em desenvolvimento
     });
     
     if (!response.ok) {

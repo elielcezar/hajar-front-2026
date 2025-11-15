@@ -1,0 +1,176 @@
+===========================================
+🚀 COMANDOS PARA DEPLOY - HAJAR IMÓVEIS
+===========================================
+
+PASSO 1: ENVIAR CÓDIGO PARA O REPOSITÓRIO
+------------------------------------------
+# No seu computador local (dentro da pasta do projeto):
+git add .
+git commit -m "Deploy: Configuração para produção"
+git push origin main
+
+
+PASSO 2: CONECTAR NO SERVIDOR VIA SSH
+--------------------------------------
+ssh hajar-novo@SEU_SERVIDOR_IP
+
+
+PASSO 3: CONFIGURAR NGINX (SOMENTE PRIMEIRA VEZ)
+------------------------------------------------
+# No CloudPanel, vá em: Sites → novo.hajar.com.br → Vhost
+# Cole esta configuração:
+
+server {
+  listen 80;
+  listen [::]:80;
+  listen 443 ssl;
+  listen [::]:443 ssl;
+  http2 on;
+  {{ssl_certificate_key}}
+  {{ssl_certificate}}
+  server_name novo.hajar.com.br;
+
+  {{nginx_access_log}}
+  {{nginx_error_log}}
+
+  if ($scheme != "https") {
+    rewrite ^ https://$host$request_uri permanent;
+  }
+
+  location ~ /.well-known {
+    auth_basic off;
+    allow all;
+  }
+
+  {{settings}}
+
+  location / {
+    proxy_pass http://127.0.0.1:3005;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_cache_bypass $http_upgrade;
+  }
+
+  location /_next/static {
+    proxy_pass http://127.0.0.1:3005;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+  }
+
+  location /_next/image {
+    proxy_pass http://127.0.0.1:3005;
+  }
+}
+
+# Depois de salvar, recarregue o nginx:
+sudo systemctl reload nginx
+
+
+PASSO 4: PRIMEIRA INSTALAÇÃO (SOMENTE UMA VEZ)
+----------------------------------------------
+cd /home/hajar-novo/htdocs/
+git clone SEU_REPOSITORIO_GIT novo.hajar.com.br
+cd novo.hajar.com.br
+npm install
+npm run build
+mkdir -p ~/logs
+pm2 start ecosystem.config.js
+pm2 save
+pm2 startup
+
+
+PASSO 5: ATUALIZAÇÕES FUTURAS
+------------------------------
+# Use estes comandos sempre que atualizar o código:
+cd /home/hajar-novo/htdocs/novo.hajar.com.br
+git pull
+./deploy.sh
+
+# OU manualmente:
+npm install
+npm run build
+pm2 restart hajar-front
+
+
+PASSO 6: ATUALIZAR BACKEND (IMPORTANTE!)
+----------------------------------------
+# No backend (admin.hajar.com.br), adicione ao arquivo .env:
+FRONTEND_URL=http://localhost:8080,http://localhost:3000,http://localhost:3004,http://localhost:3005,https://hajar.ecwd.cloud,https://admin.hajar.com.br,https://novo.hajar.com.br
+
+# Depois reinicie o backend:
+pm2 restart nome-do-backend-app
+
+
+===========================================
+📊 COMANDOS ÚTEIS
+===========================================
+
+# Ver status do Next.js
+pm2 status
+
+# Ver logs em tempo real
+pm2 logs hajar-front
+
+# Parar aplicação
+pm2 stop hajar-front
+
+# Reiniciar aplicação
+pm2 restart hajar-front
+
+# Ver uso de memória/CPU
+pm2 monit
+
+# Verificar se a porta 3005 está ativa
+netstat -tulpn | grep 3005
+
+# Ver logs do nginx
+sudo tail -f /var/log/nginx/error.log
+
+
+===========================================
+✅ VERIFICAR SE ESTÁ FUNCIONANDO
+===========================================
+
+1. Acesse: https://novo.hajar.com.br/
+2. Verifique se o site carrega normalmente
+3. Teste a navegação entre páginas
+4. Verifique se os imóveis estão aparecendo
+
+
+===========================================
+🐛 SOLUÇÃO DE PROBLEMAS
+===========================================
+
+ERRO 502 Bad Gateway:
+  → pm2 restart hajar-front
+  → pm2 logs hajar-front
+
+Site não carrega:
+  → pm2 status (verificar se está rodando)
+  → sudo systemctl status nginx
+
+Imóveis não aparecem (erro CORS):
+  → Verificar se https://novo.hajar.com.br está no FRONTEND_URL do backend
+  → Reiniciar o backend: pm2 restart nome-do-backend
+
+Build falhou:
+  → Verificar logs: pm2 logs hajar-front
+  → npm install novamente
+  → npm run build para ver o erro
+
+
+===========================================
+📞 SUPORTE
+===========================================
+
+Documentação completa: Ver arquivo DEPLOY.md
+Comandos rápidos: npm run dev, npm run build
+Logs do PM2: pm2 logs hajar-front
+Status: pm2 status
+
+===========================================
+

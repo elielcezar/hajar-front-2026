@@ -4,12 +4,13 @@ import { getImovel, getImoveis } from "@/lib/api";
 import PropertyDetailsContent from "./property-details-content";
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 // Gerar metadata dinâmica para SEO
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const imovel = await getImovel(params.id);
+  const { id } = await params;
+  const imovel = await getImovel(id);
   
   if (!imovel) {
     return {
@@ -61,21 +62,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Gerar parâmetros estáticos para as páginas mais acessadas (ISR)
-export async function generateStaticParams() {
-  const imoveis = await getImoveis();
-  
-  // Gerar páginas estáticas para todos os imóveis
-  return imoveis.map((imovel) => ({
-    id: String(imovel.id),
-  }));
-}
+// Tornar a página dinâmica para melhor performance no build
+export const dynamic = 'force-dynamic';
 
-// Revalidar a cada 1 hora
+// Revalidar a cada 1 hora (ISR)
 export const revalidate = 3600;
 
 export default async function PropertyDetailsPage({ params }: Props) {
-  const imovel = await getImovel(params.id);
+  const { id } = await params;
+  const imovel = await getImovel(id);
   
   if (!imovel) {
     notFound();
