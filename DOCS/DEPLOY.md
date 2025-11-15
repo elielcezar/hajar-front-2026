@@ -80,10 +80,10 @@ server {
   {{settings}}
 
   # ==========================================
-  # PROXY REVERSO PARA NEXT.JS
+  # PROXY REVERSO PARA NEXT.JS (porta 3008)
   # ==========================================
   location / {
-    proxy_pass http://127.0.0.1:3005;
+    proxy_pass http://127.0.0.1:3008;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection 'upgrade';
@@ -98,14 +98,14 @@ server {
 
   # Cache para arquivos estáticos do Next.js
   location /_next/static {
-    proxy_pass http://127.0.0.1:3005;
+    proxy_pass http://127.0.0.1:3008;
     proxy_cache_valid 200 365d;
     add_header Cache-Control "public, max-age=31536000, immutable";
   }
 
   # Imagens otimizadas pelo Next.js
   location /_next/image {
-    proxy_pass http://127.0.0.1:3005;
+    proxy_pass http://127.0.0.1:3008;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -114,7 +114,7 @@ server {
 
   # Arquivos públicos
   location ~* ^.+\.(ico|jpg|jpeg|gif|png|svg|webp)$ {
-    proxy_pass http://127.0.0.1:3005;
+    proxy_pass http://127.0.0.1:3008;
     expires 30d;
     add_header Cache-Control "public, no-transform";
   }
@@ -135,7 +135,7 @@ sudo systemctl reload nginx
 cd /home/hajar-novo/htdocs/novo.hajar.com.br
 
 # Iniciar a aplicação com PM2
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 
 # Verificar status
 pm2 status
@@ -224,8 +224,8 @@ Se tudo estiver correto, você verá o site funcionando!
 pm2 status
 pm2 logs hajar-front
 
-# Verificar se a porta 3005 está em uso
-netstat -tulpn | grep 3005
+# Verificar se a porta 3008 está em uso
+netstat -tulpn | grep 3008
 
 # Reiniciar tudo
 pm2 restart hajar-front
