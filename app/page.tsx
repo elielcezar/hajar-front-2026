@@ -2,7 +2,6 @@ import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Newsletter } from "@/components/Newsletter";
 import { PropertiesSection } from "@/components/PropertiesSection";
-import { CarouselProperties } from "@/components/CarouselProperties";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import { Footer } from "@/components/Footer";
 import { GetInTouch } from "@/components/GetInTouch";
@@ -16,7 +15,6 @@ export default function Home() {
       <Newsletter />
       <PropertiesSection />
       <BannerHome />
-      <CarouselProperties />
       <FeaturesSection />
       <GetInTouch />
       <Footer />

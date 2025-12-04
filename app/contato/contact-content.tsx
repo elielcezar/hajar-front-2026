@@ -252,7 +252,7 @@ export default function ContactContent() {
                 NOSSA EQUIPE
               </h2>
               <p className="text-muted-foreground mt-4">
-              Sinta-se à vontade para entrar em contato diretamente com qualquer um de nosso consultores. Eles estão aqui para ajudá-lo a encontrar o imóvel dos seus sonhos. 
+                Sinta-se à vontade para entrar em contato diretamente com qualquer um de nosso corretores. Eles estão aqui para ajudá-lo a encontrar o imóvel dos seus sonhos. 
               </p>
             </div>
 

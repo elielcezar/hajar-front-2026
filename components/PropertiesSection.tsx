@@ -53,7 +53,7 @@ export const PropertiesSection = () => {
   return (
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
-        <div className="mb-8">         
+        <div className="mb-8">
           <h2 className="font-aestetico text-4xl mb-4 border-b-8 border-primary inline-block pb-2">
             IMÓVEIS RECENTES
           </h2>
@@ -61,21 +61,21 @@ export const PropertiesSection = () => {
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 bg-oceanic p-0 rounded-sm">
           <div className="flex items-center gap-4 text-white">
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               onClick={() => setFilterType("all")}
               className={filterType === "all" ? "bg-primary text-white hover:bg-primary/90 hover:text-white p-7" : "text-white hover:bg-white/10 hover:text-white p-7"}
             >
               Todos
             </Button>
-            <Button 
+            <Button
               variant="ghost"
               onClick={() => setFilterType("venda")}
               className={filterType === "venda" ? "bg-primary text-white hover:bg-primary/90 hover:text-white" : "text-white hover:bg-white/10 hover:text-white"}
             >
               Venda
             </Button>
-            <Button 
+            <Button
               variant="ghost"
               onClick={() => setFilterType("aluguel")}
               className={filterType === "aluguel" ? "bg-primary text-white hover:bg-primary/90 hover:text-white" : "text-white hover:bg-white/10 hover:text-white"}
@@ -86,19 +86,19 @@ export const PropertiesSection = () => {
 
           <div className="flex items-center gap-4 px-2">
             <span className="text-white font-medium">Ordenar por:</span>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               onClick={() => setSortBy("recent")}
               className={sortBy === "recent" ? "bg-primary text-white hover:bg-primary/90 hover:text-white" : "text-white hover:bg-white/10 hover:text-white"}
             >
-              Recentes ▼
+              Recentes
             </Button>
-            <Button 
+            <Button
               variant="ghost"
               onClick={() => setSortBy("price")}
               className={sortBy === "price" ? "bg-primary text-white hover:bg-primary/90 hover:text-white" : "text-white hover:bg-white/10 hover:text-white"}
             >
-              Preço ▼
+              Preço
             </Button>
             <ToggleGroup type="single" value={viewMode} onValueChange={(value) => value && setViewMode(value as "grid" | "list")} className="ml-4">
               <ToggleGroupItem value="grid" aria-label="Grid view" className="bg-oceanic text-white data-[state=on]:bg-primary">
@@ -114,12 +114,12 @@ export const PropertiesSection = () => {
         {viewMode === "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {sortedProperties.map((property, index) => (
-              <div 
+              <div
                 key={property.id}
                 className="animate-fade-in"
                 style={{ animationDelay: `${index * 0.1}s`, animationFillMode: 'both' }}
               >
-                <PropertyCard 
+                <PropertyCard
                   id={property.id}
                   image={property.fotos[0]}
                   title={property.titulo}
@@ -134,12 +134,12 @@ export const PropertiesSection = () => {
         ) : (
           <div className="space-y-4">
             {sortedProperties.map((property, index) => (
-              <div 
+              <div
                 key={property.id}
                 className="animate-fade-in bg-card rounded-sm overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
                 style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'both' }}
               >
-                <PropertyCard 
+                <PropertyCard
                   id={property.id}
                   image={property.fotos[0]}
                   title={property.titulo}
