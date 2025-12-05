@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
-import { Newsletter } from "@/components/Newsletter";
+import { SearchBar } from "@/components/SearchBar";
 import { PropertyCard } from "@/components/PropertyCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -82,7 +82,7 @@ export default function PropertiesContent() {
         </div>
       </div>*/}
 
-      <Newsletter />
+      <SearchBar />
 
       {/* Detailed Search Bar */}
       {/*<div className="bg-card border-b border-border py-8">
