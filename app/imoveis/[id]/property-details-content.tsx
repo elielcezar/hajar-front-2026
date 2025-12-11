@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
-import { Newsletter } from "@/components/SearchBar";
+import { SearchBar } from "@/components/SearchBar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -72,7 +72,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
       <Header />
 
       {/* Search Bar */}
-      <Newsletter />
+      <SearchBar />
       
       {/* Hero Section with Breadcrumb */}
       <div className="relative h-[300px] overflow-hidden">

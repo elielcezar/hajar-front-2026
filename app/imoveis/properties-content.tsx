@@ -2,23 +2,76 @@
 
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
-import { SearchBar } from "@/components/SearchBar";
 import { PropertyCard } from "@/components/PropertyCard";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Grid, List, Search, MapPin, ChevronRight } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { Grid, List } from "lucide-react";
 import { getImoveis, type Imovel } from "@/lib/api";
 import { Footer } from "@/components/Footer";
 import { GetInTouch } from "@/components/GetInTouch";
 
+const bairros = [  
+  { id: 1, nome: "Centro" },
+  { id: 2, nome: "Jardim das Araucárias" },
+  { id: 3, nome: "Nossa Senhora da Conceição" },
+  { id: 4, nome: "Papiros" },
+  { id: 5, nome: "Regina Vitória" },
+  { id: 6, nome: "Rocio I" },
+  { id: 7, nome: "Rocio II" },
+  { id: 8, nome: "Vila Mayer" },
+  { id: 9, nome: "Vila Rosa" },
+  { id: 10, nome: "Vila Maria" },
+  { id: 11, nome: "Vila Militar" },
+];
+
+interface Filtros {
+  bairro: string;
+  tipoImovel: string;
+  faixaPreco: [number, number];
+  area: [number, number];
+  suites: string;
+  quartos: string;
+  banheiros: string;
+  vagas: string;
+  caracteristicas: string;
+}
+
+
 export default function PropertiesContent() {
   const [properties, setProperties] = useState<Imovel[]>([]);
   const [loading, setLoading] = useState(true);
+
+  
+  const [filtros, setFiltros] = useState<Filtros>({
+    bairro: "",
+    tipoImovel: "",
+    faixaPreco: [0, 2000000],
+    area: [0, 500],
+    suites: "",
+    quartos: "",
+    banheiros: "",
+    vagas: "",
+    caracteristicas: "",
+  });
+
+  const atualizarFiltro = (campo: keyof Filtros, valor: string | [number, number]) => {
+    setFiltros((prev) => ({ ...prev, [campo]: valor }));
+  };
+
+  const atualizarFiltroRange = (campo: "faixaPreco" | "area", valor: number[]) => {
+    if (valor.length === 2) {
+      setFiltros((prev) => ({ ...prev, [campo]: [valor[0], valor[1]] as [number, number] }));
+    }
+  };
+
+  const formatarPreco = (valor: number) => {
+    if (valor >= 1000000) {
+      return `R$ ${(valor / 1000000).toFixed(1)}M`;
+    }
+    return `R$ ${(valor / 1000).toFixed(0)}k`;
+  };
 
   useEffect(() => {
     async function fetchImoveis() {
@@ -35,18 +88,7 @@ export default function PropertiesContent() {
   }, []);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<"recent" | "price">("recent");
-  const [priceRange, setPriceRange] = useState([0, 2000000]);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const generalFeatures = [
-    "Ar condicionado",
-    "Piscina",
-    "Varanda",
-    "Garagem",
-    "Jardim",
-    "Academia",
-  ];
-
+  
   const sortedProperties = [...properties].sort((a, b) => {
     if (sortBy === "price") {
       return a.preco - b.preco;
@@ -65,6 +107,7 @@ export default function PropertiesContent() {
     );
   }
 
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -82,7 +125,7 @@ export default function PropertiesContent() {
         </div>
       </div>*/}
 
-      <SearchBar />
+      {/*<SearchBar />*/}
 
       {/* Detailed Search Bar */}
       {/*<div className="bg-card border-b border-border py-8">
@@ -111,20 +154,33 @@ export default function PropertiesContent() {
           <aside className="lg:col-span-1">
             <div className="bg-card rounded-sm border border-border p-6 space-y-6 sticky top-24">
               <div>
-                <h3 className="font-aestetico text-lg font-medium mb-4 border-b-2 border-primary inline-block pb-1">
+                <h3 className="font-aestetico text-lg font-medium mb-2 border-b-2 border-primary inline-block pb-1">
                   FILTROS
                 </h3>
               </div>
 
-              {/* Property Type */}
-              <div className="space-y-2">
-                <Label className="text-sm font-bold text-foreground">TIPO DE IMÓVEL</Label>
-                <Select defaultValue="any">
-                  <SelectTrigger>
-                    <SelectValue />
+              {/* Bairro */}
+              <div>                  
+                <Select value={filtros.bairro} onValueChange={(valor) => atualizarFiltro("bairro", valor)}>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="Bairro" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="any">Todos</SelectItem>
+                    {bairros.map((bairro) => (
+                      <SelectItem key={bairro.id} value={bairro.nome}>{bairro.nome}</SelectItem>
+                    ))}              
+                  </SelectContent>
+                </Select>
+              </div>
+
+
+              {/* Property Type */}
+              <div>                  
+                <Select value={filtros.tipoImovel} onValueChange={(valor) => atualizarFiltro("tipoImovel", valor)}>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="Tipo de Imóvel" />
+                  </SelectTrigger>
+                  <SelectContent>
                     <SelectItem value="apartamento">Apartamento</SelectItem>
                     <SelectItem value="casa">Casa</SelectItem>
                     <SelectItem value="terreno">Terreno</SelectItem>
@@ -133,85 +189,123 @@ export default function PropertiesContent() {
                 </Select>
               </div>
 
-              {/* Location */}
+             
+              {/* Faixa de Preço */}
               <div className="space-y-2">
-                <Label className="text-sm font-bold text-foreground">LOCALIZAÇÃO</Label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Digite a localização" className="pl-9" />
+                <label className="text-sm font-medium text-foreground">
+                  Faixa de Preço
+                </label>
+                <Slider
+                  value={filtros.faixaPreco}
+                  onValueChange={(valor) => atualizarFiltroRange("faixaPreco", valor)}
+                  min={0}
+                  max={2000000}
+                  step={50000}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>{formatarPreco(filtros.faixaPreco[0])}</span>
+                  <span>{formatarPreco(filtros.faixaPreco[1])}</span>
                 </div>
               </div>
 
-              {/* Price Range */}
+              {/* Área */}
               <div className="space-y-2">
-                <Label className="text-sm font-bold text-foreground">FAIXA DE PREÇO</Label>
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="text-xs text-muted-foreground">
-                    R$ {priceRange[0].toLocaleString('pt-BR')}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    R$ {priceRange[1].toLocaleString('pt-BR')}
-                  </span>
-                </div>
+                <label className="text-sm font-medium text-foreground">
+                  Área (m²)
+                </label>
                 <Slider
-                  value={priceRange}
-                  onValueChange={setPriceRange}
-                  max={2000000}
+                  value={filtros.area}
+                  onValueChange={(valor) => atualizarFiltroRange("area", valor)}
                   min={0}
-                  step={50000}
+                  max={500}
+                  step={10}
+                  className="w-full"
                 />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>{filtros.area[0]} m²</span>
+                  <span>{filtros.area[1]} m²</span>
+                </div>
               </div>
 
               {/* Bedrooms */}
-              <div className="space-y-2">
-                <Label className="text-sm font-bold text-foreground">QUARTOS</Label>
-                <Select defaultValue="any">
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="any">Todos</SelectItem>
-                    <SelectItem value="1">1+</SelectItem>
-                    <SelectItem value="2">2+</SelectItem>
-                    <SelectItem value="3">3+</SelectItem>
-                    <SelectItem value="4">4+</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div>                  
+                  <Select value={filtros.quartos} onValueChange={(valor) => atualizarFiltro("quartos", valor)}>
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder="Quantidade de Quartos" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1</SelectItem>
+                      <SelectItem value="2">2</SelectItem>
+                      <SelectItem value="3">3</SelectItem>
+                      <SelectItem value="4">4</SelectItem>
+                      <SelectItem value="5+">5+</SelectItem>
+                    </SelectContent>
+                  </Select>
+              </div>
+
+              {/* Suites */}
+              <div>                  
+                  <Select value={filtros.suites} onValueChange={(valor) => atualizarFiltro("suites", valor)}>
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder="Quantidade de Suítes" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="0">0</SelectItem>
+                      <SelectItem value="1">1</SelectItem>
+                      <SelectItem value="2">2</SelectItem>
+                      <SelectItem value="3">3</SelectItem>
+                      <SelectItem value="4">4</SelectItem>
+                      <SelectItem value="5+">5+</SelectItem>
+                    </SelectContent>
+                  </Select>
               </div>
 
               {/* Bathrooms */}
-              <div className="space-y-2">
-                <Label className="text-sm font-bold text-foreground">BANHEIROS</Label>
-                <Select defaultValue="any">
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="any">Todos</SelectItem>
-                    <SelectItem value="1">1+</SelectItem>
-                    <SelectItem value="2">2+</SelectItem>
-                    <SelectItem value="3">3+</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <div>                  
+                  <Select value={filtros.banheiros} onValueChange={(valor) => atualizarFiltro("banheiros", valor)}>
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder="Quantidade de Banheiros" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1</SelectItem>
+                      <SelectItem value="2">2</SelectItem>
+                      <SelectItem value="3">3</SelectItem>
+                      <SelectItem value="4">4</SelectItem>
+                      <SelectItem value="5+">5+</SelectItem>
+                    </SelectContent>
+                  </Select>
+              </div>             
 
-              {/* Features */}
-              <div className="space-y-3">
-                <Label className="text-sm font-bold text-foreground">CARACTERÍSTICAS</Label>
-                <div className="space-y-2">
-                  {generalFeatures.map((feature) => (
-                    <div key={feature} className="flex items-center gap-2">
-                      <Checkbox id={feature} />
-                      <label
-                        htmlFor={feature}
-                        className="text-sm text-foreground cursor-pointer"
-                      >
-                        {feature}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              {/* Garagem */}
+              <div>                  
+                  <Select value={filtros.vagas} onValueChange={(valor) => atualizarFiltro("vagas", valor)}>
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder="Vagas na Garagem" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="0">0</SelectItem>
+                      <SelectItem value="1">1</SelectItem>
+                      <SelectItem value="2">2</SelectItem>
+                      <SelectItem value="3">3</SelectItem>
+                      <SelectItem value="4">4</SelectItem>
+                      <SelectItem value="5+">5+</SelectItem>
+                    </SelectContent>
+                  </Select>
+              </div>             
+
+              {/* Características */}
+              <div>                  
+                  <Select value={filtros.caracteristicas} onValueChange={(valor) => atualizarFiltro("caracteristicas", valor)}>
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder="Características" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="geminada">Geminada</SelectItem>
+                      <SelectItem value="unica-lote">Única no Lote</SelectItem>
+                    </SelectContent>
+                  </Select>
+              </div>             
 
               <Button className="w-full" size="lg">
                 Aplicar Filtros
@@ -248,7 +342,7 @@ export default function PropertiesContent() {
                       : "text-white hover:bg-white/10 hover:text-white"
                   }
                 >
-                  Recentes ▼
+                  Recentes
                 </Button>
                 <Button
                   variant="ghost"
@@ -259,7 +353,7 @@ export default function PropertiesContent() {
                       : "text-white hover:bg-white/10 hover:text-white"
                   }
                 >
-                  Preço ▼
+                  Preço
                 </Button>
                 <ToggleGroup
                   type="single"

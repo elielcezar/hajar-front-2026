@@ -51,14 +51,13 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className="bg-primary/90 border-y border-primary">
+    <div className="bg-deepOceanic">
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-3 items-end">
-          <div>
-            <label className="text-xs text-white/90 mb-1 block font-medium">Bairro</label>
+          <div>            
             <Select value={filtros.bairro} onValueChange={(valor) => atualizarFiltro("bairro", valor)}>
               <SelectTrigger className="bg-white">
-                <SelectValue placeholder="Selecione..." />
+                <SelectValue placeholder="Bairro" />
               </SelectTrigger>
               <SelectContent>
                 {bairros.map((bairro) => (
@@ -68,11 +67,10 @@ export const SearchBar = () => {
             </Select>
           </div>
           
-          <div>
-            <label className="text-xs text-white/90 mb-1 block font-medium">Tipo de Imóvel</label>
+          <div>            
             <Select value={filtros.tipoImovel} onValueChange={(valor) => atualizarFiltro("tipoImovel", valor)}>
               <SelectTrigger className="bg-white">
-                <SelectValue placeholder="Selecione..." />
+                <SelectValue placeholder="Tipo de Imóvel" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="apartamento">Apartamento</SelectItem>
@@ -83,11 +81,10 @@ export const SearchBar = () => {
             </Select>
           </div>
           
-          <div>
-            <label className="text-xs text-white/90 mb-1 block font-medium">Faixa de Preço</label>
+          <div>            
             <Select value={filtros.faixaPreco} onValueChange={(valor) => atualizarFiltro("faixaPreco", valor)}>
               <SelectTrigger className="bg-white">
-                <SelectValue placeholder="Selecione..." />
+                <SelectValue placeholder="Faixa de Preço" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="0-300k">Até R$ 300.000</SelectItem>
@@ -99,10 +96,9 @@ export const SearchBar = () => {
           </div>
           
           <div>
-            <label className="text-xs text-white/90 mb-1 block font-medium">Área (m²)</label>
             <Select value={filtros.area} onValueChange={(valor) => atualizarFiltro("area", valor)}>
               <SelectTrigger className="bg-white">
-                <SelectValue placeholder="Selecione..." />
+                <SelectValue placeholder="Área (m²)" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="0-50">Até 50 m²</SelectItem>
