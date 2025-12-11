@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,24 +17,28 @@ const agents = [
     name: "Jaudeth Hajar",
     email: "CRECI 15545",
     phone: "(42) 99925-7363",
+    image: "/user.png",
   },
   {
     id: 2,
     name: "Zahra Hajar",
     email: "CRECI 18590",
     phone: "(42) 99924-8874",
+    image: "/user.png",
   },
   {
     id: 3,
     name: "Kelly Stanganini",
     email: "CRECI 48209",
     phone: "(42) 99141-4779",
+    image: "/kelly.png",
   },
   {
     id: 4,
     name: "Yara Agottani",
     email: "CRECI 33773",
     phone: "(42) 99953-6810",
+    image: "/yara.png",
   },
 ];
 
@@ -95,20 +100,7 @@ export default function ContactContent() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-
-      {/* Breadcrumb */}
-      {/*<div className="bg-muted py-4 border-b border-border">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Link href="/" className="hover:text-primary transition-colors">
-              Home
-            </Link>
-            <ChevronRight className="h-4 w-4" />
-            <span className="text-foreground font-medium">Contato</span>
-          </div>
-        </div>
-      </div>*/}
-
+     
       {/* Map Section */}
       <div className="w-full h-[400px] bg-muted relative overflow-hidden">
         <iframe
@@ -121,42 +113,14 @@ export default function ContactContent() {
           referrerPolicy="no-referrer-when-downgrade"
           title="Localização do Escritório"
         />
-      </div>
-
-    
-      {/* Stay Informed Section */}
-      {/*<div className="bg-muted py-12 border-b border-border">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="text-center md:text-left">
-              <h2 className="text-3xl font-bold italic mb-2">FIQUE INFORMADO</h2>
-              <p className="text-muted-foreground">
-                Receba as últimas atualizações e ofertas exclusivas de imóveis no seu e-mail.
-              </p>
-            </div>
-            <div className="flex w-full md:w-auto gap-2">
-              <Input
-                placeholder="Seu e-mail..."
-                className="min-w-[300px] h-12 bg-background"
-                type="email"
-              />
-              <Button size="lg" className="h-12 px-8">
-                Inscrever-se
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>*/}
+      </div>    
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <div>
-            <div className="mb-8">
-              {/*<div className="text-sm font-bold mb-2 text-muted-foreground tracking-wider">
-                ENTRE EM CONTATO
-              </div>*/}
+            <div className="mb-8">            
               <h2 className="font-aestetico text-4xl font-medium mb-4 border-b-4 border-primary inline-block pb-2">
               ENTRE EM CONTATO
               </h2>
@@ -262,11 +226,9 @@ export default function ContactContent() {
                   style={{ animationDelay: `${index * 0.1}s`, animationFillMode: 'both' }}
                 >
                   <div className="flex flex-col items-center text-center space-y-4">
-                    <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-                      <span className="text-2xl font-bold text-primary">
-                        {agent.name.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    </div>
+                    
+                      <Image src={agent.image} alt={agent.name} width={100} height={100} className="rounded-full" />
+                    
                     <div>
                       <h3 className="font-bold text-lg mb-3">{agent.name}</h3>
                       <div className="space-y-2 text-sm">
