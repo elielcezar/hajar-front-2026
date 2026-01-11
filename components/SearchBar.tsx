@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -34,6 +35,7 @@ interface Filtros {
 }
 
 export const SearchBar = () => {
+  const router = useRouter();
   const [filtros, setFiltros] = useState<Filtros>({
     bairro: "",
     tipoImovel: "",
@@ -48,6 +50,18 @@ export const SearchBar = () => {
 
   const atualizarFiltro = (campo: keyof Filtros, valor: string) => {
     setFiltros((prev) => ({ ...prev, [campo]: valor }));
+  };
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    
+    Object.entries(filtros).forEach(([key, value]) => {
+      if (value) {
+        params.append(key, value);
+      }
+    });
+
+    router.push(`/imoveis?${params.toString()}`);
   };
 
   return (
@@ -207,7 +221,10 @@ export const SearchBar = () => {
             </PopoverContent>
           </Popover>
           
-          <Button className="bg-white text-primary hover:bg-white/90 font-semibold">
+          <Button 
+            className="bg-white text-primary hover:bg-white/90 font-semibold"
+            onClick={handleSearch}
+          >
             <Search className="h-4 w-4 mr-2" />
             Buscar
           </Button>

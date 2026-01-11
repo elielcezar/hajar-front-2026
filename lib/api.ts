@@ -9,9 +9,16 @@ interface ApiImovel {
   descricaoLonga: string;
   fotos: string[];
   cidade: string;
+  bairro: string | null;
   valor: string;
   codigo: string;
-  endereco: string;
+  endereco: string | null;
+  dormitorios: number | null;
+  banheiros: number | null;
+  suites: number | null;
+  areaConstruida: number | null;
+  terrenoM2: number | null;
+  garagem: boolean;
   createdAt: string;
   updatedAt: string;
   tipo: Array<{
@@ -57,6 +64,8 @@ export interface Imovel {
   area?: number;
   quartos?: number;
   banheiros?: number;
+  suites?: number;
+  vagas?: number;
   caracteristicas?: string[];
   corretor?: {
     nome: string;
@@ -84,25 +93,69 @@ function transformApiImovel(apiImovel: ApiImovel): Imovel {
     descricaoLonga: apiImovel.descricaoLonga,
     preco: valorNumerico,
     localizacao: apiImovel.cidade,
-    endereco: apiImovel.endereco,
+    endereco: apiImovel.endereco || '',
     fotos: apiImovel.fotos,
     tipo: finalidadeNome.toLowerCase() === 'aluguel' ? 'aluguel' : 'venda',
     categoria: tipoNome,
     codigo: apiImovel.codigo,
     dataPublicacao: apiImovel.createdAt,
-    // Valores padrão para campos que não existem na API
-    area: 0,
-    quartos: 0,
-    banheiros: 0,
+    area: apiImovel.areaConstruida || apiImovel.terrenoM2 || 0,
+    quartos: apiImovel.dormitorios || 0,
+    banheiros: apiImovel.banheiros || 0,
+    suites: apiImovel.suites || 0,
+    vagas: apiImovel.garagem ? 1 : 0, // A API retorna booleano para garagem
     caracteristicas: [],
     visualizacoes: 0,
     favoritos: 0,
   };
 }
 
-export async function getImoveis(): Promise<Imovel[]> {
+export async function getImoveis(filters?: Record<string, string>): Promise<Imovel[]> {
   try {
-    const response = await fetch(`${API_URL}/imoveis`, {
+    const url = new URL(`${API_URL}/imoveis`);
+    
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (!value) return;
+
+        switch (key) {
+          case 'faixaPreco':
+            if (value.includes('+')) {
+              const min = value.replace('k+', '000').replace('+', '');
+              url.searchParams.append('valor_min', min);
+            } else if (value.includes('-')) {
+              const [min, max] = value.split('-');
+              url.searchParams.append('valor_min', min.replace('k', '000'));
+              url.searchParams.append('valor_max', max.replace('k', '000'));
+            }
+            break;
+            
+          case 'area':
+            if (value.includes('+')) {
+              const min = value.replace('+', '');
+              url.searchParams.append('area_min', min);
+            } else if (value.includes('-')) {
+              const [min, max] = value.split('-');
+              url.searchParams.append('area_min', min);
+              url.searchParams.append('area_max', max);
+            }
+            break;
+
+          case 'tipoImovel':
+            url.searchParams.append('tipo', value);
+            break;
+
+          case 'quartos':
+            url.searchParams.append('dormitorios', value.replace('+', ''));
+            break;
+
+          default:
+            url.searchParams.append(key, value);
+        }
+      });
+    }
+
+    const response = await fetch(url.toString(), {
       next: { revalidate: 3600 }, // Revalidar a cada 1 hora
     });
     
@@ -111,8 +164,77 @@ export async function getImoveis(): Promise<Imovel[]> {
       return [];
     }
     
-    const data: ApiImovel[] = await response.json();
-    return data.map(transformApiImovel);
+    const data = await response.json();
+    // A API retorna os dados dentro da propriedade 'value'
+    const imoveisRaw: ApiImovel[] = Array.isArray(data) ? data : (data.value || []);
+    let imoveis = imoveisRaw.map(transformApiImovel);
+
+    // Filtragem Local (Fallback se o backend não filtrar)
+    if (filters) {
+      imoveis = imoveis.filter(imovel => {
+        // Filtro de Faixa de Preço
+        if (filters.faixaPreco) {
+          if (filters.faixaPreco.includes('+')) {
+            const min = parseFloat(filters.faixaPreco.replace('k+', '000').replace('+', ''));
+            if (imovel.preco < min) return false;
+          } else if (filters.faixaPreco.includes('-')) {
+            const [minStr, maxStr] = filters.faixaPreco.split('-');
+            const min = parseFloat(minStr.replace('k', '000'));
+            const max = parseFloat(maxStr.replace('k', '000'));
+            if (imovel.preco < min || imovel.preco > max) return false;
+          }
+        }
+
+        // Filtro de Área
+        if (filters.area) {
+          if (filters.area.includes('+')) {
+            const min = parseFloat(filters.area.replace('+', ''));
+            if ((imovel.area || 0) < min) return false;
+          } else if (filters.area.includes('-')) {
+            const [min, max] = filters.area.split('-').map(Number);
+            if ((imovel.area || 0) < min || (imovel.area || 0) > max) return false;
+          }
+        }
+
+        // Filtro de Quartos (Mínimo)
+        if (filters.quartos) {
+          const min = parseInt(filters.quartos.replace('+', ''), 10);
+          if ((imovel.quartos || 0) < min) return false;
+        }
+
+        // Filtro de Banheiros (Mínimo)
+        if (filters.banheiros) {
+          const min = parseInt(filters.banheiros.replace('+', ''), 10);
+          if ((imovel.banheiros || 0) < min) return false;
+        }
+
+        // Filtro de Suítes (Mínimo)
+        if (filters.suites) {
+          const min = parseInt(filters.suites.replace('+', ''), 10);
+          if ((imovel.suites || 0) < min) return false;
+        }
+
+        // Filtro de Vagas (Mínimo)
+        if (filters.vagas) {
+          const min = parseInt(filters.vagas.replace('+', ''), 10);
+          if ((imovel.vagas || 0) < min) return false;
+        }
+
+        // Filtro de Bairro
+        if (filters.bairro && imovel.localizacao) {
+          // A API retorna cidade em 'localizacao', mas o filtro é de bairro.
+          // Se o backend enviar bairro no endereço ou em outro campo mapeado, ajustaremos.
+          // Por enquanto, verificamos se o termo está no endereço ou localização.
+          const termo = filters.bairro.toLowerCase();
+          const enderecoCompleto = `${imovel.endereco} ${imovel.localizacao}`.toLowerCase();
+          if (!enderecoCompleto.includes(termo)) return false;
+        }
+
+        return true;
+      });
+    }
+
+    return imoveis;
   } catch (error) {
     console.error('Erro ao buscar imóveis:', error);
     return [];

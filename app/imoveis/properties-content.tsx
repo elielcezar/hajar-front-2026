@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { PropertyCard } from "@/components/PropertyCard";
 import { Button } from "@/components/ui/button";
@@ -40,21 +41,147 @@ interface Filtros {
 
 
 export default function PropertiesContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [properties, setProperties] = useState<Imovel[]>([]);
+  // Se não tem params, assume que estamos verificando o storage para evitar flash de conteúdo
+  const [checkingStorage, setCheckingStorage] = useState(() => Array.from(searchParams.keys()).length === 0);
   const [loading, setLoading] = useState(true);
 
   
   const [filtros, setFiltros] = useState<Filtros>({
-    bairro: "",
-    tipoImovel: "",
+    bairro: searchParams.get("bairro") || "",
+    tipoImovel: searchParams.get("tipoImovel") || "",
     faixaPreco: [0, 2000000],
     area: [0, 500],
-    suites: "",
-    quartos: "",
-    banheiros: "",
-    vagas: "",
-    caracteristicas: "",
+    suites: searchParams.get("suites") || "",
+    quartos: searchParams.get("quartos") || "",
+    banheiros: searchParams.get("banheiros") || "",
+    vagas: searchParams.get("vagas") || "",
+    caracteristicas: searchParams.get("caracteristicas") || "",
   });
+
+  // Se os searchParams mudarem e tiverem chaves, paramos de verificar o storage
+  useEffect(() => {
+    if (Array.from(searchParams.keys()).length > 0) {
+      setCheckingStorage(false);
+    }
+  }, [searchParams]);
+
+  // Efeito para carregar filtros do localStorage ao montar o componente (se a URL estiver vazia)
+  useEffect(() => {
+    // Se não houver params na URL, tentamos recuperar do localStorage
+    if (Array.from(searchParams.keys()).length === 0) {
+      const savedFilters = localStorage.getItem("hajar_imoveis_filtros");
+      let restored = false;
+
+      if (savedFilters) {
+        try {
+          const parsedFilters = JSON.parse(savedFilters);
+          
+          // Reconstruir a URL com base nos filtros salvos
+          const params = new URLSearchParams();
+          if (parsedFilters.bairro) params.set("bairro", parsedFilters.bairro);
+          if (parsedFilters.tipoImovel) params.set("tipoImovel", parsedFilters.tipoImovel);
+          if (parsedFilters.quartos) params.set("quartos", parsedFilters.quartos);
+          if (parsedFilters.suites) params.set("suites", parsedFilters.suites);
+          if (parsedFilters.banheiros) params.set("banheiros", parsedFilters.banheiros);
+          if (parsedFilters.vagas) params.set("vagas", parsedFilters.vagas);
+          if (parsedFilters.caracteristicas) params.set("caracteristicas", parsedFilters.caracteristicas);
+          
+          if (parsedFilters.faixaPreco && (parsedFilters.faixaPreco[0] > 0 || parsedFilters.faixaPreco[1] < 2000000)) {
+            params.set("faixaPreco", `${parsedFilters.faixaPreco[0]}-${parsedFilters.faixaPreco[1]}`);
+          }
+          
+          if (parsedFilters.area && (parsedFilters.area[0] > 0 || parsedFilters.area[1] < 500)) {
+            params.set("area", `${parsedFilters.area[0]}-${parsedFilters.area[1]}`);
+          }
+
+          // Se conseguiu reconstruir params, redireciona
+          if (params.toString()) {
+            restored = true;
+            router.replace(`/imoveis?${params.toString()}`);
+            // Não setamos checkingStorage(false) aqui pois o redirect vai desmontar/remontar ou atualizar a página
+            return; 
+          }
+        } catch (e) {
+          console.error("Erro ao recuperar filtros", e);
+        }
+      }
+      
+      // Se não restaurou nada (não tinha filtros ou erro), liberamos o loading
+      if (!restored) {
+        setCheckingStorage(false);
+      }
+    } else {
+      // Se já tem params, não precisamos checar storage
+      setCheckingStorage(false);
+    }
+  }, []);
+
+  // Atualizar filtros quando os searchParams mudarem E salvar no localStorage
+  useEffect(() => {
+    const novosFiltros = {
+      bairro: searchParams.get("bairro") || "",
+      tipoImovel: searchParams.get("tipoImovel") || "",
+      faixaPreco: [0, 2000000] as [number, number],
+      area: [0, 500] as [number, number],
+      suites: searchParams.get("suites") || "",
+      quartos: searchParams.get("quartos") || "",
+      banheiros: searchParams.get("banheiros") || "",
+      vagas: searchParams.get("vagas") || "",
+      caracteristicas: searchParams.get("caracteristicas") || "",
+    };
+
+    // Parse manual para ranges (preço e área) vindos da URL
+    const precoParam = searchParams.get("faixaPreco");
+    if (precoParam && precoParam.includes('-')) {
+      const [min, max] = precoParam.split('-').map(Number);
+      if (!isNaN(min) && !isNaN(max)) novosFiltros.faixaPreco = [min, max];
+    } else if (precoParam && precoParam.includes('+')) {
+       // Tratamento básico para 800k+ se vier do SearchBar antigo
+       const min = parseInt(precoParam.replace(/\D/g, '')) * (precoParam.includes('k') ? 1000 : 1);
+       novosFiltros.faixaPreco = [min, 2000000];
+    }
+
+    const areaParam = searchParams.get("area");
+    if (areaParam && areaParam.includes('-')) {
+      const [min, max] = areaParam.split('-').map(Number);
+      if (!isNaN(min) && !isNaN(max)) novosFiltros.area = [min, max];
+    }
+
+    setFiltros(novosFiltros);
+
+    // Salvar no localStorage APENAS se houver parâmetros relevantes na URL
+    // Isso evita salvar um estado "vazio" logo antes de restaurar o backup
+    if (Array.from(searchParams.keys()).length > 0) {
+      localStorage.setItem("hajar_imoveis_filtros", JSON.stringify(novosFiltros));
+    }
+
+  }, [searchParams]);
+
+  const aplicarFiltros = () => {
+    const params = new URLSearchParams();
+    if (filtros.bairro) params.set("bairro", filtros.bairro);
+    if (filtros.tipoImovel) params.set("tipoImovel", filtros.tipoImovel);
+    if (filtros.quartos) params.set("quartos", filtros.quartos);
+    if (filtros.suites) params.set("suites", filtros.suites);
+    if (filtros.banheiros) params.set("banheiros", filtros.banheiros);
+    if (filtros.vagas) params.set("vagas", filtros.vagas);
+    if (filtros.caracteristicas) params.set("caracteristicas", filtros.caracteristicas);
+    
+    // Adicionar faixa de preço se não for o padrão
+    if (filtros.faixaPreco[0] > 0 || filtros.faixaPreco[1] < 2000000) {
+      params.set("faixaPreco", `${filtros.faixaPreco[0]}-${filtros.faixaPreco[1]}`);
+    }
+    
+    // Adicionar área se não for o padrão
+    if (filtros.area[0] > 0 || filtros.area[1] < 500) {
+      params.set("area", `${filtros.area[0]}-${filtros.area[1]}`);
+    }
+
+    router.push(`/imoveis?${params.toString()}`);
+  };
 
   const atualizarFiltro = (campo: keyof Filtros, valor: string | [number, number]) => {
     setFiltros((prev) => ({ ...prev, [campo]: valor }));
@@ -75,8 +202,14 @@ export default function PropertiesContent() {
 
   useEffect(() => {
     async function fetchImoveis() {
+      setLoading(true);
       try {
-        const data = await getImoveis();
+        const filters: Record<string, string> = {};
+        searchParams.forEach((value, key) => {
+          filters[key] = value;
+        });
+        
+        const data = await getImoveis(filters);
         setProperties(data);
       } catch (error) {
         console.error('Erro ao carregar imóveis:', error);
@@ -85,7 +218,7 @@ export default function PropertiesContent() {
       }
     }
     fetchImoveis();
-  }, []);
+  }, [searchParams]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<"recent" | "price">("recent");
   
@@ -96,7 +229,7 @@ export default function PropertiesContent() {
     return 0;
   });
 
-  if (loading) {
+  if (loading || checkingStorage) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -307,7 +440,7 @@ export default function PropertiesContent() {
                   </Select>
               </div>             
 
-              <Button className="w-full" size="lg">
+              <Button className="w-full" size="lg" onClick={aplicarFiltros}>
                 Aplicar Filtros
               </Button>
             </div>

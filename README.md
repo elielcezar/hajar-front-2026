@@ -1,45 +1,65 @@
-# 🏠 Hajar Imóveis
+# 🏠 Hajar Imóveis - Frontend 2026
 
-Portal imobiliário moderno da **Hajar Imóveis**, desenvolvido em Next.js 15 com foco em performance e SEO.
+Este é o repositório do portal imobiliário da **Hajar Imóveis**, uma aplicação moderna construída com **Next.js 16** (App Router), focada em performance, SEO e experiência do usuário.
 
-## 📋 Sobre
+## 🧠 Contexto para IA e Desenvolvedores
 
-Site institucional e showcase de imóveis da Hajar Imóveis, uma imobiliária dedicada a conectar pessoas aos seus imóveis ideais. O portal oferece uma experiência moderna e intuitiva para busca e visualização de propriedades disponíveis para venda e aluguel.
+### 🛠️ Tech Stack Principal
+- **Framework:** Next.js 16.0.10 (App Router)
+- **Linguagem:** TypeScript
+- **Estilização:** Tailwind CSS + `shadcn/ui` (Componentes baseados em Radix UI)
+- **Gerenciamento de Estado/Data Fetching:** TanStack Query (React Query)
+- **Formulários:** React Hook Form + Zod
+- **Ícones:** Lucide React
 
----
+### 📂 Estrutura de Diretórios Chave
+- `app/`: Rotas da aplicação (App Router).
+  - `app/imoveis/`: Página de listagem com suporte a query params para filtros.
+  - `app/imoveis/[id]/`: Página de detalhes do imóvel.
+- `components/`: Componentes modulares.
+  - `ui/`: Componentes primitivos do shadcn/ui.
+  - `SearchBar.tsx`: Componente crítico que gerencia o estado dos filtros e navegação via URL.
+- `lib/`: Utilitários e configurações.
+  - **`api.ts`**: Camada de serviço central. **Importante:** A URL da API está definida via constante (`https://admin.hajar.com.br/api`) e não via .env neste momento. Contém a lógica de transformação de dados (`transformApiImovel`) para adaptar o payload do backend para a interface do frontend.
 
-## 🛠️ Tecnologias
+### 🔄 Fluxo de Dados e API
+O frontend consome uma API externa REST. 
 
-- **Next.js 15** - Framework React com App Router
-- **TypeScript** - Tipagem estática
-- **Tailwind CSS** - Estilização
-- **shadcn/ui** - Componentes UI
-- **TanStack Query** - Gerenciamento de estado
+1. **Fetching:** Realizado principalmente em `lib/api.ts`.
+2. **Transformação:** A interface `ApiImovel` (backend) é diferente da interface `Imovel` (frontend). A função `transformApiImovel` normaliza campos como snake_case para camelCase, trata valores monetários e define tipos (Venda/Aluguel).
+3. **Filtros:** A busca funciona via **Query Params**.
+   - O `SearchBar` constrói a URL: `/imoveis?tipoImovel=Casa&faixaPreco=500k-1m`.
+   - O `api.ts` lê estes filtros e constrói a query string correta para o backend.
 
----
+### 🎨 Design System e Convenções
+- **Cores:** Definidas no `tailwind.config.ts`. Uso frequente de classes como `bg-deepOceanic`.
+- **Componentes:** Preferência por componentes funcionais pequenos.
+- **Responsividade:** Mobile-first, com hooks dedicados como `use-mobile.tsx`.
 
+## 🚀 Scripts Disponíveis
 
-## 🌐 Site em Produção
-
-**URL:** https://novo.hajar.com.br/
-
-**API Backend:** https://admin.hajar.com.br/api
-
----
-
-## 🚀 Deploy
-
-Para instruções completas de deploy, consulte: **[DOCS/DEPLOY.md](DOCS/DEPLOY.md)**
-
-**Deploy rápido:**
 ```bash
-cd /home/hajar-novo/htdocs/novo.hajar.com.br
-git pull
-./deploy.sh
+# Desenvolvimento
+npm run dev
+
+# Build de Produção
+npm run build
+
+# Start Produção
+npm run start
+
+# Linting
+npm run lint
 ```
 
+## 📍 Status Atual do Projeto (Jan 2026)
+- **Versão do Next.js:** Atualizado para v16.
+- **Funcionalidade de Busca:** Recentemente refatorada para suportar filtros de URL (Preço, Área, Tipo) integrados diretamente na chamada da API.
+- **Deploy:** Configurado via scripts shell (`deploy.sh`) e PM2 (`ecosystem.config.cjs`).
+
+## 🔗 Links Importantes
+- **Produção:** https://novo.hajar.com.br/
+- **Backend API:** https://admin.hajar.com.br/api
+
 ---
-
-## 📝 Licença
-
-© 2025 Hajar Imóveis. Todos os direitos reservados.
+© 2026 Hajar Imóveis.
