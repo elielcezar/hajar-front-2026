@@ -1,17 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
 
 // E-mail de destino (fallback para build time)
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'elielcezar@gmail.com';
-
-// Função para obter instância do Resend (lazy initialization)
-function getResendClient() {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    throw new Error('RESEND_API_KEY não configurada');
-  }
-  return new Resend(apiKey);
-}
 
 // Interface para os dados do formulário
 interface ContactFormData {
@@ -157,17 +147,19 @@ export async function POST(request: NextRequest) {
     // Gera o HTML do e-mail
     const htmlContent = createEmailTemplate({ name, email, phone, message });
 
-    // Inicializa o Resend (lazy - apenas no momento da requisição)
-    let resend: Resend;
-    try {
-      resend = getResendClient();
-    } catch {
+    // Verifica se a API key está configurada
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
       console.error('RESEND_API_KEY não configurada');
       return NextResponse.json(
         { error: 'Erro de configuração do servidor' },
         { status: 500 }
       );
     }
+
+    // Import dinâmico do Resend (evita erro no build)
+    const { Resend } = await import('resend');
+    const resend = new Resend(apiKey);
 
     // Envia o e-mail via Resend
     const { data, error } = await resend.emails.send({
