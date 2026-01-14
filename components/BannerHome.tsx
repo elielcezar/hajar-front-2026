@@ -7,7 +7,7 @@ export const BannerHome = () => {
         <div className="container mx-auto px-4 relative overflow-hidden mb-16">
             
             <Image 
-                src="/banner-home.png" 
+                src="/banner-home2.png" 
                 alt="Banner Home" 
                 width={1711}
                 height={325}

@@ -121,16 +121,22 @@ export default function PropertiesContent() {
 
   // Atualizar filtros quando os searchParams mudarem E salvar no localStorage
   useEffect(() => {
+    const getParam = (key: string) => {
+      const value = searchParams.get(key);
+      // Se o valor for "__all__" (valor especial), retorna vazio
+      return value && value !== '__all__' ? value : "";
+    };
+
     const novosFiltros = {
-      bairro: searchParams.get("bairro") || "",
-      tipoImovel: searchParams.get("tipoImovel") || "",
+      bairro: getParam("bairro"),
+      tipoImovel: getParam("tipoImovel"),
       faixaPreco: [0, 2000000] as [number, number],
       area: [0, 500] as [number, number],
-      suites: searchParams.get("suites") || "",
-      quartos: searchParams.get("quartos") || "",
-      banheiros: searchParams.get("banheiros") || "",
-      vagas: searchParams.get("vagas") || "",
-      caracteristicas: searchParams.get("caracteristicas") || "",
+      suites: getParam("suites"),
+      quartos: getParam("quartos"),
+      banheiros: getParam("banheiros"),
+      vagas: getParam("vagas"),
+      caracteristicas: getParam("caracteristicas"),
     };
 
     // Parse manual para ranges (preço e área) vindos da URL
@@ -162,13 +168,13 @@ export default function PropertiesContent() {
 
   const aplicarFiltros = () => {
     const params = new URLSearchParams();
-    if (filtros.bairro) params.set("bairro", filtros.bairro);
-    if (filtros.tipoImovel) params.set("tipoImovel", filtros.tipoImovel);
-    if (filtros.quartos) params.set("quartos", filtros.quartos);
-    if (filtros.suites) params.set("suites", filtros.suites);
-    if (filtros.banheiros) params.set("banheiros", filtros.banheiros);
-    if (filtros.vagas) params.set("vagas", filtros.vagas);
-    if (filtros.caracteristicas) params.set("caracteristicas", filtros.caracteristicas);
+    if (filtros.bairro && filtros.bairro !== '__all__') params.set("bairro", filtros.bairro);
+    if (filtros.tipoImovel && filtros.tipoImovel !== '__all__') params.set("tipoImovel", filtros.tipoImovel);
+    if (filtros.quartos && filtros.quartos !== '__all__') params.set("quartos", filtros.quartos);
+    if (filtros.suites && filtros.suites !== '__all__') params.set("suites", filtros.suites);
+    if (filtros.banheiros && filtros.banheiros !== '__all__') params.set("banheiros", filtros.banheiros);
+    if (filtros.vagas && filtros.vagas !== '__all__') params.set("vagas", filtros.vagas);
+    if (filtros.caracteristicas && filtros.caracteristicas !== '__all__') params.set("caracteristicas", filtros.caracteristicas);
     
     // Adicionar faixa de preço se não for o padrão
     if (filtros.faixaPreco[0] > 0 || filtros.faixaPreco[1] < 2000000) {
@@ -184,7 +190,12 @@ export default function PropertiesContent() {
   };
 
   const atualizarFiltro = (campo: keyof Filtros, valor: string | [number, number]) => {
-    setFiltros((prev) => ({ ...prev, [campo]: valor }));
+    // Se o valor for "__all__" (valor especial para limpar), limpa o filtro
+    if (typeof valor === 'string' && valor === '__all__') {
+      setFiltros((prev) => ({ ...prev, [campo]: '' }));
+    } else {
+      setFiltros((prev) => ({ ...prev, [campo]: valor }));
+    }
   };
 
   const atualizarFiltroRange = (campo: "faixaPreco" | "area", valor: number[]) => {
@@ -293,12 +304,16 @@ export default function PropertiesContent() {
               </div>
 
               {/* Bairro */}
-              <div>                  
-                <Select value={filtros.bairro} onValueChange={(valor) => atualizarFiltro("bairro", valor)}>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Bairro
+                </label>
+                <Select value={filtros.bairro && filtros.bairro !== '__all__' ? filtros.bairro : undefined} onValueChange={(valor) => atualizarFiltro("bairro", valor)}>
                   <SelectTrigger className="bg-white">
-                    <SelectValue placeholder="Bairro" />
+                    <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="__all__">Todos os bairros</SelectItem>
                     {bairros.map((bairro) => (
                       <SelectItem key={bairro.id} value={bairro.nome}>{bairro.nome}</SelectItem>
                     ))}              
@@ -308,12 +323,16 @@ export default function PropertiesContent() {
 
 
               {/* Property Type */}
-              <div>                  
-                <Select value={filtros.tipoImovel} onValueChange={(valor) => atualizarFiltro("tipoImovel", valor)}>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Tipo de Imóvel
+                </label>
+                <Select value={filtros.tipoImovel && filtros.tipoImovel !== '__all__' ? filtros.tipoImovel : undefined} onValueChange={(valor) => atualizarFiltro("tipoImovel", valor)}>
                   <SelectTrigger className="bg-white">
-                    <SelectValue placeholder="Tipo de Imóvel" />
+                    <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="__all__">Todos os tipos</SelectItem>
                     <SelectItem value="apartamento">Apartamento</SelectItem>
                     <SelectItem value="casa">Casa</SelectItem>
                     <SelectItem value="terreno">Terreno</SelectItem>
@@ -362,82 +381,102 @@ export default function PropertiesContent() {
               </div>
 
               {/* Bedrooms */}
-              <div>                  
-                  <Select value={filtros.quartos} onValueChange={(valor) => atualizarFiltro("quartos", valor)}>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Quantidade de Quartos" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">1</SelectItem>
-                      <SelectItem value="2">2</SelectItem>
-                      <SelectItem value="3">3</SelectItem>
-                      <SelectItem value="4">4</SelectItem>
-                      <SelectItem value="5+">5+</SelectItem>
-                    </SelectContent>
-                  </Select>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Quartos
+                </label>
+                <Select value={filtros.quartos && filtros.quartos !== '__all__' ? filtros.quartos : undefined} onValueChange={(valor) => atualizarFiltro("quartos", valor)}>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">Qualquer quantidade</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4">4</SelectItem>
+                    <SelectItem value="5+">5+</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Suites */}
-              <div>                  
-                  <Select value={filtros.suites} onValueChange={(valor) => atualizarFiltro("suites", valor)}>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Quantidade de Suítes" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0">0</SelectItem>
-                      <SelectItem value="1">1</SelectItem>
-                      <SelectItem value="2">2</SelectItem>
-                      <SelectItem value="3">3</SelectItem>
-                      <SelectItem value="4">4</SelectItem>
-                      <SelectItem value="5+">5+</SelectItem>
-                    </SelectContent>
-                  </Select>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Suítes
+                </label>
+                <Select value={filtros.suites && filtros.suites !== '__all__' ? filtros.suites : undefined} onValueChange={(valor) => atualizarFiltro("suites", valor)}>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">Qualquer quantidade</SelectItem>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4">4</SelectItem>
+                    <SelectItem value="5+">5+</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Bathrooms */}
-              <div>                  
-                  <Select value={filtros.banheiros} onValueChange={(valor) => atualizarFiltro("banheiros", valor)}>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Quantidade de Banheiros" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">1</SelectItem>
-                      <SelectItem value="2">2</SelectItem>
-                      <SelectItem value="3">3</SelectItem>
-                      <SelectItem value="4">4</SelectItem>
-                      <SelectItem value="5+">5+</SelectItem>
-                    </SelectContent>
-                  </Select>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Banheiros
+                </label>
+                <Select value={filtros.banheiros && filtros.banheiros !== '__all__' ? filtros.banheiros : undefined} onValueChange={(valor) => atualizarFiltro("banheiros", valor)}>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">Qualquer quantidade</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4">4</SelectItem>
+                    <SelectItem value="5+">5+</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>             
 
               {/* Garagem */}
-              <div>                  
-                  <Select value={filtros.vagas} onValueChange={(valor) => atualizarFiltro("vagas", valor)}>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Vagas na Garagem" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0">0</SelectItem>
-                      <SelectItem value="1">1</SelectItem>
-                      <SelectItem value="2">2</SelectItem>
-                      <SelectItem value="3">3</SelectItem>
-                      <SelectItem value="4">4</SelectItem>
-                      <SelectItem value="5+">5+</SelectItem>
-                    </SelectContent>
-                  </Select>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Vagas na Garagem
+                </label>
+                <Select value={filtros.vagas && filtros.vagas !== '__all__' ? filtros.vagas : undefined} onValueChange={(valor) => atualizarFiltro("vagas", valor)}>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">Qualquer quantidade</SelectItem>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4">4</SelectItem>
+                    <SelectItem value="5+">5+</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>             
 
               {/* Características */}
-              <div>                  
-                  <Select value={filtros.caracteristicas} onValueChange={(valor) => atualizarFiltro("caracteristicas", valor)}>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Características" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="geminada">Geminada</SelectItem>
-                      <SelectItem value="unica-lote">Única no Lote</SelectItem>
-                    </SelectContent>
-                  </Select>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Características
+                </label>
+                <Select value={filtros.caracteristicas && filtros.caracteristicas !== '__all__' ? filtros.caracteristicas : undefined} onValueChange={(valor) => atualizarFiltro("caracteristicas", valor)}>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">Todas</SelectItem>
+                    <SelectItem value="geminada">Geminada</SelectItem>
+                    <SelectItem value="unica-lote">Única no Lote</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>             
 
               <Button className="w-full" size="lg" onClick={aplicarFiltros}>
