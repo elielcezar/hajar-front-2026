@@ -296,7 +296,7 @@ export default function PropertiesContent() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar Filters */}
           <aside className="lg:col-span-1">
-            <div className="bg-card rounded-sm border border-border p-6 space-y-6 sticky top-24">
+            <div className="bg-card rounded-sm border border-border p-6 space-y-3 sticky top-24">
               <div>
                 <h3 className="font-aestetico text-lg font-medium mb-2 border-b-2 border-primary inline-block pb-1">
                   FILTROS
@@ -595,7 +595,7 @@ export default function PropertiesContent() {
             )}
 
             {/* Pagination */}
-            <div className="mt-8 flex justify-center gap-2">
+            {/*<div className="mt-8 flex justify-center gap-2">
               <Button variant="outline" size="sm" disabled>
                 Anterior
               </Button>
@@ -611,7 +611,7 @@ export default function PropertiesContent() {
               <Button variant="outline" size="sm">
                 Próximo
               </Button>
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import PropertiesContent from "./properties-content";
 
 export const metadata: Metadata = {
@@ -11,6 +12,14 @@ export const metadata: Metadata = {
 };
 
 export default function PropertiesPage() {
-  return <PropertiesContent />;
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-muted-foreground text-lg">Carregando imóveis...</p>
+      </div>
+    }>
+      <PropertiesContent />
+    </Suspense>
+  );
 }
 
