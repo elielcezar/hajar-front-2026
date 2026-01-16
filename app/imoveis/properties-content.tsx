@@ -12,23 +12,11 @@ import { Grid, List } from "lucide-react";
 import { getImoveis, type Imovel } from "@/lib/api";
 import { Footer } from "@/components/Footer";
 import { GetInTouch } from "@/components/GetInTouch";
-
-const bairros = [  
-  { id: 1, nome: "Centro" },
-  { id: 2, nome: "Jardim das Araucárias" },
-  { id: 3, nome: "Nossa Senhora da Conceição" },
-  { id: 4, nome: "Papiros" },
-  { id: 5, nome: "Regina Vitória" },
-  { id: 6, nome: "Rocio I" },
-  { id: 7, nome: "Rocio II" },
-  { id: 8, nome: "Vila Mayer" },
-  { id: 9, nome: "Vila Rosa" },
-  { id: 10, nome: "Vila Maria" },
-  { id: 11, nome: "Vila Militar" },
-];
+import { Input } from "@/components/ui/input";
 
 interface Filtros {
   bairro: string;
+  finalidade: string;
   tipoImovel: string;
   faixaPreco: [number, number];
   area: [number, number];
@@ -51,6 +39,7 @@ export default function PropertiesContent() {
   
   const [filtros, setFiltros] = useState<Filtros>({
     bairro: searchParams.get("bairro") || "",
+    finalidade: searchParams.get("finalidade") || "",
     tipoImovel: searchParams.get("tipoImovel") || "",
     faixaPreco: [0, 2000000],
     area: [0, 500],
@@ -82,6 +71,7 @@ export default function PropertiesContent() {
           // Reconstruir a URL com base nos filtros salvos
           const params = new URLSearchParams();
           if (parsedFilters.bairro) params.set("bairro", parsedFilters.bairro);
+          if (parsedFilters.finalidade) params.set("finalidade", parsedFilters.finalidade);
           if (parsedFilters.tipoImovel) params.set("tipoImovel", parsedFilters.tipoImovel);
           if (parsedFilters.quartos) params.set("quartos", parsedFilters.quartos);
           if (parsedFilters.suites) params.set("suites", parsedFilters.suites);
@@ -129,6 +119,7 @@ export default function PropertiesContent() {
 
     const novosFiltros = {
       bairro: getParam("bairro"),
+      finalidade: getParam("finalidade"),
       tipoImovel: getParam("tipoImovel"),
       faixaPreco: [0, 2000000] as [number, number],
       area: [0, 500] as [number, number],
@@ -169,6 +160,7 @@ export default function PropertiesContent() {
   const aplicarFiltros = () => {
     const params = new URLSearchParams();
     if (filtros.bairro && filtros.bairro !== '__all__') params.set("bairro", filtros.bairro);
+    if (filtros.finalidade && filtros.finalidade !== '__all__') params.set("finalidade", filtros.finalidade);
     if (filtros.tipoImovel && filtros.tipoImovel !== '__all__') params.set("tipoImovel", filtros.tipoImovel);
     if (filtros.quartos && filtros.quartos !== '__all__') params.set("quartos", filtros.quartos);
     if (filtros.suites && filtros.suites !== '__all__') params.set("suites", filtros.suites);
@@ -308,19 +300,31 @@ export default function PropertiesContent() {
                 <label className="text-sm font-medium text-foreground">
                   Bairro
                 </label>
-                <Select value={filtros.bairro && filtros.bairro !== '__all__' ? filtros.bairro : undefined} onValueChange={(valor) => atualizarFiltro("bairro", valor)}>
+                <Input 
+                  type="text"
+                  placeholder="Digite o bairro"
+                  value={filtros.bairro}
+                  onChange={(e) => atualizarFiltro("bairro", e.target.value)}
+                  className="bg-white"
+                />
+              </div>
+
+              {/* Finalidade */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Finalidade
+                </label>
+                <Select value={filtros.finalidade && filtros.finalidade !== '__all__' ? filtros.finalidade : undefined} onValueChange={(valor) => atualizarFiltro("finalidade", valor)}>
                   <SelectTrigger className="bg-white">
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="__all__">Todos os bairros</SelectItem>
-                    {bairros.map((bairro) => (
-                      <SelectItem key={bairro.id} value={bairro.nome}>{bairro.nome}</SelectItem>
-                    ))}              
+                    <SelectItem value="__all__">Todas</SelectItem>
+                    <SelectItem value="venda">Venda</SelectItem>
+                    <SelectItem value="aluguel">Aluguel</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-
 
               {/* Property Type */}
               <div className="space-y-2">

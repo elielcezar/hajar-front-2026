@@ -230,6 +230,12 @@ export async function getImoveis(filters?: Record<string, string>): Promise<Imov
           if (!bairroImovel.includes(termo)) return false;
         }
 
+        // Filtro de Finalidade (venda/aluguel)
+        if (filters.finalidade) {
+          const finalidadeFiltro = filters.finalidade.toLowerCase();
+          if (imovel.tipo !== finalidadeFiltro) return false;
+        }
+
         return true;
       });
     }
