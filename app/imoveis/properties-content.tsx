@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Slider } from "@/components/ui/slider";
-import { Grid, List } from "lucide-react";
+import { Grid, List, SlidersHorizontal, X } from "lucide-react";
 import { getImoveis, type Imovel } from "@/lib/api";
 import { Footer } from "@/components/Footer";
 import { GetInTouch } from "@/components/GetInTouch";
@@ -35,6 +35,7 @@ export default function PropertiesContent() {
   // Se não tem params, assume que estamos verificando o storage para evitar flash de conteúdo
   const [checkingStorage, setCheckingStorage] = useState(() => Array.from(searchParams.keys()).length === 0);
   const [loading, setLoading] = useState(true);
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
   
   const [filtros, setFiltros] = useState<Filtros>({
@@ -56,6 +57,19 @@ export default function PropertiesContent() {
       setCheckingStorage(false);
     }
   }, [searchParams]);
+
+  // Bloquear scroll do body quando o drawer está aberto no mobile
+  useEffect(() => {
+    if (isFilterDrawerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isFilterDrawerOpen]);
 
   // Efeito para carregar filtros do localStorage ao montar o componente (se a URL estiver vazia)
   useEffect(() => {
@@ -178,6 +192,9 @@ export default function PropertiesContent() {
       params.set("area", `${filtros.area[0]}-${filtros.area[1]}`);
     }
 
+    // Fechar o drawer no mobile após aplicar filtros
+    setIsFilterDrawerOpen(false);
+    
     router.push(`/imoveis?${params.toString()}`);
   };
 
@@ -285,18 +302,65 @@ export default function PropertiesContent() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
+        {/* Botão Filtros - Mobile Only */}
+        <div className="lg:hidden mb-4">
+          <Button 
+            onClick={() => setIsFilterDrawerOpen(true)}
+            className="w-full bg-primary text-white"
+            size="lg"
+          >
+            <SlidersHorizontal className="h-5 w-5 mr-2" />
+            Filtros
+          </Button>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Overlay - Mobile Only */}
+          {isFilterDrawerOpen && (
+            <div 
+              className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+              onClick={() => setIsFilterDrawerOpen(false)}
+            />
+          )}
+
           {/* Sidebar Filters */}
-          <aside className="lg:col-span-1">
-            <div className="bg-card rounded-sm border border-border p-6 space-y-3 sticky top-24">
-              <div>
+          <aside className={`
+            lg:col-span-1
+            fixed lg:relative
+            top-0 left-0 
+            h-full lg:h-auto
+            w-[85%] max-w-sm lg:w-full lg:max-w-none
+            bg-background lg:bg-transparent
+            z-50 lg:z-auto
+            transform transition-transform duration-300 ease-in-out
+            ${isFilterDrawerOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+            overflow-y-auto lg:overflow-visible
+          `}>
+            <div className="bg-card rounded-sm border border-border p-6 space-y-3 lg:sticky lg:top-24 h-full lg:h-auto">
+              {/* Botão Fechar - Mobile Only */}
+              <div className="flex items-center justify-between mb-4 lg:hidden">
+                <h3 className="font-aestetico text-lg font-medium border-b-2 border-primary inline-block pb-1">
+                  FILTROS
+                </h3>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsFilterDrawerOpen(false)}
+                  className="text-foreground"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+
+              {/* Título - Desktop Only */}
+              <div className="hidden lg:block">
                 <h3 className="font-aestetico text-lg font-medium mb-2 border-b-2 border-primary inline-block pb-1">
                   FILTROS
                 </h3>
               </div>
 
               {/* Bairro */}
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Bairro
                 </label>
@@ -310,7 +374,7 @@ export default function PropertiesContent() {
               </div>
 
               {/* Finalidade */}
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Finalidade
                 </label>
@@ -319,15 +383,15 @@ export default function PropertiesContent() {
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="__all__">Todas</SelectItem>
-                    <SelectItem value="venda">Venda</SelectItem>
-                    <SelectItem value="aluguel">Aluguel</SelectItem>
+                    <SelectItem value="__all__">Selecione</SelectItem>
+                    <SelectItem value="venda">Comprar</SelectItem>
+                    <SelectItem value="aluguel">Alugar</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Property Type */}
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Tipo de Imóvel
                 </label>
@@ -347,7 +411,7 @@ export default function PropertiesContent() {
 
              
               {/* Faixa de Preço */}
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Faixa de Preço
                 </label>
@@ -366,7 +430,7 @@ export default function PropertiesContent() {
               </div>
 
               {/* Área */}
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Área (m²)
                 </label>
@@ -385,7 +449,7 @@ export default function PropertiesContent() {
               </div>
 
               {/* Bedrooms */}
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Quartos
                 </label>
@@ -405,7 +469,7 @@ export default function PropertiesContent() {
               </div>
 
               {/* Suites */}
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Suítes
                 </label>
@@ -426,7 +490,7 @@ export default function PropertiesContent() {
               </div>
 
               {/* Bathrooms */}
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Banheiros
                 </label>
@@ -446,7 +510,7 @@ export default function PropertiesContent() {
               </div>             
 
               {/* Garagem */}
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Vagas na Garagem
                 </label>
@@ -467,7 +531,7 @@ export default function PropertiesContent() {
               </div>             
 
               {/* Características */}
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Características
                 </label>
@@ -531,7 +595,7 @@ export default function PropertiesContent() {
                 >
                   Preço
                 </Button>
-                <ToggleGroup
+                {/*<ToggleGroup
                   type="single"
                   value={viewMode}
                   onValueChange={(value) => value && setViewMode(value as "grid" | "list")}
@@ -551,7 +615,7 @@ export default function PropertiesContent() {
                   >
                     <List className="h-4 w-4" />
                   </ToggleGroupItem>
-                </ToggleGroup>
+                </ToggleGroup>*/}
               </div>
             </div>
 

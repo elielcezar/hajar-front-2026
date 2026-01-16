@@ -33,10 +33,10 @@ export const Footer = () => {
         <div className="h-1 bg-primary"></div>
         {/* Main Footer Content */}
         <div className="container mx-auto px-4 py-12">
-          <div className="flex gap-8">
+          <div className="flex gap-8 portrait:flex-col portrait:items-center">
             {/* Contact Us */}
-            <div className="w-full text-sm landscape:max-w-[30%] flex flex-col">
-              <img src={logo.src} alt="Hajar" className="self-start w-[220px] h-auto mb-6" />
+            <div className="w-full text-sm landscape:max-w-[30%] flex flex-col portrait:justify-center portrait:items-center">
+              <img src={logo.src} alt="Hajar" className="landscape:self-start w-[220px] h-auto mb-6" />
 
               <div className="flex items-start gap-3 mb-3">
                 <Mail className="w-5 h-5 text-white mt-1 flex-shrink-0" />
@@ -62,7 +62,7 @@ export const Footer = () => {
             {/* Tag Cloud */}
             <div className="w-full landscape:max-w-[30%] flex flex-col">
 
-              <h3 className="font-aestetico text-xl font-medium mt-6 mb-9">Nossos Consultores</h3>
+              <h3 className="font-aestetico text-xl font-medium mt-6 mb-9 portrait:text-center portrait:text-3xl">Nossos Consultores</h3>
               <ul>
                 <li className="mb-3 flex gap-2">
                   <FaWhatsapp className="bg-green-500 rounded-full p-1 w-6 h-6 text-white mt-1 flex-shrink-0 inline-block" />
@@ -98,7 +98,7 @@ export const Footer = () => {
             {/* Testimonials */}
             <div className="w-full landscape:max-w-[20%] flex flex-col">
 
-              <h3 className="font-aestetico text-xl font-medium mt-6 mb-9">Cotações do dia</h3>
+              <h3 className="font-aestetico text-xl font-medium mt-6 mb-9  portrait:text-center portrait:text-3xl">Cotações do dia</h3>
               <ul>
                 <li className="mb-3"><strong>Dólar:</strong> R$ 5,29</li>
                 <li className="mb-3"><strong>Milho:</strong> R$ 55,24/sc</li>
@@ -109,8 +109,8 @@ export const Footer = () => {
             </div>
             <div className="w-full landscape:max-w-[20%] flex flex-col">
 
-              <h3 className="font-aestetico text-xl font-medium mt-6 mb-9">Redes Sociais</h3>
-              <div className="flex items-start gap-4">
+              <h3 className="font-aestetico text-xl font-medium mt-6 mb-9  portrait:text-center portrait:text-3xl">Redes Sociais</h3>
+              <div className="flex items-start gap-4 portrait:justify-center portrait:items-center">
                 <Link href="https://www.facebook.com/hajarimoveis" target="_blank" rel="noopener noreferrer">
                   <FaFacebook className="w-7 h-7 text-white mt-1 flex-shrink-0 hover:text-deepOceanic transition-colors" />
                 </Link>

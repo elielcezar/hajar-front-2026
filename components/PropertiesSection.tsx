@@ -84,7 +84,7 @@ export const PropertiesSection = () => {
             </Button>
           </div>
 
-          <div className="flex items-center gap-4 px-2">
+          <div className="flex items-center gap-4 px-2 portrait:hidden">
             <span className="text-white font-medium">Ordenar por:</span>
             <Button
               variant="ghost"
@@ -100,14 +100,14 @@ export const PropertiesSection = () => {
             >
               Preço
             </Button>
-            <ToggleGroup type="single" value={viewMode} onValueChange={(value) => value && setViewMode(value as "grid" | "list")} className="ml-4">
+            {/*<ToggleGroup type="single" value={viewMode} onValueChange={(value) => value && setViewMode(value as "grid" | "list")} className="ml-4">
               <ToggleGroupItem value="grid" aria-label="Grid view" className="bg-oceanic text-white data-[state=on]:bg-primary">
                 <Grid className="h-4 w-4" />
               </ToggleGroupItem>
               <ToggleGroupItem value="list" aria-label="List view" className="bg-oceanic text-white data-[state=on]:bg-primary">
                 <List className="h-4 w-4" />
               </ToggleGroupItem>
-            </ToggleGroup>
+            </ToggleGroup>*/}
           </div>
         </div>
 
