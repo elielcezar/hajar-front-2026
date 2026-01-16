@@ -564,7 +564,7 @@ export default function PropertiesContent() {
                       id={property.id}
                       image={property.fotos[0]}
                       title={property.titulo}
-                      location={property.localizacao}
+                      location={property.bairro ? `${property.bairro} - ${property.localizacao}` : property.localizacao}
                       price={property.tipo === 'aluguel' ? `R$ ${property.preco}/mês` : `R$ ${property.preco.toLocaleString('pt-BR')}`}
                       badge={property.tipo === 'venda' ? 'À Venda!' : 'Para Alugar!'}
                       type={property.tipo}
@@ -584,7 +584,7 @@ export default function PropertiesContent() {
                       id={property.id}
                       image={property.fotos[0]}
                       title={property.titulo}
-                      location={property.localizacao}
+                      location={property.bairro ? `${property.bairro} - ${property.localizacao}` : property.localizacao}
                       price={property.tipo === 'aluguel' ? `R$ ${property.preco}/mês` : `R$ ${property.preco.toLocaleString('pt-BR')}`}
                       badge={property.tipo === 'venda' ? 'À Venda!' : 'Para Alugar!'}
                       type={property.tipo}

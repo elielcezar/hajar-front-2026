@@ -55,6 +55,7 @@ export interface Imovel {
   descricaoLonga: string;
   preco: number;
   localizacao: string;
+  bairro: string;
   endereco: string;
   fotos: string[];
   tipo: 'venda' | 'aluguel';
@@ -93,6 +94,7 @@ function transformApiImovel(apiImovel: ApiImovel): Imovel {
     descricaoLonga: apiImovel.descricaoLonga,
     preco: valorNumerico,
     localizacao: apiImovel.cidade,
+    bairro: apiImovel.bairro || '',
     endereco: apiImovel.endereco || '',
     fotos: apiImovel.fotos,
     tipo: finalidadeNome.toLowerCase() === 'aluguel' ? 'aluguel' : 'venda',
@@ -220,14 +222,12 @@ export async function getImoveis(filters?: Record<string, string>): Promise<Imov
           if ((imovel.vagas || 0) < min) return false;
         }
 
-        // Filtro de Bairro
-        if (filters.bairro && imovel.localizacao) {
-          // A API retorna cidade em 'localizacao', mas o filtro é de bairro.
-          // Se o backend enviar bairro no endereço ou em outro campo mapeado, ajustaremos.
-          // Por enquanto, verificamos se o termo está no endereço ou localização.
-          const termo = filters.bairro.toLowerCase();
-          const enderecoCompleto = `${imovel.endereco} ${imovel.localizacao}`.toLowerCase();
-          if (!enderecoCompleto.includes(termo)) return false;
+        // Filtro de Bairro (busca parcial)
+        if (filters.bairro) {
+          const termo = filters.bairro.toLowerCase().trim();
+          const bairroImovel = (imovel.bairro || '').toLowerCase();
+          // Busca parcial: verifica se o termo está contido no bairro
+          if (!bairroImovel.includes(termo)) return false;
         }
 
         return true;

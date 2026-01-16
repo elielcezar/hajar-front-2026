@@ -8,20 +8,6 @@ import { Input } from "./ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
-const bairros = [  
-  { id: 1, nome: "Centro" },
-  { id: 2, nome: "Jardim das Araucárias" },
-  { id: 3, nome: "Nossa Senhora da Conceição" },
-  { id: 4, nome: "Papiros" },
-  { id: 5, nome: "Regina Vitória" },
-  { id: 6, nome: "Rocio I" },
-  { id: 7, nome: "Rocio II" },
-  { id: 8, nome: "Vila Mayer" },
-  { id: 9, nome: "Vila Rosa" },
-  { id: 10, nome: "Vila Maria" },
-  { id: 11, nome: "Vila Militar" },
-];
-
 interface Filtros {
   bairro: string;
   tipoImovel: string;
@@ -69,16 +55,13 @@ export const SearchBar = () => {
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-3 items-end">
           <div>            
-            <Select value={filtros.bairro} onValueChange={(valor) => atualizarFiltro("bairro", valor)}>
-              <SelectTrigger className="bg-white">
-                <SelectValue placeholder="Bairro" />
-              </SelectTrigger>
-              <SelectContent>
-                {bairros.map((bairro) => (
-                  <SelectItem key={bairro.id} value={bairro.nome}>{bairro.nome}</SelectItem>
-                ))}              
-              </SelectContent>
-            </Select>
+            <Input 
+              type="text"
+              placeholder="Bairro"
+              value={filtros.bairro}
+              onChange={(e) => atualizarFiltro("bairro", e.target.value)}
+              className="bg-white"
+            />
           </div>
           
           <div>            
@@ -222,7 +205,7 @@ export const SearchBar = () => {
           </Popover>
           
           <Button 
-            className="bg-white text-primary hover:bg-white/90 font-semibold"
+            className="bg-primary text-white hover:bg-red-500 font-semibold"
             onClick={handleSearch}
           >
             <Search className="h-4 w-4 mr-2" />

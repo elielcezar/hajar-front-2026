@@ -114,7 +114,9 @@ export const CarouselProperties = () => {
                       <div className="p-4 space-y-2">
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-gray-600 font-medium">Place</span>
-                          <span className="text-sm text-gray-800">{property.localizacao}</span>
+                          <span className="text-sm text-gray-800">
+                            {property.bairro ? `${property.bairro} - ${property.localizacao}` : property.localizacao}
+                          </span>
                         </div>
                         <div className="flex justify-between items-center border-t pt-2">
                           <span className="text-sm text-gray-600 font-medium">Price</span>

@@ -201,7 +201,12 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                   <Separator />
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Localização:</span>
+                    <span className="text-sm text-muted-foreground">Bairro:</span>
+                    <span className="text-sm font-medium">{imovel.bairro || 'Não informado'}</span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Cidade:</span>
                     <span className="text-sm font-medium">{imovel.localizacao}</span>
                   </div>
                   
@@ -322,11 +327,11 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                       <h3 className="font-aestetico text-2xl font-medium">Localização</h3>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">
-                      {imovel.endereco}, {imovel.localizacao}
+                      {imovel.endereco}{imovel.bairro ? `, ${imovel.bairro}` : ''} - {imovel.localizacao}
                     </p>
                     <div className="relative w-full h-[400px] rounded-lg overflow-hidden border">
                       <iframe
-                        src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(`${imovel.endereco}, ${imovel.localizacao}`)}`}
+                        src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(`${imovel.endereco}${imovel.bairro ? ', ' + imovel.bairro : ''}, ${imovel.localizacao}`)}`}
                         width="100%"
                         height="100%"
                         style={{ border: 0 }}
@@ -339,7 +344,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                     <div className="mt-4 flex justify-end">
                       <Button variant="outline" size="sm" asChild>
                         <a 
-                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${imovel.endereco}, ${imovel.localizacao}`)}`}
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${imovel.endereco}${imovel.bairro ? ', ' + imovel.bairro : ''}, ${imovel.localizacao}`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
