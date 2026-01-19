@@ -72,26 +72,29 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
       <Header />
 
       {/* Search Bar */}
-      <SearchBar />
+      {/*<SearchBar />*/}
       
       {/* Hero Section with Breadcrumb */}
-      <div className="relative h-[300px] overflow-hidden">
-        <Image
+      <div className="relative overflow-hidden py-16">
+        {/*<Image
           src={imovel.fotos[0] || "/property-1.jpg"}
           alt={imovel.titulo}
           fill
           className="object-cover"
           priority
-        />
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="relative container mx-auto px-4 h-full flex flex-col justify-center">
-          <h1 className="font-aestetico text-4xl md:text-5xl font-medium text-white mb-4">DETALHES DO IMÓVEL</h1>
-          <div className="flex items-center gap-2 text-white">
-            <span>Home</span>
-            <span>/</span>
-            <span className="text-primary">Detalhes do Imóvel</span>
+        />*/}
+        <div className="absolute inset-0 bg-oceanic" />
+          <div className="relative container mx-auto px-4 h-full flex flex-col justify-center">
+            {/*<h1 className="font-aestetico text-4xl md:text-5xl font-medium text-white mb-4">DETALHES DO IMÓVEL</h1>*/}
+            <h1 className="font-aestetico text-4xl md:text-5xl font-medium text-white">
+              {imovel.titulo}
+            </h1>
+            {/*<div className="flex items-center gap-2 text-white">
+              <span>Home</span>
+              <span>/</span>
+              <span className="text-primary">Detalhes do Imóvel</span>
+            </div>*/}
           </div>
-        </div>
       </div>
 
       {/* Main Content */}
@@ -140,17 +143,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                         className="object-cover"
                         sizes="(max-width: 768px) 100vw, 66vw"
                       />
-                      {index === 0 && (
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                          <h2 className="text-2xl font-bold text-white mb-2">
-                            {imovel.titulo}
-                          </h2>
-                          <p className="text-xl text-primary font-bold">{priceFormatted}</p>
-                          <p className="text-white/90 mt-2">
-                            {imovel.descricao.substring(0, 100)}...
-                          </p>
-                        </div>
-                      )}
+                      
                     </div>
                   </CarouselItem>
                 ))}
@@ -320,7 +313,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                   </CardContent>
                 </Card>
 
-                <Card>
+                {/*<Card>
                   <CardContent className="p-6">
                     <div className="flex items-center gap-2 mb-4">
                       <MapPin className="h-5 w-5 text-primary" />
@@ -354,7 +347,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
+                </Card>*/}
               </TabsContent>
 
               <TabsContent value="agent" className="mt-6">
