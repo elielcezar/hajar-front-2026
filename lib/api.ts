@@ -77,6 +77,25 @@ export interface Imovel {
   favoritos?: number;
 }
 
+// Interface para destaques do Hero
+export interface Destaque {
+  id: number;
+  titulo: string;
+  descricao: string;
+  imagem: string;
+  valor: string | null;
+  area: number | null;
+  quartos: number | null;
+  banheiros: number | null;
+  garagem: number | null;
+  textoBotao: string;
+  link: string;
+  ativo: boolean;
+  ordem: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // Função para transformar dados da API para o formato do frontend
 function transformApiImovel(apiImovel: ApiImovel): Imovel {
   // Extrair tipo e finalidade
@@ -269,4 +288,28 @@ export async function getImoveisFeatured(): Promise<Imovel[]> {
   // Por enquanto, retorna os primeiros 4 imóveis
   const imoveis = await getImoveis();
   return imoveis.slice(0, 4);
+}
+
+export async function getDestaques(): Promise<Destaque[]> {
+  try {
+    const response = await fetch(`${API_URL}/destaques`, {
+      next: { revalidate: 3600 }, // Revalidar a cada 1 hora
+    });
+    
+    if (!response.ok) {
+      console.error('Erro ao buscar destaques:', response.statusText);
+      return [];
+    }
+    
+    const data = await response.json();
+    const destaques: Destaque[] = Array.isArray(data) ? data : [];
+    
+    // Filtrar apenas destaques ativos e ordenar por ordem
+    return destaques
+      .filter(destaque => destaque.ativo)
+      .sort((a, b) => a.ordem - b.ordem);
+  } catch (error) {
+    console.error('Erro ao buscar destaques:', error);
+    return [];
+  }
 }

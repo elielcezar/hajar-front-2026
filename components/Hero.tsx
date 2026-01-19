@@ -3,60 +3,37 @@
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
-import { Home, BedDouble, DollarSign } from "lucide-react";
+import Link from "next/link";
+import { Home, BedDouble, Bath, CarFront } from "lucide-react";
+import { getDestaques, type Destaque } from "@/lib/api";
 
-const heroImages = [
-  {
-    image: "/hero-bg.jpg",
-    title: "Encontre o imóvel perfeito",
-    description: "Conheça nossos imóveis exclusivos com as melhores localizações. Apartamentos e casas prontos para você realizar o seu sonho.",
-    features: [
-      { icon: Home, label: "3" },
-      { icon: BedDouble, label: "5" },
-      { icon: DollarSign, label: "5.000" }
-    ]
-  },
-  {
-    image: "/hero-bg-2.jpg",
-    title: "Oportunidade de investimento",
-    description: "Investir em imóveis é uma excelente oportunidade de ganhar renda passiva e aumentar o seu patrimônio. Com a Hajar Imóveis, você pode investir em imóveis de qualidade e com potencial de valorização.",
-    features: [
-      { icon: Home, label: "1" },
-      { icon: BedDouble, label: "2" },
-      { icon: DollarSign, label: "1.000" }
-    ]
-  },
-  {
-    image: "/hero-bg-3.jpg",
-    title: "Alugue o seu imóvel",
-    description: "Alugar um imóvel é uma excelente oportunidade de ganhar renda passiva e aumentar o seu patrimônio. Com a Hajar Imóveis, você pode alugar imóveis de qualidade e com potencial de valorizaçã.",
-    features: [
-      { icon: Home, label: "2" },
-      { icon: BedDouble, label: "1" },
-      { icon: DollarSign, label: "7.000" }
-    ]
-  },
-  {
-    image: "/hero-bg-4.jpg",
-    title: "Encontre o seu imóvel",
-    description: "Com a Hajar Imóveis, você pode encontrar o imóvel perfeito para você e sua família. Com as melhores localizações e os melhores imóveis, você pode realizar o seu sonho.",
-    features: [
-      { icon: Home, label: "4" },
-      { icon: BedDouble, label: "4" },
-      { icon: DollarSign, label: "4.000" }
-    ]
-  }
-];
-    
 export const Hero = () => {
+  const [destaques, setDestaques] = useState<Destaque[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [nextImageIndex, setNextImageIndex] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
 
   useEffect(() => {
+    async function fetchDestaques() {
+      try {
+        const data = await getDestaques();
+        setDestaques(data);
+      } catch (error) {
+        console.error('Erro ao carregar destaques:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchDestaques();
+  }, []);
+
+  useEffect(() => {
+    if (destaques.length === 0) return;
+    
     const interval = setInterval(() => {
-      const next = (currentImageIndex + 1) % heroImages.length;
+      const next = (currentImageIndex + 1) % destaques.length;
       setNextImageIndex(next);
       setIsTransitioning(true);
       setAnimationKey(prev => prev + 1);
@@ -68,12 +45,24 @@ export const Hero = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [currentImageIndex]);
+  }, [currentImageIndex, destaques.length]);
+
+  if (loading) {
+    return (
+      <div className="relative min-h-[600px] overflow-hidden bg-zinc-900 flex items-center justify-center">
+        <p className="text-white text-lg">Carregando...</p>
+      </div>
+    );
+  }
+
+  if (destaques.length === 0) {
+    return null;
+  }
 
   return (
     <div className="relative min-h-[600px] overflow-hidden bg-zinc-900">
       {/* Animated Background Images */}
-      {heroImages.map((item: any, index: number) => {
+      {destaques.map((item: Destaque, index: number) => {
         const isCurrentSlide = index === currentImageIndex;
         const isNextSlide = index === nextImageIndex && isTransitioning;
         const shouldShow = isCurrentSlide || isNextSlide;
@@ -97,8 +86,8 @@ export const Hero = () => {
                 (isCurrentSlide && isTransitioning) ? "fade-out-smooth" : ""
               }`}>
                 <Image
-                  src={item.image}
-                  alt={`Hero background ${index + 1}`}
+                  src={item.imagem}
+                  alt={item.titulo}
                   fill
                   className="object-cover"
                   priority={index === 0}
@@ -113,8 +102,8 @@ export const Hero = () => {
                 {/* Imagem completa que aparece quando mosaico suma */}
                 <div className="absolute inset-0 fade-in-from-mosaic">
                   <Image
-                    src={item.image}
-                    alt={`Hero background ${index + 1}`}
+                    src={item.imagem}
+                    alt={item.titulo}
                     fill
                     className="object-cover"
                     quality={90}
@@ -141,7 +130,7 @@ export const Hero = () => {
                           }}
                         >
                           <Image
-                            src={item.image}
+                            src={item.imagem}
                             alt=""
                             fill
                             className="object-cover"
@@ -171,7 +160,7 @@ export const Hero = () => {
                     !isTransitioning ? 'content-fade-in-title' : 'opacity-0'
                   }`}>
                     <h1 className="font-aestetico relative text-3xl md:text-4xl font-medium text-white leading-6 text-right">
-                      {item.title}
+                      {item.titulo}
                     </h1>
                   </div>
 
@@ -180,34 +169,58 @@ export const Hero = () => {
                     !isTransitioning ? 'content-fade-in-content' : 'opacity-0'
                   }`}>
                   <p className="text-white text-right text-lg leading-relaxed bg-deepOceanic/80 backdrop-blur-sm p-6 md:p-8 rounded-sm">
-                    {item.description}
+                    {item.descricao}
                   </p>
                   
                   {/* Ícones de Características */}
                   <div className="flex flex-wrap gap-4 py-4 justify-end">
-                    <div className="flex items-center gap-2 bg-deepOceanic/80 px-4 py-2 rounded">
-                      <Home className="w-6 h-6 text-white" />
-                      <span className="text-white text-xl font-semibold">{item.features[0].label}</span>
-                    </div>
+                    {item.area !== null && (
+                      <div className="flex items-center gap-2 bg-deepOceanic/80 px-4 py-2 rounded">
+                        <Home className="w-6 h-6 text-white" />
+                        <span className="text-white text-xl font-semibold">{item.area}m²</span>
+                      </div>
+                    )}
                     
-                    <div className="flex items-center gap-2 bg-deepOceanic/80 px-4 py-2 rounded">
-                      <BedDouble className="w-6 h-6 text-white" />
-                      <span className="text-white text-xl font-semibold">{item.features[1].label}</span>
-                    </div>
+                    {item.quartos !== null && (
+                      <div className="flex items-center gap-2 bg-deepOceanic/80 px-4 py-2 rounded">
+                        <BedDouble className="w-6 h-6 text-white" />
+                        <span className="text-white text-xl font-semibold">{item.quartos}</span>
+                      </div>
+                    )}
                     
-                    <div className="flex items-center gap-2 bg-primary/90 px-6 py-2 rounded">                      
-                      <span className="text-white text-2xl font-bold">R$ {item.features[2].label}</span>
-                    </div>
+                    {item.banheiros !== null && (
+                      <div className="flex items-center gap-2 bg-deepOceanic/80 px-4 py-2 rounded">
+                        <Bath className="w-6 h-6 text-white" />
+                        <span className="text-white text-xl font-semibold">{item.banheiros}</span>
+                      </div>
+                    )}
+                    
+                    {item.garagem !== null && (
+                      <div className="flex items-center gap-2 bg-deepOceanic/80 px-4 py-2 rounded">
+                        <CarFront className="w-6 h-6 text-white" />
+                        <span className="text-white text-xl font-semibold">{item.garagem}</span>
+                      </div>
+                    )}
+                    
+                    {item.valor !== null && (
+                      <div className="flex items-center gap-2 bg-primary/90 px-6 py-2 rounded">                      
+                        <span className="text-white text-2xl font-bold">
+                          R$ {parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   
                   {/* Botão CTA */}
                   <div className="pt-0">
-                    <Button 
-                      size="lg" 
-                      className="bg-primary/90 hover:bg-primary text-white font-semibold px-8 py-6 text-lg"
-                    >
-                      Ver Mais Informações
-                    </Button>
+                    <Link href={item.link}>
+                      <Button 
+                        size="lg" 
+                        className="bg-primary/90 hover:bg-primary text-white font-semibold px-8 py-6 text-lg"
+                      >
+                        {item.textoBotao}
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </div>        
@@ -219,9 +232,9 @@ export const Hero = () => {
 
       {/* Navigation Dots */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-30">
-        {heroImages.map((_, index) => (
+        {destaques.map((destaque, index) => (
           <button
-            key={index}
+            key={destaque.id}
             onClick={() => {
               if (!isTransitioning && index !== currentImageIndex) {
                 setNextImageIndex(index);
@@ -238,7 +251,7 @@ export const Hero = () => {
                 ? "bg-primary w-8" 
                 : "bg-white/50 hover:bg-white/80"
             }`}
-            aria-label={`Go to slide ${index + 1}`}
+            aria-label={`Ir para ${destaque.titulo}`}
           />
         ))}
       </div>
