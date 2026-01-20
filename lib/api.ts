@@ -63,6 +63,7 @@ export interface Imovel {
   codigo: string;
   dataPublicacao: string;
   area?: number;
+  terrenoM2?: number;
   quartos?: number;
   banheiros?: number;
   suites?: number;
@@ -120,11 +121,12 @@ function transformApiImovel(apiImovel: ApiImovel): Imovel {
     categoria: tipoNome,
     codigo: apiImovel.codigo,
     dataPublicacao: apiImovel.createdAt,
-    area: apiImovel.areaConstruida || apiImovel.terrenoM2 || 0,
-    quartos: apiImovel.dormitorios || 0,
-    banheiros: apiImovel.banheiros || 0,
-    suites: apiImovel.suites || 0,
-    vagas: apiImovel.garagem ? 1 : 0, // A API retorna booleano para garagem
+    area: apiImovel.areaConstruida || undefined,
+    terrenoM2: apiImovel.terrenoM2 || undefined,
+    quartos: apiImovel.dormitorios || undefined,
+    banheiros: apiImovel.banheiros || undefined,
+    suites: apiImovel.suites || undefined,
+    vagas: apiImovel.garagem ? 1 : undefined,
     caracteristicas: [],
     visualizacoes: 0,
     favoritos: 0,
