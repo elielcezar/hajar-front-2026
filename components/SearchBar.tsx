@@ -69,11 +69,10 @@ export const SearchBar = () => {
               <SelectTrigger className="bg-white">
                 <SelectValue placeholder="Tipo de Imóvel" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="apartamento">Apartamento</SelectItem>
+              <SelectContent>                
                 <SelectItem value="casa">Casa</SelectItem>
-                <SelectItem value="terreno">Terreno</SelectItem>
-                <SelectItem value="comercial">Comercial</SelectItem>
+                <SelectItem value="sobrado">Sobrado</SelectItem>
+                <SelectItem value="terreno">Terreno</SelectItem>                
               </SelectContent>
             </Select>
           </div>

@@ -81,6 +81,13 @@ export const Footer = () => {
                 <li className="mb-3 flex gap-2">
                   <FaWhatsapp className="bg-green-500 rounded-full p-1 w-6 h-6 text-white mt-1 flex-shrink-0 inline-block" />
                   <span className="text-sm">
+                    <strong className="inline-block min-w-[140px]">Omar Hajar</strong> (42) 99982-0807<br />
+                    
+                  </span>
+                </li>
+                <li className="mb-3 flex gap-2">
+                  <FaWhatsapp className="bg-green-500 rounded-full p-1 w-6 h-6 text-white mt-1 flex-shrink-0 inline-block" />
+                  <span className="text-sm">
                     <strong className="inline-block min-w-[140px]">Kelly Stanganini</strong> (42) 99141-4779<br />
                     CRECI 48209
                   </span>
