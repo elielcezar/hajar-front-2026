@@ -315,3 +315,90 @@ export async function getDestaques(): Promise<Destaque[]> {
     return [];
   }
 }
+
+// Interfaces para o Blog
+interface ApiPost {
+  id: number;
+  titulo: string;
+  slug: string;
+  chamada: string;
+  conteudo: string;
+  imagemCapa: string;
+  dataPublicacao: string;
+  status: 'PUBLICADO' | 'RASCUNHO';
+  categoria: {
+    id: number;
+    nome: string;
+  };
+}
+
+export interface Post {
+  id: number;
+  titulo: string;
+  slug: string;
+  resumo: string;
+  conteudo: string;
+  imagemCapa: string;
+  dataPublicacao: string;
+  categoria: string;
+}
+
+// Função para transformar dados do post da API
+function transformApiPost(apiPost: ApiPost): Post {
+  return {
+    id: apiPost.id,
+    titulo: apiPost.titulo,
+    slug: apiPost.slug,
+    resumo: apiPost.chamada,
+    conteudo: apiPost.conteudo,
+    imagemCapa: apiPost.imagemCapa,
+    dataPublicacao: new Date(apiPost.dataPublicacao).toLocaleDateString('pt-BR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }),
+    categoria: apiPost.categoria.nome,
+  };
+}
+
+// Função para buscar todos os posts
+export async function getPosts(): Promise<Post[]> {
+  try {
+    const response = await fetch(`${API_URL}/posts`, {
+      next: { revalidate: 3600 }, // Revalidar a cada 1 hora
+    });
+
+    if (!response.ok) {
+      console.error('Erro ao buscar posts:', response.statusText);
+      return [];
+    }
+
+    const apiPosts: ApiPost[] = await response.json();
+    return apiPosts
+      .filter(post => post.status === 'PUBLICADO')
+      .map(transformApiPost);
+  } catch (error) {
+    console.error('Erro ao buscar posts:', error);
+    return [];
+  }
+}
+
+// Função para buscar um post pelo slug
+export async function getPostBySlug(slug: string): Promise<Post | null> {
+  try {
+    // A API de listagem já contém todos os dados que precisamos.
+    // Vamos buscar todos e encontrar o post correspondente.
+    const posts = await getPosts();
+    const post = posts.find(p => p.slug === slug);
+
+    if (!post) {
+      console.log(`Post com slug "${slug}" não encontrado.`);
+      return null;
+    }
+
+    return post;
+  } catch (error) {
+    console.error(`Erro ao buscar o post "${slug}":`, error);
+    return null;
+  }
+}

@@ -42,6 +42,7 @@ export const Header = () => {
               <Link href="/" className="text-white px-2 py-1 rounded-md hover:text-primary hover:bg-white hover:text-primary transition-colors font-medium">HOME</Link>
               <Link href="/imoveis" className="text-white px-2 py-1 rounded-md hover:text-primary hover:bg-white hover:text-primary transition-colors font-medium">IMÓVEIS</Link>
               <Link href="/sobre" className="text-white px-2 py-1 rounded-md hover:text-primary hover:bg-white hover:text-primary transition-colors font-medium">SOBRE</Link>
+              <Link href="/blog" className="text-white px-2 py-1 rounded-md hover:text-primary hover:bg-white hover:text-primary transition-colors font-medium">BLOG</Link>
               <Link href="https://www8.caixa.gov.br/siopiinternet-web/simulaOperacaoInternet.do?method=inicializarCasoUso" target="_blank" className="text-white px-2 py-1 rounded-md hover:text-primary hover:bg-white hover:text-primary transition-colors font-medium">SIMULADOR DE FINANCIAMENTO</Link>
               <Link href="/contato" className="text-white px-2 py-1 rounded-md hover:text-primary hover:bg-white hover:text-primary transition-colors font-medium">CONTATO</Link>
             </div>

@@ -5,13 +5,14 @@ import { FeaturesSection } from "@/components/FeaturesSection";
 import { GetInTouch } from "@/components/GetInTouch";
 import { BrandsCarousel } from "@/components/BrandsCarousel";
 import Image from "next/image";
+import { SearchBar } from "@/components/SearchBar";
 
 export const AboutContent = () => {
   return (
     <div>
         <>
           <Header />
-
+          <SearchBar />
           <div className="container mx-auto px-4 py-16">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-24">
                 <div className="relative h-96 overflow-hidden">
