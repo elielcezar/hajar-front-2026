@@ -96,7 +96,7 @@ export const CarouselProperties = () => {
 
                         {/* Property Image */}
                         <Image
-                          src={property.fotos[0] || "/placeholder.svg"}
+                          src={property.imagemCapa || property.fotos[0] || "/placeholder.svg"}
                           alt={property.titulo}
                           fill
                           className="object-cover group-hover:scale-110 transition-transform duration-500"

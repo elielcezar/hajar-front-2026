@@ -8,6 +8,7 @@ interface ApiImovel {
   descricaoCurta: string;
   descricaoLonga: string;
   fotos: string[];
+  imagemCapa: string | null;
   cidade: string;
   bairro: string | null;
   valor: string;
@@ -58,6 +59,7 @@ export interface Imovel {
   bairro: string;
   endereco: string;
   fotos: string[];
+  imagemCapa?: string;
   tipo: 'venda' | 'aluguel';
   categoria: string;
   codigo: string;
@@ -117,6 +119,7 @@ function transformApiImovel(apiImovel: ApiImovel): Imovel {
     bairro: apiImovel.bairro || '',
     endereco: apiImovel.endereco || '',
     fotos: apiImovel.fotos,
+    imagemCapa: apiImovel.imagemCapa || undefined,
     tipo: finalidadeNome.toLowerCase() === 'aluguel' ? 'aluguel' : 'venda',
     categoria: tipoNome,
     codigo: apiImovel.codigo,
