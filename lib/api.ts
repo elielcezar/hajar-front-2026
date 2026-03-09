@@ -12,6 +12,7 @@ interface ApiImovel {
   cidade: string;
   bairro: string | null;
   valor: string;
+  valorPromo: string | null;
   codigo: string;
   endereco: string | null;
   dormitorios: number | null;
@@ -55,6 +56,7 @@ export interface Imovel {
   descricao: string;
   descricaoLonga: string;
   preco: number;
+  precoPromo?: number;
   localizacao: string;
   bairro: string;
   endereco: string;
@@ -115,6 +117,9 @@ function transformApiImovel(apiImovel: ApiImovel): Imovel {
     descricao: apiImovel.descricaoCurta,
     descricaoLonga: apiImovel.descricaoLonga,
     preco: valorNumerico,
+    precoPromo: apiImovel.valorPromo
+      ? parseFloat(apiImovel.valorPromo.replace(/\./g, '').replace(',', '.')) || undefined
+      : undefined,
     localizacao: apiImovel.cidade,
     bairro: apiImovel.bairro || '',
     endereco: apiImovel.endereco || '',

@@ -151,6 +151,12 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
     ? `R$ ${imovel.preco.toLocaleString('pt-BR')}/mês` 
     : `R$ ${imovel.preco.toLocaleString('pt-BR')}`;
 
+  const promoPriceFormatted = imovel.precoPromo
+    ? imovel.tipo === 'aluguel'
+      ? `R$ ${imovel.precoPromo.toLocaleString('pt-BR')}/mês`
+      : `R$ ${imovel.precoPromo.toLocaleString('pt-BR')}`
+    : null;
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -251,10 +257,23 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                 <Separator className="my-4" />
                 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Valor:</span>
-                    <span className="text-lg font-bold text-primary">{priceFormatted}</span>
-                  </div>
+                  {promoPriceFormatted ? (
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Valor:</span>
+                        <Badge className="bg-green-600 text-white hover:bg-green-700">Oferta</Badge>
+                      </div>
+                      <div className="flex flex-col items-end gap-0.5">
+                        <span className="text-xl font-bold text-green-600">{promoPriceFormatted}</span>
+                        <span className="text-sm text-muted-foreground line-through">{priceFormatted}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">Valor:</span>
+                      <span className="text-lg font-bold text-primary">{priceFormatted}</span>
+                    </div>
+                  )}
                   
                   <Separator />
                   
