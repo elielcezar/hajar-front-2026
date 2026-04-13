@@ -11,7 +11,7 @@ interface ApiImovel {
   imagemCapa: string | null;
   cidade: string;
   bairro: string | null;
-  valor: string;
+  valor: string | null;
   valorPromo: string | null;
   codigo: string;
   endereco: string | null;
@@ -108,7 +108,9 @@ function transformApiImovel(apiImovel: ApiImovel): Imovel {
   const finalidadeNome = apiImovel.finalidade[0]?.finalidade?.nome || 'Venda';
   
   // Converter valor para número (remover pontos e vírgulas)
-  const valorNumerico = parseFloat(apiImovel.valor.replace(/\./g, '').replace(',', '.')) || 0;
+  const valorNumerico = apiImovel.valor
+    ? parseFloat(apiImovel.valor.replace(/\./g, '').replace(',', '.')) || 0
+    : 0;
   
   return {
     id: apiImovel.id,
