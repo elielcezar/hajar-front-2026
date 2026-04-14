@@ -354,6 +354,26 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                     </div>
                   )}
                 </div>
+
+                {imovel.proximidades && imovel.proximidades.length > 0 && (
+                  <>
+                    <Separator className="my-4" />
+                    <div>
+                      <h3 className="text-sm font-medium mb-3">Proximidades</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {imovel.proximidades.map((proximidade, index) => (
+                          <Badge
+                            key={index}
+                            variant="secondary"
+                            className="capitalize"
+                          >
+                            {proximidade}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
 

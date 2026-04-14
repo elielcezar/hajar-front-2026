@@ -46,6 +46,17 @@ interface ApiImovel {
     };
   }>;
   categorias: any[];
+  proximidades?: Array<{
+    id: number;
+    imovelId: number;
+    proximidadeId: number;
+    proximidade: {
+      id: number;
+      nome: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+  }> | null;
 }
 
 // Interface unificada para uso no frontend
@@ -73,6 +84,7 @@ export interface Imovel {
   suites?: number;
   vagas?: number;
   caracteristicas?: string[];
+  proximidades?: string[];
   corretor?: {
     nome: string;
     email: string;
@@ -143,6 +155,11 @@ function transformApiImovel(apiImovel: ApiImovel): Imovel {
     suites: apiImovel.suites || undefined,
     vagas: apiImovel.garagem ? 1 : undefined,
     caracteristicas: [],
+    proximidades: Array.isArray(apiImovel.proximidades)
+      ? apiImovel.proximidades
+          .map(p => p?.proximidade?.nome)
+          .filter((nome): nome is string => Boolean(nome))
+      : [],
     visualizacoes: 0,
     favoritos: 0,
   };
