@@ -86,9 +86,9 @@ export const CarouselProperties = () => {
                         {/* Diagonal Badge */}
                         <div className="absolute top-0 left-0 z-10">
                           <div className="relative w-32 h-32">
-                            <div className="absolute top-6 -left-8 w-40 bg-primary text-white text-center py-2 transform -rotate-45 shadow-lg">
+                            <div className={`absolute top-6 -left-8 w-40 text-white text-center py-2 transform -rotate-45 shadow-lg ${property.tipo === 'vendido' ? 'bg-deepOceanic' : 'bg-primary'}`}>
                               <span className="text-sm font-bold">
-                                {property.tipo === 'venda' ? 'À Venda!' : 'Para Alugar!'}
+                                {property.tipo === 'vendido' ? 'Vendido' : property.tipo === 'venda' ? 'À Venda!' : 'Para Alugar!'}
                               </span>
                             </div>
                           </div>

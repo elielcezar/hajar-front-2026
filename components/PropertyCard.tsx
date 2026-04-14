@@ -15,7 +15,7 @@ interface PropertyCardProps {
   type?: string;
 }
 
-export const PropertyCard = ({ image, title, location, price, badge, id = "1" }: PropertyCardProps) => {
+export const PropertyCard = ({ image, title, location, price, badge, id = "1", type }: PropertyCardProps) => {
   return (
     <Link href={`/imoveis/${id}`} className="block">
       <div className="group relative bg-card rounded-sm overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
@@ -27,8 +27,8 @@ export const PropertyCard = ({ image, title, location, price, badge, id = "1" }:
 
         <div className="absolute top-0 left-0 z-10">
           <div className="relative w-32 h-32">
-            <div className={`absolute top-6 -left-9 w-40 text-white text-center py-2 transform -rotate-45 shadow-lg 
-              ${badge === "À Venda!" ? "bg-primary" : "bg-deepOceanic"}`}>
+            <div className={`absolute top-6 -left-9 w-40 text-white text-center py-2 transform -rotate-45 shadow-lg
+              ${type === "vendido" ? "bg-deepOceanic" : "bg-primary"}`}>
               <span className="text-sm font-bold">
                 {badge}
               </span>

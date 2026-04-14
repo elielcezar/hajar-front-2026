@@ -634,7 +634,7 @@ export default function PropertiesContent() {
                       title={property.titulo}
                       location={property.bairro ? `${property.bairro} - ${property.localizacao}` : property.localizacao}
                       price={property.tipo === 'aluguel' ? `R$ ${property.preco}/mês` : `R$ ${property.preco.toLocaleString('pt-BR')}`}
-                      badge={property.tipo === 'venda' ? 'À Venda!' : 'Para Alugar!'}
+                      badge={property.tipo === 'vendido' ? 'Vendido' : property.tipo === 'venda' ? 'À Venda!' : 'Para Alugar!'}
                       type={property.tipo}
                     />
                   </div>
@@ -654,7 +654,7 @@ export default function PropertiesContent() {
                       title={property.titulo}
                       location={property.bairro ? `${property.bairro} - ${property.localizacao}` : property.localizacao}
                       price={property.tipo === 'aluguel' ? `R$ ${property.preco}/mês` : `R$ ${property.preco.toLocaleString('pt-BR')}`}
-                      badge={property.tipo === 'venda' ? 'À Venda!' : 'Para Alugar!'}
+                      badge={property.tipo === 'vendido' ? 'Vendido' : property.tipo === 'venda' ? 'À Venda!' : 'Para Alugar!'}
                       type={property.tipo}
                     />
                   </div>

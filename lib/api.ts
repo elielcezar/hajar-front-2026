@@ -62,7 +62,7 @@ export interface Imovel {
   endereco: string;
   fotos: string[];
   imagemCapa?: string;
-  tipo: 'venda' | 'aluguel';
+  tipo: 'venda' | 'aluguel' | 'vendido';
   categoria: string;
   codigo: string;
   dataPublicacao: string;
@@ -127,7 +127,12 @@ function transformApiImovel(apiImovel: ApiImovel): Imovel {
     endereco: apiImovel.endereco || '',
     fotos: apiImovel.fotos,
     imagemCapa: apiImovel.imagemCapa || undefined,
-    tipo: finalidadeNome.toLowerCase() === 'aluguel' ? 'aluguel' : 'venda',
+    tipo:
+      finalidadeNome.toLowerCase() === 'vendido'
+        ? 'vendido'
+        : finalidadeNome.toLowerCase() === 'aluguel'
+          ? 'aluguel'
+          : 'venda',
     categoria: tipoNome,
     codigo: apiImovel.codigo,
     dataPublicacao: apiImovel.createdAt,
