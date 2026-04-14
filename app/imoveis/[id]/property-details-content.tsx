@@ -36,6 +36,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Imovel } from "@/lib/api";
 import Image from "next/image";
+import { FaWhatsapp } from "react-icons/fa";
 import { Footer } from "@/components/Footer";
 import { CarouselProperties } from "@/components/CarouselProperties";
 import { GetInTouch } from "@/components/GetInTouch";
@@ -253,7 +254,23 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                 <p className="text-sm text-muted-foreground mb-6">
                   {imovel.descricao.substring(0, 150)}...
                 </p>
-                
+
+                <Button
+                  asChild
+                  className="w-full bg-green-500 hover:bg-green-600 text-white"
+                >
+                  <a
+                    href={`https://wa.me/5542988686269?text=${encodeURIComponent(
+                      `Olá, tenho interesse no imóvel ${imovel.titulo} (Cód: ${imovel.codigo}). Gostaria de mais informações.`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaWhatsapp className="h-5 w-5 mr-2" />
+                    Conversar no WhatsApp
+                  </a>
+                </Button>
+
                 <Separator className="my-4" />
                 
                 <div className="space-y-4">
