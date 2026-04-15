@@ -10,7 +10,9 @@ module.exports = {
     max_memory_restart: '1G',
     env: {
       NODE_ENV: 'production',
-      PORT: 3012
+      PORT: 3012,
+      RESEND_API_KEY: process.env.RESEND_API_KEY || '',
+      CONTACT_EMAIL: process.env.CONTACT_EMAIL || 'elielcezar@gmail.com',
     },
     error_file: '/home/hajar/logs/hajar-front-error.log',
     out_file: '/home/hajar/logs/hajar-front-out.log',
