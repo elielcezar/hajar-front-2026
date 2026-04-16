@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -60,6 +61,18 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-K4HW94WE35"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-K4HW94WE35');
+          `}
+        </Script>
         {/* Font Awesome */}
         <link
           rel="stylesheet"

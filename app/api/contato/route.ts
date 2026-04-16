@@ -171,7 +171,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (error) {
-      console.error('Erro ao enviar e-mail:', error);
+      console.error('Erro ao enviar e-mail:', JSON.stringify(error, null, 2));
       return NextResponse.json(
         { error: 'Erro ao enviar mensagem. Tente novamente.' },
         { status: 500 }

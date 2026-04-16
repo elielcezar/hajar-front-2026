@@ -1,30 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import logo from "@/public/logo-footer.png";
-import { FaFacebook, FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { WhatsappButton } from "./WhatsappButton";
 import Link from "next/link";
 
 
-const testimonials = [
-  {
-    text: "Lorem ipsum ea cum congue bonorum, pri no natum clita. His ne vide omnis forensibus. Eum cetero imperdiet et.!",
-    author: "Jeniffer Martinez - Web Development"
-  },
-  {
-    text: "Excelente serviço! Encontrei meu imóvel dos sonhos rapidamente e com todo suporte necessário durante o processo.",
-    author: "Carlos Silva - Cliente Satisfeito"
-  },
-  {
-    text: "Profissionais competentes e atenciosos. Recomendo a todos que buscam qualidade no atendimento imobiliário.",
-    author: "Ana Paula - Investidora"
-  }
-];
+interface Cotacoes {
+  dolar: string;
+  milho: string;
+  soja: string;
+  atualizadoEm: string;
+}
 
 export const Footer = () => {
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [cotacoes, setCotacoes] = useState<Cotacoes | null>(null);
+
+  useEffect(() => {
+    fetch('/api/cotacoes')
+      .then((res) => res.json())
+      .then((data) => setCotacoes(data))
+      .catch(() => setCotacoes({ dolar: '--', milho: '--', soja: '--', atualizadoEm: '--' }));
+  }, []);
 
   return (
     <>
@@ -106,12 +105,21 @@ export const Footer = () => {
             <div className="w-full landscape:max-w-[20%] flex flex-col">
 
               <h3 className="font-aestetico text-xl font-medium mt-6 mb-9  portrait:text-center portrait:text-3xl">Cotações do dia</h3>
-              <ul>
-                <li className="mb-3"><strong>Dólar:</strong> R$ 5,29</li>
-                <li className="mb-3"><strong>Milho:</strong> R$ 55,24/sc</li>
-                <li className="mb-3"><strong>Soja:</strong> R$ 133,98/sc</li>
-                <li className="mb-3"><strong>Atualizado em:</strong> 14/11/2025 10:10</li>
-              </ul>
+              {cotacoes ? (
+                <ul>
+                  <li className="mb-3"><strong>Dólar:</strong> R$ {cotacoes.dolar}</li>
+                  <li className="mb-3"><strong>Milho:</strong> R$ {cotacoes.milho}/sc</li>
+                  <li className="mb-3"><strong>Soja:</strong> R$ {cotacoes.soja}/sc</li>
+                  <li className="mb-3 text-xs opacity-75">Atualizado em: {cotacoes.atualizadoEm}</li>
+                </ul>
+              ) : (
+                <ul className="animate-pulse">
+                  <li className="mb-3"><strong>Dólar:</strong> <span className="inline-block w-16 h-4 bg-white/20 rounded" /></li>
+                  <li className="mb-3"><strong>Milho:</strong> <span className="inline-block w-20 h-4 bg-white/20 rounded" /></li>
+                  <li className="mb-3"><strong>Soja:</strong> <span className="inline-block w-20 h-4 bg-white/20 rounded" /></li>
+                  <li className="mb-3 text-xs opacity-75">Carregando...</li>
+                </ul>
+              )}
 
             </div>
             <div className="w-full landscape:max-w-[20%] flex flex-col">
