@@ -58,7 +58,7 @@ npm run lint
 - **Deploy:** Configurado via scripts shell (`deploy.sh`) e PM2 (`ecosystem.config.cjs`).
 
 ## 🔗 Links Importantes
-- **Produção:** https://novo.hajar.com.br/
+- **Produção:** https://hajar.com.br/
 - **Backend API:** https://admin.hajar.com.br/api
 
 ---

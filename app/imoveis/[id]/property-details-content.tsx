@@ -260,7 +260,7 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                   className="w-full bg-green-500 hover:bg-green-600 text-white"
                 >
                   <a
-                    href={`https://wa.me/5542988686269?text=${encodeURIComponent(
+                    href={`https://wa.me/5542999248874?text=${encodeURIComponent(
                       `Olá, tenho interesse no imóvel ${imovel.titulo} (Cód: ${imovel.codigo}). Gostaria de mais informações.`
                     )}`}
                     target="_blank"

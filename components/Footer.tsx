@@ -45,8 +45,8 @@ export const Footer = () => {
               </div>
               <div className="flex items-start gap-3 mb-3">
                 <Phone className="w-5 h-5 text-white mt-1 flex-shrink-0" />
-                <a href="tel:42999536810" className="hover:text-primary transition-colors">
-                  42 98868-6269
+                <a href="tel:42999248874" className="hover:text-primary transition-colors">
+                  42 99924-8874
                 </a>
               </div>              
               <div className="flex items-start gap-3 mb-3">

@@ -12,7 +12,7 @@ const features = [
     icon: Building2,
     title: "Quer vender seu imóvel?",
     description: "Conte com nossa equipe para vender seu imóvel de forma eficiente e segura.",
-    link: "https://wa.me/554299257363"
+    link: "https://wa.me/5542999248874"
   },
   {
     icon: MapPin,
