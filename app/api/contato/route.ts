@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 // E-mail de destino (fallback para build time)
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'contato@hajar.com.br';
 
+// Remetente do e-mail — deve pertencer a um domínio verificado no Resend
+const CONTACT_FROM = process.env.CONTACT_FROM || 'Hajar Imóveis <contato@hajar.com.br>';
+
 // Interface para os dados do formulário
 interface ContactFormData {
   name: string;
@@ -181,7 +184,7 @@ export async function POST(request: NextRequest) {
 
     // Envia o e-mail via Resend
     const { data, error } = await resend.emails.send({
-      from: 'Hajar Imóveis <onboarding@resend.dev>', // Usar domínio verificado em produção
+      from: CONTACT_FROM,
       to: [CONTACT_EMAIL],
       replyTo: email, // Responder diretamente para o cliente
       subject: `Nova Mensagem de Contato - ${name}`,
