@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // E-mail de destino (fallback para build time)
-const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'elielcezar@gmail.com';
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'contato@hajar.com.br';
 
 // Interface para os dados do formulário
 interface ContactFormData {
@@ -112,8 +112,26 @@ function createEmailTemplate(data: ContactFormData): string {
 export async function POST(request: NextRequest) {
   try {
     // Parse do body da requisição
-    const body: ContactFormData = await request.json();
-    const { name, email, phone, message } = body;
+    const body: ContactFormData & { website?: string; elapsed?: number } = await request.json();
+    const { name, email, phone, message, website, elapsed } = body;
+
+    // --- Barreira antibot: honeypot + time-trap ---
+    // honeypot: campo oculto que apenas automações preenchem.
+    // time-trap: preenchimento rápido demais (< 3s) indica bot.
+    // Em ambos os casos respondemos como "sucesso" SEM enviar o e-mail,
+    // para não sinalizar ao bot que ele foi detectado.
+    const MIN_ELAPSED_MS = 3000;
+    const honeypotAcionado = typeof website === 'string' && website.trim() !== '';
+    const rapidoDemais = typeof elapsed === 'number' && elapsed < MIN_ELAPSED_MS;
+
+    if (honeypotAcionado || rapidoDemais) {
+      console.warn('Contato bloqueado pela barreira antibot', { honeypotAcionado, elapsed });
+      return NextResponse.json(
+        { success: true, message: 'Mensagem enviada com sucesso!' },
+        { status: 200 }
+      );
+    }
+    // --- fim da barreira antibot ---
 
     // Validação dos campos obrigatórios
     if (!name?.trim()) {

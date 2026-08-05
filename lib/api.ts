@@ -9,6 +9,7 @@ interface ApiImovel {
   descricaoLonga: string;
   fotos: string[];
   imagemCapa: string | null;
+  video: string | null;
   cidade: string;
   bairro: string | null;
   valor: string | null;
@@ -73,6 +74,7 @@ export interface Imovel {
   endereco: string;
   fotos: string[];
   imagemCapa?: string;
+  video?: string;
   tipo: 'venda' | 'aluguel' | 'vendido';
   categoria: string;
   codigo: string;
@@ -92,6 +94,37 @@ export interface Imovel {
   };
   visualizacoes?: number;
   favoritos?: number;
+}
+
+// Item de mídia do carrossel do imóvel (vídeo ou imagem)
+export type CarouselMedia = {
+  tipo: 'video' | 'imagem';
+  url: string;
+};
+
+/**
+ * Monta a lista ordenada de itens do carrossel do imóvel.
+ * Ordem: vídeo (se houver) → imagem de capa (se houver) → fotos da galeria.
+ * Itens ausentes/nulos são ignorados, sem deixar buracos no carrossel.
+ */
+export function buildCarouselItems(imovel: Imovel): CarouselMedia[] {
+  const items: CarouselMedia[] = [];
+
+  if (imovel.video) {
+    items.push({ tipo: 'video', url: imovel.video });
+  }
+
+  if (imovel.imagemCapa) {
+    items.push({ tipo: 'imagem', url: imovel.imagemCapa });
+  }
+
+  for (const foto of imovel.fotos ?? []) {
+    if (foto) {
+      items.push({ tipo: 'imagem', url: foto });
+    }
+  }
+
+  return items;
 }
 
 // Interface para destaques do Hero
@@ -139,6 +172,7 @@ function transformApiImovel(apiImovel: ApiImovel): Imovel {
     endereco: apiImovel.endereco || '',
     fotos: apiImovel.fotos,
     imagemCapa: apiImovel.imagemCapa || undefined,
+    video: apiImovel.video || undefined,
     tipo:
       finalidadeNome.toLowerCase() === 'vendido'
         ? 'vendido'

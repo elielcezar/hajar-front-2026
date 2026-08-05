@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -52,6 +52,9 @@ export default function ContactContent() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  // Barreira antibot: honeypot (campo oculto) + time-trap (tempo de preenchimento)
+  const [honeypot, setHoneypot] = useState("");
+  const mountedAt = useRef<number>(Date.now());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,7 +90,11 @@ export default function ContactContent() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          website: honeypot,
+          elapsed: Date.now() - mountedAt.current,
+        }),
       });
 
       const data = await response.json();
@@ -236,6 +243,23 @@ export default function ContactContent() {
                     maxLength={1000}
                     rows={6}
                     className="resize-none"
+                  />
+                </div>
+
+                {/* Honeypot antibot — oculto para humanos; não remover nem preencher */}
+                <div
+                  aria-hidden="true"
+                  style={{ position: "absolute", left: "-9999px", top: "-9999px", width: 0, height: 0, overflow: "hidden" }}
+                >
+                  <label htmlFor="website">Não preencha este campo</label>
+                  <input
+                    id="website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
                   />
                 </div>
 

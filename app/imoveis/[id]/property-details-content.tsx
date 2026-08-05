@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Header } from "@/components/Header";
 import { SearchBar } from "@/components/SearchBar";
 import { Button } from "@/components/ui/button";
@@ -29,12 +29,13 @@ import {
   Phone,
   Send,
   MapPin,
-  CheckCircle
+  CheckCircle,
+  Play
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Imovel } from "@/lib/api";
+import { Imovel, buildCarouselItems } from "@/lib/api";
 import Image from "next/image";
 import { FaWhatsapp } from "react-icons/fa";
 import { Footer } from "@/components/Footer";
@@ -61,12 +62,18 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  // Barreira antibot: honeypot (campo oculto) + time-trap (tempo de preenchimento)
+  const [honeypot, setHoneypot] = useState("");
+  const mountedAt = useRef<number>(Date.now());
 
   const propertyFeatures = [
     { icon: Bed, label: "Quartos", value: String(imovel.quartos) },
     { icon: Bath, label: "Banheiros", value: String(imovel.banheiros) },
     { icon: Maximize, label: "Área", value: `${imovel.area} m²` },
   ];
+
+  // Itens do carrossel: vídeo (se houver) → capa → fotos da galeria
+  const carouselItems = buildCarouselItems(imovel);
 
   // Listen to carousel changes
   useEffect(() => {
@@ -112,7 +119,11 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          website: honeypot,
+          elapsed: Date.now() - mountedAt.current,
+        }),
       });
 
       const data = await response.json();
@@ -203,17 +214,25 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
             {/* Image Carousel */}
             <Carousel className="w-full" setApi={setCarouselApi}>
               <CarouselContent>
-                {imovel.fotos.map((foto, index) => (
+                {carouselItems.map((item, index) => (
                   <CarouselItem key={index}>
-                    <div className="relative aspect-video rounded-sm overflow-hidden shadow-lg">
-                      <Image 
-                        src={foto} 
-                        alt={`${imovel.titulo} ${index + 1}`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 66vw"
-                      />
-                      
+                    <div className="relative aspect-video rounded-sm overflow-hidden shadow-lg bg-black">
+                      {item.tipo === 'video' ? (
+                        <video
+                          src={item.url}
+                          controls
+                          preload="metadata"
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <Image
+                          src={item.url}
+                          alt={`${imovel.titulo} ${index + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 66vw"
+                        />
+                      )}
                     </div>
                   </CarouselItem>
                 ))}
@@ -224,24 +243,38 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
 
             {/* Thumbnail Navigation */}
             <div className="grid grid-cols-4 gap-3">
-              {imovel.fotos.slice(0, 4).map((foto, i) => (
-                <div 
-                  key={i} 
+              {carouselItems.slice(0, 4).map((item, i) => (
+                <div
+                  key={i}
                   onClick={() => carouselApi?.scrollTo(i)}
                   className={`relative aspect-video rounded-sm overflow-hidden cursor-pointer hover:opacity-80 transition-all border-2 ${
                     currentSlide === i ? 'border-primary' : 'border-transparent hover:border-primary'
                   }`}
                 >
-                  <Image 
-                    src={foto}
-                    alt={`Miniatura ${i + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 25vw, 12vw"
-                  />
+                  {item.tipo === 'video' ? (
+                    <>
+                      <video
+                        src={item.url}
+                        muted
+                        preload="metadata"
+                        className="w-full h-full object-cover bg-black"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <Play className="h-6 w-6 text-white fill-white" />
+                      </div>
+                    </>
+                  ) : (
+                    <Image
+                      src={item.url}
+                      alt={`Miniatura ${i + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 25vw, 12vw"
+                    />
+                  )}
                 </div>
               ))}
-            </div>            
+            </div>
           </div>
 
           {/* Right Column - Sidebar */}
@@ -607,8 +640,25 @@ export default function PropertyDetailsContent({ imovel }: PropertyDetailsConten
                             maxLength={1000}
                           />
                         </div>
-                        <Button 
-                          type="submit" 
+                        {/* Honeypot antibot — oculto para humanos; não remover nem preencher */}
+                        <div
+                          aria-hidden="true"
+                          style={{ position: "absolute", left: "-9999px", top: "-9999px", width: 0, height: 0, overflow: "hidden" }}
+                        >
+                          <label htmlFor="website">Não preencha este campo</label>
+                          <input
+                            id="website"
+                            name="website"
+                            type="text"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            value={honeypot}
+                            onChange={(e) => setHoneypot(e.target.value)}
+                          />
+                        </div>
+
+                        <Button
+                          type="submit"
                           className="w-full"
                           disabled={isSubmitting}
                         >
