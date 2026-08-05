@@ -9,16 +9,28 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1
+      - name: Prepare SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      # A conexão SSH com o servidor é intermitente (timeout de rede em alguns
+      # runners). O retry tenta novamente automaticamente em vez de exigir
+      # re-run manual do workflow.
+      - name: Deploy via SSH (com retry)
+        uses: nick-fields/retry@v3
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            cd /home/hajar/htdocs/hajar.com.br
-            git pull origin main
-            npm install
-            npm run build
-            pm2 restart hajar-front
-            pm2 save
+          timeout_minutes: 8
+          max_attempts: 5
+          retry_wait_seconds: 30
+          command: |
+            ssh -i ~/.ssh/deploy_key \
+              -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -o ConnectTimeout=30 \
+              "$SSH_USER@$SSH_HOST" \
+              'cd /home/hajar/htdocs/hajar.com.br && git pull origin main && npm install && npm run build && pm2 restart hajar-front && pm2 save'
