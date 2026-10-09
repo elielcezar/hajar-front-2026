@@ -161,16 +161,16 @@ function transformApiImovel(apiImovel: ApiImovel): Imovel {
     id: apiImovel.id,
     titulo: apiImovel.titulo,
     subTitulo: apiImovel.subTitulo,
-    descricao: apiImovel.descricaoCurta,
-    descricaoLonga: apiImovel.descricaoLonga,
+    descricao: apiImovel.descricaoCurta || '',
+    descricaoLonga: apiImovel.descricaoLonga || '',
     preco: valorNumerico,
     precoPromo: apiImovel.valorPromo
       ? parseFloat(apiImovel.valorPromo.replace(/\./g, '').replace(',', '.')) || undefined
       : undefined,
-    localizacao: apiImovel.cidade,
+    localizacao: apiImovel.cidade || '',
     bairro: apiImovel.bairro || '',
     endereco: apiImovel.endereco || '',
-    fotos: apiImovel.fotos,
+    fotos: Array.isArray(apiImovel.fotos) ? apiImovel.fotos : [],
     imagemCapa: apiImovel.imagemCapa || undefined,
     video: apiImovel.video || undefined,
     tipo:
@@ -244,8 +244,10 @@ export async function getImoveis(filters?: Record<string, string>): Promise<Imov
       });
     }
 
+    // Sem cache: imóveis cadastrados/editados no admin precisam aparecer na hora
+    // (o cache de 1h fazia a página de um imóvel novo retornar 404)
     const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 }, // Revalidar a cada 1 hora
+      cache: 'no-store',
     });
     
     if (!response.ok) {
